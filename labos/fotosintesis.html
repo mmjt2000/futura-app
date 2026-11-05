@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Fotosíntesis</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num;
+const Lf = L => (L / (L + 25)) / (100 / 125), Cf = C => (C / (C + 0.04)) / (0.10 / 0.14), Tf = T => Math.exp(-Math.pow((T - 25) / 10, 2));
+const rate = (L, C, T) => Math.min(Lf(L), Cf(C)) * Tf(T) * 100;
+TP.lab({
+  icon: '🌿', title: 'Laboratorio: Fotosíntesis y factores limitantes', alt: 'Tasa de fotosíntesis en función de la luz',
+  subtitle: '6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂ · La tasa la fija el <b>factor limitante</b>. (Modelo simplificado)',
+  controls: [{ id: 'L', label: 'Intensidad de la <b>luz</b>', min: 0, max: 100, step: 5, value: 50, unit: ' %', dec: 0 }, { id: 'C', label: 'Concentración de <b>CO₂</b>', min: 0.01, max: 0.1, step: 0.01, value: 0.08, unit: ' %', dec: 2 }, { id: 'T', label: '<b>Temperatura</b>', min: 0, max: 50, step: 5, value: 25, unit: ' °C', dec: 0 }],
+  presets: [{ label: 'Invernadero ideal', values: { L: 100, C: 0.1, T: 25 } }, { label: 'Aire normal (0.04 % CO₂)', values: { L: 100, C: 0.04, T: 25 } }, { label: 'Día frío', values: { L: 100, C: 0.1, T: 5 } }, { label: 'Casi sin luz', values: { L: 10, C: 0.1, T: 25 } }],
+  compute({ L, C, T }) {
+    const f = [['luz', Lf(L)], ['CO₂', Cf(C)], ['temperatura', Tf(T)]], lim = f.reduce((a, b) => b[1] < a[1] ? b : a), r = rate(L, C, T);
+    return { r, lim: lim[0], steps: [
+      { t: 'PASO 1 : Factor de la luz', html: `L = ${L} % → f(luz) = ${N(Lf(L) * 100, 0)} % de su máximo` },
+      { t: 'PASO 2 : Factor del CO₂', html: `C = ${N(C, 2)} % → f(CO₂) = ${N(Cf(C) * 100, 0)} %` },
+      { t: 'PASO 3 : Factor de la temperatura', html: `T = ${T} °C (óptimo ≈ 25 °C) → f(T) = ${N(Tf(T) * 100, 0)} %` },
+      { t: 'PASO 4 : Factor limitante', html: 'Es el factor más escaso: el que más frena la fotosíntesis.', r: lim[0], cls: 'bad' },
+      { t: 'PASO 5 : Tasa de fotosíntesis', html: `tasa = mín(luz, CO₂) × temperatura = ${N(Math.min(Lf(L), Cf(C)) * 100, 0)} % × ${N(Tf(T), 2)}`, r: `${N(r, 0)} % del máximo`, cls: 'good' },
+      { t: 'PASO 6 : ¿Qué mejorar?', html: `Subir otro factor no ayuda mientras el ${lim[0]} siga limitando.` }] };
+  },
+  draw(ctx, { L, C, T }, res, { W, H }) {
+    const g = TP.plane(ctx, W, H, { x0: 0, x1: 100, y0: 0, y1: 100, xt: 20, yt: 20, lm: 44, xl: 'luz (%)', yl: 'tasa (%)', yf: v => v + '%' });
+    const curve = (c, t, col, dash) => { ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.setLineDash(dash || []); ctx.beginPath(); for (let l = 0; l <= 100; l += 2) { const x = g.X(l), y = g.Y(rate(l, c, t)); l ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke(); ctx.setLineDash([]); };
+    curve(0.1, 25, '#94a3b8', [6, 5]); curve(C, T, '#4de0c1');
+    TP.dot(ctx, g.X(L), g.Y(res.r), 7, '#f59e0b'); TP.tx(ctx, `${N(res.r, 0)} %`, g.X(L) + 10, g.Y(res.r) - 10, '#f59e0b', L > 80 ? 'right' : 'left');
+    TP.tx(ctx, '--- condiciones ideales', g.r - 4, g.t + 14, '#94a3b8', 'right', '11px sans-serif'); TP.tx(ctx, '— tus condiciones', g.r - 4, g.t + 30, '#4de0c1', 'right', '11px sans-serif');
+  },
+  retos: [
+    { text: 'Consigue la <b>tasa máxima</b> (100 %): ¿qué valores necesitas?', check: (S, r) => r.r >= 99 },
+    { text: 'Haz que el <b>CO₂</b> sea el factor limitante.', check: (S, r) => r.lim === 'CO₂' },
+    { text: 'Haz que la <b>temperatura</b> sea el factor limitante.', check: (S, r) => r.lim === 'temperatura' }],
+  info: [
+    { cls: 'materials', title: '📘 FACTORES LIMITANTES', html: '<p>La fotosíntesis necesita <b>luz</b>, <b>CO₂</b>, agua y una <b>temperatura</b> adecuada.</p><p>La tasa no depende de lo que sobra, sino del factor más escaso: el <b>factor limitante</b>.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>En un invernadero se controlan la luz, el CO₂ y la temperatura para aumentar la cosecha sin desperdiciar energía.</p><div class="highlight"><b>Regla de oro:</b> si la luz ya está saturada, ponerle más no sirve: hay que mejorar el siguiente factor limitante.</div>' }]
+});
+</script></body></html>

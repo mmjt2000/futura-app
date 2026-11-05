@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Leyes de Newton</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, G = 9.8;
+TP.lab({
+  icon: '🚀', title: 'Laboratorio: Segunda ley de Newton', alt: 'Velocidad en función del tiempo para una fuerza dada',
+  subtitle: '<b>F = m · a</b> · Una fuerza neta sobre una masa produce una aceleración.',
+  controls: [{ id: 'F', label: 'Fuerza aplicada <b>F</b>', min: 0, max: 100, step: 5, value: 20, unit: ' N', dec: 0 }, { id: 'm', label: 'Masa <b>m</b>', min: 1, max: 20, step: 1, value: 5, unit: ' kg', dec: 0 }, { id: 'mu', label: 'Fricción <b>μ</b> con el suelo', min: 0, max: 0.5, step: 0.05, value: 0.1, dec: 2 }, { id: 't', label: 'Tiempo <b>t</b>', min: 1, max: 10, step: 1, value: 5, unit: ' s', dec: 0 }],
+  presets: [{ label: 'Sin fricción (F 10 N, 5 kg)', values: { F: 10, m: 5, mu: 0, t: 5 } }, { label: 'Duplica la masa (10 kg)', values: { F: 20, m: 10, mu: 0, t: 5 } }, { label: 'Fricción fuerte', values: { F: 20, m: 10, mu: 0.3, t: 5 } }],
+  compute({ F, m, mu, t }) {
+    const W = m * G, fr = mu * W, net = F - fr, moves = net > 1e-9, a = moves ? net / m : 0, v = a * t, d = 0.5 * a * t * t;
+    return { a, moves, fr, steps: [
+      { t: 'PASO 1 : Peso  W = m · g', html: `W = ${m} × ${G}`, r: `${N(W, 1)} N` },
+      { t: 'PASO 2 : Fricción máxima  f = μ · W', html: `f = ${N(mu, 2)} × ${N(W, 1)}`, r: `${N(fr, 1)} N` },
+      { t: 'PASO 3 : Fuerza neta', html: moves ? `F_neta = F − f = ${F} − ${N(fr, 1)}` : `F = ${F} N no supera la fricción de ${N(fr, 1)} N: <span class="warning">el objeto no se mueve.</span>`, r: moves ? `${N(net, 1)} N` : '0 N', cls: moves ? 'good' : 'bad' },
+      { t: 'PASO 4 : Aceleración  a = F_neta / m', html: moves ? `a = ${N(net, 1)} / ${m}` : 'a = 0', r: `${N(a, 2)} m/s²` },
+      { t: `PASO 5 : Velocidad y distancia a los ${t} s`, html: `v = a·t = ${N(a, 2)} × ${t}<br>d = ½·a·t² = ½ × ${N(a, 2)} × ${t}²`, f: `v = ${N(v, 1)} m/s    d = ${N(d, 1)} m` },
+      { t: 'PASO 6 : Si se duplica la masa', html: `a′ = ${N(net > 0 ? (net / (2 * m)) : 0, 2)} m/s² con la misma fuerza neta`, f: 'Doble masa → mitad de aceleración' }] };
+  },
+  draw(ctx, { F, m, mu, t }, res, { W, H }) {
+    const vmax = Math.max(1, res.a * 10 * 1.05), st = TP.nice(vmax, 5), y1 = Math.ceil(vmax / st) * st;
+    const g = TP.plane(ctx, W, H, { x0: 0, x1: 10, y0: 0, y1, xt: 1, yt: st, lm: 46, xl: 't (s)', yl: 'v (m/s)', yf: v => N(v, 1) });
+    TP.line(ctx, g.X(0), g.Y(0), g.X(10), g.Y(res.a * 10), '#38bdf8', 3); const a0 = F / m; if (mu > 0 && a0 * 10 <= y1) TP.line(ctx, g.X(0), g.Y(0), g.X(10), g.Y(a0 * 10), '#94a3b8', 2, [6, 5]);
+    TP.line(ctx, g.X(t), g.Y(0), g.X(t), g.Y(res.a * t), 'rgba(255,255,255,.4)', 1.5, [4, 4]); TP.dot(ctx, g.X(t), g.Y(res.a * t), 7, '#f59e0b'); TP.tx(ctx, `${N(res.a * t, 1)} m/s`, g.X(t) + 10, g.Y(res.a * t) - 10, '#f59e0b', t > 7 ? 'right' : 'left');
+    TP.tx(ctx, `a = ${N(res.a, 2)} m/s²`, g.l + 8, g.t + 14, '#38bdf8', 'left'); if (mu > 0) TP.tx(ctx, '--- sin fricción', g.r - 4, g.t + 14, '#94a3b8', 'right', '11px sans-serif');
+  },
+  retos: [
+    { text: 'Consigue una aceleración de <b>exactamente 2 m/s²</b>.', check: (S, r) => Math.abs(r.a - 2) < 1e-9 },
+    { text: 'Aplica una fuerza <b>mayor que 0</b> y haz que el objeto <b>no se mueva</b> (la fricción gana).', check: (S, r) => S.F > 0 && !r.moves },
+    { text: 'Sin fricción, con <b>F = 40 N</b>, logra <b>a = 4 m/s²</b>.', check: (S, r) => S.F === 40 && S.mu === 0 && Math.abs(r.a - 4) < 1e-9 }],
+  info: [
+    { cls: 'materials', title: '📘 LAS LEYES DE NEWTON', html: '<p><b>1.ª:</b> sin fuerza neta, un cuerpo mantiene su movimiento.</p><p><b>2.ª:</b> F_neta = m · a.</p><p><b>3.ª:</b> a toda acción corresponde una reacción igual y opuesta.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Los ingenieros calculan con F = m·a cuánta fuerza necesita un auto para acelerar o un ascensor para subir, y por qué un objeto pesado cuesta más empujarlo.</p><div class="highlight"><b>Regla de oro:</b> con la misma fuerza, a doble masa, la mitad de aceleración.</div>' }]
+});
+</script></body></html>

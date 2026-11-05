@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Ley de Ohm</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num;
+TP.lab({
+  icon: '⚡', title: 'Laboratorio: La ley de Ohm', alt: 'Gráfica de la corriente en función del voltaje',
+  subtitle: '<b>I = V / R</b> · Cambia el voltaje y la resistencia y observa la corriente y la potencia.',
+  controls: [{ id: 'V', label: 'Voltaje <b>V</b>', min: 1, max: 24, step: 1, value: 12, unit: ' V', dec: 0 }, { id: 'R', label: 'Resistencia <b>R</b>', min: 10, max: 300, step: 10, value: 100, unit: ' Ω', dec: 0 }],
+  presets: [{ label: 'Batería de auto (12 V, 6 Ω ≈)', values: { V: 12, R: 10 } }, { label: 'Pila (9 V, 100 Ω)', values: { V: 9, R: 100 } }, { label: 'Resistencia alta (24 V, 300 Ω)', values: { V: 24, R: 300 } }],
+  compute({ V, R }) {
+    const I = V / R, P = V * I;
+    return { I, P, steps: [
+      { t: 'PASO 1 : Datos', html: `V = ${V} V · R = ${R} Ω` },
+      { t: 'PASO 2 : Corriente  I = V / R', html: `I = ${V} / ${R}`, r: `${N(I, 3)} A  (${N(I * 1000, 1)} mA)`, cls: 'good' },
+      { t: 'PASO 3 : Potencia  P = V · I', html: `P = ${V} × ${N(I, 3)}`, r: `${N(P, 2)} W` },
+      { t: 'PASO 4 : Energía en 1 hora', html: `E = P × t = ${N(P, 2)} W × 1 h`, f: `${N(P, 2)} Wh = ${N(P / 1000, 4)} kWh` },
+      { t: 'PASO 5 : ¿Y si se duplica la resistencia?', html: `R′ = ${2 * R} Ω → I′ = ${V} / ${2 * R}`, f: `${N(V / (2 * R), 3)} A  (la mitad)` },
+      { t: 'PASO 6 : Seguridad', html: I > 0.03 ? '<span class="warning">Una corriente mayor de 30 mA a través del cuerpo ya puede ser peligrosa.</span>' : 'Corriente pequeña, pero nunca pruebes con la red eléctrica de la casa.' }] };
+  },
+  draw(ctx, { V, R }, res, { W, H }) {
+    const g = TP.plane(ctx, W, H, { x0: 0, x1: 24, y0: 0, y1: 2.5, xt: 4, yt: 0.5, lm: 44, xl: 'V (voltios)', yl: 'I (A)', yf: v => N(v, 1) });
+    g.clip(); TP.line(ctx, g.X(0), g.Y(0), g.X(24), g.Y(24 / R), '#38bdf8', 3); g.unclip();
+    TP.line(ctx, g.X(V), g.Y(0), g.X(V), g.Y(res.I), 'rgba(255,255,255,.4)', 1.5, [4, 4]); TP.line(ctx, g.X(0), g.Y(res.I), g.X(V), g.Y(res.I), 'rgba(255,255,255,.4)', 1.5, [4, 4]);
+    TP.dot(ctx, g.X(V), g.Y(res.I), 7, '#f59e0b'); TP.tx(ctx, `${N(res.I, 3)} A`, g.X(V) + 10, g.Y(res.I) - 10, '#f59e0b', V > 18 ? 'right' : 'left'); TP.tx(ctx, `pendiente = 1/R = ${N(1 / R, 4)}`, g.r - 4, g.t + 14, '#38bdf8', 'right', '11px sans-serif');
+  },
+  retos: [
+    { text: 'Consigue que circule <b>exactamente 1 A</b>.', check: (S, r) => Math.abs(r.I - 1) < 1e-9 },
+    { text: 'Con <b>12 V</b>, logra una potencia de <b>14.4 W</b>.', check: (S, r) => S.V === 12 && Math.abs(r.P - 14.4) < 1e-9 },
+    { text: 'Con <b>24 V</b>, consigue una corriente <b>menor que 0.1 A</b>.', check: (S, r) => S.V === 24 && r.I < 0.1 }],
+  info: [
+    { cls: 'materials', title: '📘 TRES MAGNITUDES', html: '<p><b>Voltaje (V):</b> la «presión» que empuja las cargas.</p><p><b>Resistencia (R):</b> cuánto se opone el material al paso de la corriente.</p><p><b>Corriente (I):</b> cuántas cargas pasan por segundo. Ley de Ohm: I = V / R.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Los ingenieros de electrónica y telecomunicaciones usan la ley de Ohm para diseñar circuitos, elegir resistencias y calcular el consumo de un equipo.</p><div class="highlight"><b>Regla de oro:</b> a igual voltaje, doble resistencia significa mitad de corriente.</div>' }]
+});
+</script></body></html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Crecimiento exponencial</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, big = v => Math.round(v).toLocaleString('en-US');
+TP.lab({
+  icon: '🦠', title: 'Laboratorio: Crecimiento y decaimiento exponencial', alt: 'Curva exponencial comparada con un crecimiento lineal',
+  subtitle: '<b>N = N₀ · (1 + g)ᵗ</b> · Cambia la tasa por período y observa cómo crece (o decae) la cantidad.',
+  controls: [{ id: 'N0', label: 'Cantidad inicial <b>N₀</b>', min: 100, max: 2000, step: 100, value: 500, dec: 0 }, { id: 'g', label: 'Tasa por período <b>g</b>', min: -50, max: 100, step: 5, value: 10, unit: ' %', dec: 0 }, { id: 't', label: 'Períodos <b>t</b>', min: 1, max: 20, step: 1, value: 8, dec: 0 }],
+  presets: [{ label: 'Bacterias (se duplican)', values: { N0: 100, g: 100, t: 6 } }, { label: 'Medicamento (pierde 50 %)', values: { N0: 800, g: -50, t: 6 } }, { label: 'Crecimiento de 10 %', values: { N0: 500, g: 10, t: 8 } }],
+  compute({ N0, g, t }) {
+    const r = 1 + g / 100, Nt = N0 * Math.pow(r, t), lin = N0 * (1 + g / 100 * t), dbl = g > 0 ? Math.log(2) / Math.log(r) : null, half = g < 0 ? Math.log(.5) / Math.log(r) : null;
+    return { Nt, lin, dbl, half, steps: [
+      { t: 'PASO 1 : El modelo', html: `N = N₀ · (1 + g)ᵗ = ${big(N0)} · (1 + ${N(g / 100)})^${t}` },
+      { t: 'PASO 2 : El factor', html: `(${N(r, 2)})^${t}`, f: `= ${N(Math.pow(r, t), 3)}` },
+      { t: 'PASO 3 : Cantidad después de t períodos', html: `N = ${big(N0)} × ${N(Math.pow(r, t), 3)}`, r: big(Nt), cls: 'good' },
+      { t: 'PASO 4 : Si fuera lineal (suma g·N₀ cada período)', html: `N = N₀(1 + g·t) = ${big(N0)}(1 + ${N(g / 100)}·${t})`, r: big(lin), cls: 'bad' },
+      { t: dbl ? 'PASO 5 : Tiempo de duplicación' : half ? 'PASO 5 : Vida media' : 'PASO 5 : Sin cambio', html: dbl ? `t = ln 2 / ln(${N(r, 2)})` : half ? `t = ln 0.5 / ln(${N(r, 2)})` : 'Con g = 0 la cantidad no cambia.', r: dbl ? `${N(dbl, 2)} períodos` : half ? `${N(half, 2)} períodos` : '' }] };
+  },
+  draw(ctx, { N0, g, t }, res, { W, H }) {
+    const top = Math.max(res.Nt, res.lin, N0) * 1.1, step = TP.nice(top, 5), ymax = Math.ceil(top / step) * step;
+    const gr = TP.plane(ctx, W, H, { x0: 0, x1: t, y0: 0, y1: ymax, xt: Math.max(1, TP.nice(t, 6)), yt: step, yf: big, lm: 66, xl: 'períodos', yl: '' });
+    const curve = (f, col, dash) => { ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.setLineDash(dash || []); ctx.beginPath(); for (let i = 0; i <= 200; i++) { const x = t * i / 200; i ? ctx.lineTo(gr.X(x), gr.Y(f(x))) : ctx.moveTo(gr.X(x), gr.Y(f(x))); } ctx.stroke(); ctx.setLineDash([]); };
+    curve(x => N0 * (1 + g / 100 * x), '#94a3b8', [6, 5]); curve(x => N0 * Math.pow(1 + g / 100, x), '#4de0c1');
+    TP.dot(ctx, gr.X(t), gr.Y(res.Nt), 6, '#4de0c1'); TP.tx(ctx, 'Exponencial ' + big(res.Nt), gr.r - 4, gr.Y(res.Nt) - 12, '#4de0c1', 'right'); TP.tx(ctx, 'Lineal ' + big(res.lin), gr.r - 4, gr.Y(res.lin) + 18, '#94a3b8', 'right');
+  },
+  retos: [
+    { text: 'Consigue que la cantidad se <b>duplique en menos de 4 períodos</b>.', check: (S, r) => r.dbl !== null && r.dbl < 4 },
+    { text: 'Consigue un decaimiento con <b>vida media entre 2.5 y 3.5 períodos</b>.', check: (S, r) => r.half !== null && r.half >= 2.5 && r.half <= 3.5 },
+    { text: 'Logra superar <b>10 000</b> en <b>10 períodos o menos</b>.', check: (S, r) => S.t <= 10 && r.Nt > 10000 }],
+  info: [
+    { cls: 'materials', title: '📘 EXPONENCIAL VS. LINEAL', html: '<p><b>Lineal:</b> suma siempre la misma cantidad en cada período.</p><p><b>Exponencial:</b> multiplica por el mismo factor (1 + g). Si g > 0 crece, y si g < 0 decae.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Así crecen las bacterias y se propagan los virus, y así decae la cantidad de un medicamento en la sangre o la radiactividad de un material.</p><div class="highlight"><b>Regla de oro:</b> el porcentaje se calcula sobre lo que ya hay, por eso el crecimiento exponencial se acelera.</div>' }]
+});
+</script></body></html>

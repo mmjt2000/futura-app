@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Sistemas de ecuaciones</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, sg = TP.sg;
+TP.lab({
+  icon: '✖️', title: 'Laboratorio: Sistemas de ecuaciones', alt: 'Dos rectas y su punto de intersección',
+  subtitle: 'Dos ecuaciones lineales forman un <b>sistema</b>. La solución es el punto donde las rectas se cruzan.',
+  controls: [
+    { id: 'm1', label: 'Recta 1: pendiente <b>m₁</b>', min: -5, max: 5, step: 0.5, value: 1 }, { id: 'b1', label: 'Recta 1: ordenada <b>b₁</b>', min: -8, max: 8, step: 1, value: 0, dec: 0 },
+    { id: 'm2', label: 'Recta 2: pendiente <b>m₂</b>', min: -5, max: 5, step: 0.5, value: -1 }, { id: 'b2', label: 'Recta 2: ordenada <b>b₂</b>', min: -8, max: 8, step: 1, value: 6, dec: 0 }],
+  presets: [{ label: 'Se cruzan en un punto', values: { m1: 1, b1: 0, m2: -1, b2: 6 } }, { label: 'Paralelas', values: { m1: 2, b1: 1, m2: 2, b2: 5 } }, { label: 'Coincidentes', values: { m1: 2, b1: 1, m2: 2, b2: 1 } }],
+  compute({ m1, b1, m2, b2 }) {
+    const par = m1 === m2, same = par && b1 === b2, x = par ? null : (b2 - b1) / (m1 - m2), y = par ? null : m1 * x + b1;
+    const kind = same ? 'Infinitas soluciones' : par ? 'Sin solución' : 'Solución única';
+    return { x, y, par, same, steps: [
+      { t: 'PASO 1 : El sistema', html: `(1) y = ${N(m1)}x ${sg(b1)}<br>(2) y = ${N(m2)}x ${sg(b2)}` },
+      { t: 'PASO 2 : Igualación', html: par ? `Como m₁ = m₂ = ${N(m1)}, al restar queda 0 = ${N(b2 - b1)}` : `${N(m1)}x ${sg(b1)} = ${N(m2)}x ${sg(b2)}<br>(${N(m1)} − ${N(m2)})x = ${N(b2)} − ${N(b1)}<br>x = ${N(b2 - b1)} / ${N(m1 - m2)}`, f: par ? (same ? '0 = 0  (siempre se cumple)' : `0 = ${N(b2 - b1)}  (imposible)`) : `x = ${N(x)}` },
+      { t: 'PASO 3 : Valor de y', html: par ? '—' : `y = ${N(m1)}(${N(x)}) ${sg(b1)}`, r: par ? '' : N(y) },
+      { t: 'PASO 4 : Verificación en (2)', html: par ? '—' : `${N(m2)}(${N(x)}) ${sg(b2)} = ${N(m2 * x + b2)}`, f: par ? '' : `${N(m2 * x + b2)} = ${N(y)}  ✅` },
+      { t: 'PASO 5 : Tipo de sistema', r: kind, cls: same ? '' : par ? 'bad' : 'good', html: same ? 'Las dos rectas son la misma.' : par ? 'Rectas paralelas: misma pendiente y distinta ordenada.' : `Pendientes distintas: se cruzan en (${N(x)}, ${N(y)}).` }] };
+  },
+  draw(ctx, { m1, b1, m2, b2 }, res, { W, H }) {
+    const g = TP.plane(ctx, W, H, { x0: -11, x1: 11, y0: -9, y1: 9, xt: 2, yt: 2 });
+    g.clip(); TP.line(ctx, g.X(-11), g.Y(-11 * m1 + b1), g.X(11), g.Y(11 * m1 + b1), '#38bdf8', 3); TP.line(ctx, g.X(-11), g.Y(-11 * m2 + b2), g.X(11), g.Y(11 * m2 + b2), '#f472b6', 3, res.same ? [8, 6] : []); g.unclip();
+    if (!res.par && Math.abs(res.x) <= 11 && Math.abs(res.y) <= 9) { TP.dot(ctx, g.X(res.x), g.Y(res.y), 7, '#f59e0b'); TP.tx(ctx, `(${N(res.x)}, ${N(res.y)})`, g.X(res.x) + 10, g.Y(res.y) - 10, '#f59e0b', 'left'); }
+    TP.tx(ctx, 'Recta 1', g.l + 6, g.t + 14, '#38bdf8', 'left'); TP.tx(ctx, 'Recta 2', g.l + 6, g.t + 30, '#f472b6', 'left');
+  },
+  retos: [
+    { text: 'Haz que las rectas se corten en el punto <b>(2, 5)</b>.', check: (S, r) => !r.par && Math.abs(r.x - 2) < 1e-9 && Math.abs(r.y - 5) < 1e-9 },
+    { text: 'Consigue un sistema <b>sin solución</b> (rectas paralelas).', check: (S, r) => r.par && !r.same },
+    { text: 'Consigue un sistema con <b>infinitas soluciones</b>.', check: (S, r) => r.same }],
+  info: [
+    { cls: 'materials', title: '📘 ¿QUÉ ES UN SISTEMA?', html: '<p>Un <b>sistema de ecuaciones</b> son dos o más ecuaciones que deben cumplirse a la vez.</p><p>Gráficamente, la solución es el punto donde se cruzan las rectas. Pueden tener <b>una</b> solución, <b>ninguna</b> (paralelas) o <b>infinitas</b> (la misma recta).</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Sirve para comparar dos planes o dos precios y saber en qué punto cuestan lo mismo, por ejemplo dos tiendas de impresión con costo fijo y costo por copia.</p><div class="highlight"><b>Regla de oro:</b> si las pendientes son distintas, las rectas siempre se cruzan en un único punto.</div>' }]
+});
+</script></body></html>

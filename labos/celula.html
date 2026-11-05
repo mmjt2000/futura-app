@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Laboratorio de la célula</title><link rel="stylesheet" href="/static/lab.css">
+<style>
+body{padding:12px}.bar{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}.main{display:grid;gap:12px;grid-template-columns:minmax(0,1.7fr) minmax(240px,1fr);max-width:1000px;margin:auto}
+@media(max-width:700px){.main{grid-template-columns:1fr}}svg{width:100%;height:auto;display:block;border-radius:14px;background:radial-gradient(#141a33,#0b0d1a)}
+.org{cursor:pointer;transition:opacity .3s,filter .3s;outline:none}.org:hover,.org:focus-visible{filter:drop-shadow(0 0 7px #ffffffaa)}.org.sel{filter:drop-shadow(0 0 12px #4de0c1)}
+.dim .org:not(.sel){opacity:.4}.pulse{animation:pulse 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{50%{transform:scale(1.07)}}@media(prefers-reduced-motion:reduce){.pulse{animation:none}}
+#panel h2{margin:0 0 6px;color:var(--accent);font-size:1.15rem}#panel p{margin:8px 0;line-height:1.45}.tag{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.prog{height:8px;background:#0b0d1a;border-radius:6px;overflow:hidden;margin:6px 0}.prog i{display:block;height:100%;background:var(--accent);transition:width .4s}
+.ok{color:#3ddc97}.ko{color:#ff7a8a}
+</style></head><body>
+<h1>🔬 Explora la célula</h1>
+<div class="bar"><button id="an" class="on">Célula animal</button><button id="ve">Célula vegetal</button><button id="ch">🎯 Desafío</button></div>
+<div class="main"><svg id="svg" viewBox="0 0 640 460" role="group" aria-label="Esquema de la célula: haz clic en cada parte"></svg><div class="card" id="panel" role="status" aria-live="polite"></div></div>
+<script>
+const $=i=>document.getElementById(i),A=['animal','plant'];
+const ORG=[
+{id:'pared',name:'Pared celular',kinds:['plant'],clue:'Capa rígida que da forma y protección a la célula vegetal.',desc:'Capa rígida de celulosa que rodea la célula vegetal: le da forma, la protege y la mantiene firme.',ana:'Las murallas de una ciudad.',fact:'La celulosa es el material principal de la madera y del algodón.'},
+{id:'citoplasma',name:'Citoplasma',kinds:A,clue:'Medio gelatinoso donde flotan los organelos.',desc:'Medio gelatinoso donde flotan los organelos y ocurren muchas reacciones químicas.',ana:'El suelo y el aire de la ciudad: todo sucede dentro de él.',fact:'Está formado en gran parte por agua.'},
+{id:'membrana',name:'Membrana plasmática',kinds:A,clue:'Controla qué sustancias entran y salen de la célula.',desc:'Controla qué sustancias entran y salen de la célula: es semipermeable.',ana:'La puerta con guardia de seguridad.',fact:'Está formada por una doble capa de fosfolípidos.'},
+{id:'vacuola',name:'Vacuola central',kinds:['plant'],pos:{plant:[[340,235,0,1]]},clue:'Almacena agua y nutrientes y mantiene firme a la planta.',desc:'Almacena agua y nutrientes y genera la presión que mantiene firme a la planta.',ana:'El tanque de agua de la ciudad.',fact:'Si falta agua, la vacuola se encoge y la planta se marchita.',
+ draw:'<ellipse rx="150" ry="120" fill="#4d9de0" fill-opacity=".6" stroke="#9fd0ff" stroke-width="4"/><text y="6" text-anchor="middle" fill="#dff0ff" font-size="15">💧 agua</text>'},
+{id:'nucleo',name:'Núcleo',kinds:A,pos:{animal:[[300,215,0,1]],plant:[[130,195,0,.7]]},clue:'Guarda el ADN y controla todas las actividades de la célula.',desc:'Guarda el ADN y da las órdenes que controlan todas las actividades de la célula.',ana:'El ayuntamiento: allí están los planos y se toman las decisiones.',fact:'Si estiraras el ADN de una sola célula humana, mediría cerca de 2 metros.',
+ draw:'<circle r="70" fill="#6d5bd0" stroke="#a99bff" stroke-width="5"/><circle cx="-12" cy="-6" r="22" fill="#3b2f8f"/>'+[[-50,-30],[40,-45],[55,20],[-35,50],[10,62],[-62,15]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#cfc8ff"/>`).join('')},
+{id:'mitocondria',name:'Mitocondria',kinds:A,pos:{animal:[[480,150,-20,1],[150,310,25,1],[505,350,10,1]],plant:[[330,62,0,.8],[545,282,-15,.8]]},clue:'Produce la mayor parte de la energía (ATP) de la célula.',desc:'Produce la mayor parte del ATP, la energía que usa la célula, mediante la respiración celular.',ana:'La central eléctrica.',fact:'Las células del corazón y de los músculos tienen cientos o miles de mitocondrias.',
+ draw:'<g class="pulse"><ellipse rx="40" ry="20" fill="#ff9f43" stroke="#c96a12" stroke-width="3"/><path d="M-26 0l8-11 8 22 8-22 8 22 8-22 8 11" fill="none" stroke="#c96a12" stroke-width="3"/></g>'},
+{id:'rer',name:'Retículo endoplasmático rugoso',kinds:['animal'],pos:{animal:[[180,215,0,1]]},clue:'Tiene ribosomas pegados; fabrica y transporta proteínas.',desc:'Red de membranas cubierta de ribosomas: fabrica y transporta proteínas.',ana:'Las carreteras con fábricas a cada lado.',fact:'Se llama «rugoso» por los ribosomas que le dan aspecto granuloso.',
+ draw:[0,16].map(o=>`<path d="M${o} -50q-22 16 0 33q22 16 0 33q-22 16 0 33" fill="none" stroke="#4fb3d9" stroke-width="7" stroke-linecap="round"/>`).join('')+[[-9,-34],[-9,0],[-9,32],[25,-34],[25,0],[25,32]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#ffd166"/>`).join('')},
+{id:'ribosoma',name:'Ribosoma',kinds:A,pos:{animal:[[130,120,0,1],[420,95,0,1],[300,400,0,1],[560,240,0,1]],plant:[[200,130,0,1],[480,120,0,1],[280,415,0,1]]},clue:'Fabrica proteínas siguiendo las instrucciones del ARN.',desc:'Fabrica proteínas siguiendo las instrucciones del ARN mensajero.',ana:'Las máquinas de la fábrica que arman las piezas.',fact:'Una célula puede tener millones de ribosomas.',
+ draw:[[0,0],[9,6],[-9,6],[6,-8],[-6,-7]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#ffd166"/>`).join('')},
+{id:'golgi',name:'Aparato de Golgi',kinds:A,pos:{animal:[[400,300,0,1]],plant:[[110,378,0,.8]]},clue:'Modifica, empaqueta y envía proteínas a su destino.',desc:'Modifica, empaqueta y envía proteínas y lípidos hacia su destino.',ana:'La oficina de correos de la célula.',fact:'Lleva el nombre de Camillo Golgi, quien lo describió en 1898.',
+ draw:[0,13,26,39].map(y=>`<path d="M-40 ${y}q40-18 80 0" fill="none" stroke="#ff6b9d" stroke-width="9" stroke-linecap="round"/>`).join('')},
+{id:'lisosoma',name:'Lisosoma',kinds:['animal'],pos:{animal:[[110,262,0,1],[245,355,0,1]]},clue:'Contiene enzimas que digieren desechos y microorganismos.',desc:'Contiene enzimas que digieren desechos, restos celulares y microorganismos.',ana:'El camión de reciclaje y limpieza.',fact:'Son muy abundantes en las células animales.',
+ draw:'<circle r="15" fill="#7bd88f" stroke="#3aa65a" stroke-width="3"/><circle cx="-4" cy="-3" r="3" fill="#3aa65a"/><circle cx="5" cy="4" r="3" fill="#3aa65a"/>'},
+{id:'cloroplasto',name:'Cloroplasto',kinds:['plant'],pos:{plant:[[90,100,0,1],[230,82,15,1],[450,58,-10,1],[545,195,20,1],[530,365,-15,1],[405,398,5,1],[110,315,10,1]]},clue:'Realiza la fotosíntesis: convierte luz en glucosa y oxígeno.',desc:'Realiza la fotosíntesis: usa luz solar, agua y CO₂ para producir glucosa y oxígeno.',ana:'Un panel solar con cocina incluida.',fact:'Contienen clorofila, el pigmento que da el color verde a las plantas.',
+ draw:'<ellipse rx="36" ry="19" fill="#3fae49" stroke="#1f7a2c" stroke-width="3"/>'+[-15,0,15].map(x=>`<ellipse cx="${x}" rx="5" ry="9" fill="#1f7a2c"/>`).join('')}
+];
+let kind='animal',sel=null,seen=new Set(),ch=null;
+const by=id=>ORG.find(o=>o.id===id),here=()=>ORG.filter(o=>o.kinds.includes(kind));
+const grp=(id,inner)=>`<g class="org${sel===id?' sel':''}" data-id="${id}" tabindex="0" role="button" aria-label="${by(id).name}">${inner}</g>`;
+function draw(){
+ let s='<defs><radialGradient id="cy"><stop offset="0" stop-color="#34456f"/><stop offset="1" stop-color="#222e52"/></radialGradient></defs>';const pl=kind==='plant';
+ if(pl)s+=grp('pared','<rect x="12" y="12" width="616" height="436" rx="58" fill="none" stroke="#5aa05a" stroke-width="18" pointer-events="stroke"/>');
+ s+=grp('citoplasma',pl?'<rect x="22" y="22" width="596" height="416" rx="50" fill="url(#cy)"/>':'<ellipse cx="320" cy="230" rx="295" ry="208" fill="url(#cy)"/>');
+ s+=grp('membrana',pl?'<rect x="27" y="27" width="586" height="406" rx="46" fill="none" stroke="#f4a6c0" stroke-width="6" pointer-events="stroke"/>':'<ellipse cx="320" cy="230" rx="295" ry="208" fill="none" stroke="#f4a6c0" stroke-width="8" pointer-events="stroke"/>');
+ ORG.filter(o=>o.pos&&o.pos[kind]).forEach(o=>o.pos[kind].forEach(([x,y,r,k])=>{s+=grp(o.id,`<g transform="translate(${x} ${y}) rotate(${r}) scale(${k})">${o.draw}</g>`);}));
+ $('svg').innerHTML=s;$('svg').classList.toggle('dim',!!sel&&!ch);
+}
+function panel(){
+ const p=$('panel'),h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;e.textContent=x;return e;};p.replaceChildren();
+ if(ch){
+  if(ch.i>=ch.order.length){p.append(h('h2','','🏆 ¡Desafío terminado!'),h('p','',`Acertaste ${ch.score} de ${ch.order.length} a la primera o con intentos. ${ch.score===ch.order.length?'¡Excelente dominio de la célula!':'Sigue explorando y vuelve a intentarlo.'}`));
+   const b=h('button','on','Volver a explorar');b.onclick=()=>{ch=null;draw();panel();};p.append(b);return;}
+  const t=by(ch.order[ch.i]);p.append(h('div','tag',`Pregunta ${ch.i+1} de ${ch.order.length} · Puntos: ${ch.score}`),h('h2','','¿Qué parte es?'),h('p','',`Pista: ${t.clue}`),h('p','tag','Haz clic en la célula para responder.'));
+  if(ch.msg)p.append(h('p',ch.ok?'ok':'ko',ch.msg));return;}
+ const tot=here().length,n=here().filter(o=>seen.has(o.id)).length;
+ if(!sel){p.append(h('h2','','Haz clic en la célula'),h('p','','Toca cada parte para descubrir su función. Los organelos que sean iguales se pueden tocar en cualquier lugar.'));}
+ else{const o=by(sel);p.append(h('div','tag',o.name),h('h2','',o.name),h('p','',o.desc),h('p','','🏙️ Analogía: '+o.ana),h('p','','💡 Dato curioso: '+o.fact));}
+ p.append(h('p','tag',`Descubiertos: ${n} de ${tot}`));const bar=h('div','prog');const i=document.createElement('i');i.style.width=n/tot*100+'%';bar.append(i);p.append(bar);
+ if(kind==='plant'&&!sel)p.append(h('p','','🌿 Fíjate en lo que tiene la célula vegetal y la animal no: pared celular, cloroplastos y una gran vacuola.'));
+}
+function pick(id){
+ if(ch){if(ch.i>=ch.order.length)return;const t=ch.order[ch.i];
+  if(id===t){ch.score++;ch.i++;ch.ok=true;ch.msg='✅ ¡Correcto!';}else{ch.ok=false;ch.msg=`❌ Eso es: ${by(id).name}. Inténtalo otra vez.`;}
+  panel();return;}
+ sel=id;seen.add(id);draw();panel();}
+function setKind(k){kind=k;sel=null;ch=null;$('an').classList.toggle('on',k==='animal');$('ve').classList.toggle('on',k==='plant');$('ch').classList.remove('on');draw();panel();}
+function start(){const ids=here().map(o=>o.id).sort(()=>Math.random()-.5).slice(0,5);ch={order:ids,i:0,score:0,msg:'',ok:false};sel=null;$('ch').classList.add('on');draw();panel();}
+$('svg').addEventListener('click',e=>{const g=e.target.closest('.org');if(g)pick(g.dataset.id);});
+$('svg').addEventListener('keydown',e=>{const g=e.target.closest('.org');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pick(g.dataset.id);}});
+$('an').onclick=()=>setKind('animal');$('ve').onclick=()=>setKind('plant');$('ch').onclick=start;setKind('animal');
+</script></body></html>

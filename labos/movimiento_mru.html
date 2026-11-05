@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Movimiento rectilíneo uniforme</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num;
+TP.lab({
+  icon: '🚴', title: 'Laboratorio: Movimiento rectilíneo uniforme', alt: 'Gráfica posición-tiempo de dos ciclistas',
+  subtitle: 'Ecuación: <b>x = x₀ + v·t</b> · Dos ciclistas en línea recta. ¿Cuándo y dónde se encuentran?',
+  controls: [
+    { id: 'xa', label: 'Ciclista A: posición inicial', min: 0, max: 100, step: 10, value: 0, unit: ' m', dec: 0 }, { id: 'va', label: 'Ciclista A: velocidad', min: 0, max: 10, step: 1, value: 5, unit: ' m/s', dec: 0 },
+    { id: 'xb', label: 'Ciclista B: posición inicial', min: 0, max: 100, step: 10, value: 60, unit: ' m', dec: 0 }, { id: 'vb', label: 'Ciclista B: velocidad', min: 0, max: 10, step: 1, value: 2, unit: ' m/s', dec: 0 }],
+  presets: [{ label: 'A alcanza a B', values: { xa: 0, va: 5, xb: 60, vb: 2 } }, { label: 'Misma velocidad', values: { xa: 0, va: 4, xb: 50, vb: 4 } }],
+  compute({ xa, va, xb, vb }) {
+    const same = va === vb, t = same ? null : (xb - xa) / (va - vb), meet = !same && t >= 0, x = meet ? xa + va * t : null;
+    return { meet, t, x, steps: [
+      { t: 'PASO 1 : Ecuaciones de posición', html: `A: x = ${N(xa, 0)} + ${N(va, 0)}t<br>B: x = ${N(xb, 0)} + ${N(vb, 0)}t` },
+      { t: 'PASO 2 : Igualar las posiciones', html: same ? `Con la misma velocidad (${N(va, 0)} m/s) la distancia entre ellos no cambia.` : `${N(xa, 0)} + ${N(va, 0)}t = ${N(xb, 0)} + ${N(vb, 0)}t<br>(${N(va, 0)} − ${N(vb, 0)})t = ${N(xb, 0)} − ${N(xa, 0)}<br>t = ${N(xb - xa, 0)} / ${N(va - vb, 0)}`, f: same ? (xa === xb ? 'Siempre están juntos' : 'Nunca se encuentran') : `t = ${N(t)} s` },
+      { t: 'PASO 3 : Encuentro', html: meet ? `x = ${N(xa, 0)} + ${N(va, 0)}(${N(t)})` : same ? '—' : 'El cruce ocurre en un tiempo negativo: ya pasó, no habrá encuentro.', r: meet ? `t = ${N(t)} s, x = ${N(x)} m` : 'No se encuentran', cls: meet ? 'good' : 'bad' },
+      { t: 'PASO 4 : Quién va adelante', html: `A tiene ${va > vb ? 'mayor' : va < vb ? 'menor' : 'igual'} velocidad que B (pendiente de la recta en la gráfica).` }] };
+  },
+  draw(ctx, { xa, va, xb, vb }, res, { W, H }) {
+    const g = TP.plane(ctx, W, H, { x0: 0, x1: 30, y0: 0, y1: 250, xt: 5, yt: 50, lm: 40, xl: 't (s)', yl: 'x (m)' });
+    g.clip(); TP.line(ctx, g.X(0), g.Y(xa), g.X(30), g.Y(xa + va * 30), '#38bdf8', 3); TP.line(ctx, g.X(0), g.Y(xb), g.X(30), g.Y(xb + vb * 30), '#f472b6', 3); g.unclip();
+    TP.tx(ctx, 'A', g.l + 6, g.Y(xa) - 6, '#38bdf8', 'left'); TP.tx(ctx, 'B', g.l + 6, g.Y(xb) - 6, '#f472b6', 'left');
+    if (res.meet && res.t <= 30 && res.x <= 250) { TP.line(ctx, g.X(res.t), g.Y(res.x), g.X(res.t), g.Y(0), 'rgba(245,158,11,.6)', 1.5, [4, 4]); TP.dot(ctx, g.X(res.t), g.Y(res.x), 7, '#f59e0b'); TP.tx(ctx, `(${N(res.t)} s, ${N(res.x)} m)`, g.X(res.t) + 10, g.Y(res.x) + 20, '#f59e0b', res.t > 20 ? 'right' : 'left'); }
+  },
+  retos: [
+    { text: 'Haz que se encuentren en <b>t = 10 s</b>.', check: (S, r) => r.meet && Math.abs(r.t - 10) < 1e-9 },
+    { text: 'Logra que <b>A nunca alcance a B</b>: B sale adelante y A va más lento o igual.', check: S => S.xb > S.xa && S.va <= S.vb }],
+  info: [
+    { cls: 'materials', title: '📘 MOVIMIENTO RECTILÍNEO UNIFORME', html: '<p>Se mueve en línea recta con <b>velocidad constante</b>: x = x₀ + v·t.</p><p>En la gráfica posición-tiempo es una recta: la <b>pendiente</b> es la velocidad y la ordenada, la posición inicial.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Los GPS, los controladores aéreos y los ingenieros de tráfico usan estas ecuaciones para saber cuándo y dónde se cruzan dos vehículos.</p><div class="highlight"><b>Regla de oro:</b> ir más rápido no basta para ir adelante: también importa de dónde se parte.</div>' }]
+});
+</script></body></html>

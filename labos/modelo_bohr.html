@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Laboratorio atómico</title><link rel="stylesheet" href="/static/lab.css"></head><body>
+<h1>⚛️ Modelo de Bohr: construye un átomo</h1>
+<div class="wrap"><div class="card"><canvas id="cv" width="360" height="360" aria-label="Átomo con capas de electrones"></canvas></div>
+<div class="card"><label for="z">Número atómico Z <b id="vz"></b></label><input id="z" type="range" min="1" max="18" value="11"><div class="eq" id="n"></div><div class="info" id="i" role="status"></div></div></div>
+<script>
+const E=['H','He','Li','Be','B','C','N','O','F','Ne','Na','Mg','Al','Si','P','S','Cl','Ar'],N=['Hidrógeno','Helio','Litio','Berilio','Boro','Carbono','Nitrógeno','Oxígeno','Flúor','Neón','Sodio','Magnesio','Aluminio','Silicio','Fósforo','Azufre','Cloro','Argón'];
+const $=i=>document.getElementById(i),g=$('cv').getContext('2d');let ang=0;
+function shells(z){const c=[];for(const k of [2,8,8]){const n=Math.min(k,z);if(n>0)c.push(n);z-=n;}return c;}
+function frame(){const z=+$('z').value,s=shells(z);g.clearRect(0,0,360,360);
+g.fillStyle='#ff7a8a';g.beginPath();g.arc(180,180,14,0,7);g.fill();g.fillStyle='#0b0d1a';g.font='10px sans-serif';g.textAlign='center';g.fillText(z+'p',180,184);
+s.forEach((n,i)=>{const R=45+i*40;g.strokeStyle='#2b3150';g.beginPath();g.arc(180,180,R,0,7);g.stroke();
+for(let j=0;j<n;j++){const a=ang*(i%2?-1:1)*(1-i*.25)+j*6.2832/n;g.fillStyle='#4de0c1';g.beginPath();g.arc(180+R*Math.cos(a),180+R*Math.sin(a),6,0,7);g.fill();}});
+ang+=.012;requestAnimationFrame(frame);}
+function info(){const z=+$('z').value,s=shells(z),v=s[s.length-1];$('vz').textContent=z;$('n').textContent=`${E[z-1]} — ${N[z-1]}`;
+const t=v===8||(z===2)?'Capa externa completa: es muy estable (gas noble).':v<4?`Tiende a perder ${v} electrón(es).`:`Tiende a ganar ${8-v} electrón(es).`;
+$('i').textContent=`Protones = electrones = ${z}. Capas: ${s.join(', ')}. Electrones de valencia: ${v}. ${t}`;}
+$('z').addEventListener('input',info);info();frame();
+</script></body></html>

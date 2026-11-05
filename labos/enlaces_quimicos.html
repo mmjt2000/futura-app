@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Enlaces químicos</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num;
+const kind = d => d < 0.5 ? 'covalente no polar' : d <= 1.7 ? 'covalente polar' : 'iónico';
+TP.lab({
+  icon: '🔗', title: 'Laboratorio: ¿Cómo se unen los átomos?', alt: 'Dos átomos y la nube de electrones compartida o transferida',
+  subtitle: 'La <b>diferencia de electronegatividad (Δχ)</b> decide si el enlace es iónico o covalente.',
+  controls: [{ id: 'a', label: 'Electronegatividad del átomo <b>A</b>', min: 0.7, max: 4, step: 0.1, value: 2.5 }, { id: 'b', label: 'Electronegatividad del átomo <b>B</b>', min: 0.7, max: 4, step: 0.1, value: 2.5 }],
+  presets: [{ label: 'Na – Cl (sal de mesa)', values: { a: 0.9, b: 3.2 } }, { label: 'H – O (agua)', values: { a: 2.2, b: 3.4 } }, { label: 'C – H (metano)', values: { a: 2.6, b: 2.2 } }, { label: 'O – O (oxígeno)', values: { a: 3.4, b: 3.4 } }],
+  compute({ a, b }) {
+    const d = Math.round(Math.abs(a - b) * 10) / 10, k = kind(d), fb = b / (a + b), lowA = a < b, hi = lowA ? 'B' : 'A', lo = lowA ? 'A' : 'B';
+    return { a, b, d, k, fb, lowA, steps: [
+      { t: 'PASO 1 : Electronegatividades', html: `χ(A) = ${N(a, 1)} · χ(B) = ${N(b, 1)}<br>(mide cuánto atrae un átomo a los electrones del enlace)` },
+      { t: 'PASO 2 : Diferencia Δχ', html: `Δχ = |${N(b, 1)} − ${N(a, 1)}|`, r: N(d, 1) },
+      { t: 'PASO 3 : Tipo de enlace', html: 'Δχ < 0.5: covalente no polar<br>0.5 ≤ Δχ ≤ 1.7: covalente polar<br>Δχ > 1.7: iónico', r: k, cls: k === 'iónico' ? 'bad' : 'good' },
+      { t: 'PASO 4 : ¿Qué pasa con los electrones?', html: k === 'iónico' ? `El átomo ${hi} les <b>arranca</b> los electrones al átomo ${lo}: hay <b>transferencia</b>.` : d === 0 ? 'Los átomos son iguales: los electrones se comparten por igual.' : `Se <b>comparten</b>, pero el átomo ${hi} atrae la nube un <b>${N(Math.max(a, b) / (a + b) * 100, 0)} %</b> del tiempo.` },
+      { t: 'PASO 5 : Cargas', html: k === 'iónico' ? `Se forman iones: ${lo}⁺ y ${hi}⁻ que se atraen en una <b>red cristalina</b>.` : k === 'covalente polar' ? `Cargas parciales: δ⁺ en ${lo} y δ⁻ en ${hi}.` : 'No hay cargas: la molécula es no polar en el enlace.' }] };
+  },
+  draw(ctx, S, res, { W, H }) {
+    ctx.fillStyle = 'rgba(10,14,39,.6)'; ctx.fillRect(0, 0, W, H);
+    const ax = 150, bx = 350, y = 190, ion = res.k === 'iónico', cx = ion ? (res.lowA ? bx : ax) : ax + (bx - ax) * res.fb;
+    const atom = (x, col, name, chi) => { ctx.fillStyle = col + '33'; ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(x, y, 58, 0, 7); ctx.fill(); ctx.stroke(); TP.tx(ctx, name, x, y - 70, col, 'center', 'bold 14px sans-serif'); TP.tx(ctx, `χ = ${N(chi, 1)}`, x, y + 80, col, 'center', '12px sans-serif'); };
+    atom(ax, '#38bdf8', 'Átomo A', S.a); atom(bx, '#f472b6', 'Átomo B', S.b);
+    const g = ctx.createRadialGradient(cx, y, 2, cx, y, 42); g.addColorStop(0, 'rgba(250,204,21,.85)'); g.addColorStop(1, 'rgba(250,204,21,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, y, 42, 0, 7); ctx.fill();
+    TP.dot(ctx, cx - 7, y, 5, '#facc15'); TP.dot(ctx, cx + 7, y, 5, '#facc15'); TP.tx(ctx, 'e⁻ e⁻', cx, y - 18, '#facc15', 'center', '11px sans-serif');
+    if (ion) { const lo = res.lowA ? ax : bx, hi = res.lowA ? bx : ax; TP.tx(ctx, '⁺', lo, y + 6, '#fff', 'center', 'bold 30px sans-serif'); TP.tx(ctx, '⁻', hi, y + 44, '#fff', 'center', 'bold 30px sans-serif'); TP.line(ctx, lo + (hi > lo ? 62 : -62), y - 40, hi + (hi > lo ? -62 : 62), y - 40, '#facc15', 2, [5, 4]); }
+    else if (res.k === 'covalente polar') { const lo = res.lowA ? ax : bx, hi = res.lowA ? bx : ax; TP.tx(ctx, 'δ⁺', lo, y + 6, '#fff', 'center', 'bold 20px sans-serif'); TP.tx(ctx, 'δ⁻', hi, y + 44, '#fff', 'center', 'bold 20px sans-serif'); }
+    TP.tx(ctx, `Δχ = ${N(res.d, 1)} → ${res.k}`, W / 2, 36, res.k === 'iónico' ? '#f59e0b' : '#4de0c1', 'center', 'bold 16px sans-serif');
+  },
+  retos: [
+    { text: 'Forma un enlace <b>iónico</b> (Δχ mayor que 1.7).', check: (S, r) => r.k === 'iónico' },
+    { text: 'Forma un enlace <b>covalente polar</b> con Δχ <b>entre 1.0 y 1.5</b>.', check: (S, r) => r.k === 'covalente polar' && r.d >= 1.0 && r.d <= 1.5 },
+    { text: 'Reproduce el enlace <b>H – O</b> del agua (χ = 2.2 y 3.4).', check: S => (S.a === 2.2 && S.b === 3.4) || (S.a === 3.4 && S.b === 2.2) }],
+  info: [
+    { cls: 'materials', title: '📘 TRES TIPOS DE ENLACE', html: '<p><b>Iónico:</b> un átomo cede electrones y otro los recibe; se forman iones que se atraen (NaCl).</p><p><b>Covalente:</b> los átomos comparten electrones. Si lo comparten igual es no polar (O₂); si no, polar (H₂O).</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>El tipo de enlace explica por qué la sal es un sólido cristalino que se disuelve en agua, y por qué el agua es líquida y disuelve tantas sustancias.</p><div class="highlight"><b>Regla de oro:</b> cuanto mayor es la diferencia de electronegatividad, más se desplaza la nube de electrones hacia un átomo.</div>' }]
+});
+</script></body></html>

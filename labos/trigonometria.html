@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Trigonometría</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num;
+TP.lab({
+  icon: '📐', title: 'Laboratorio: Seno, coseno y tangente', alt: 'Triángulo rectángulo con su ángulo θ',
+  subtitle: 'Mueve el ángulo y la hipotenusa y descubre qué razones cambian y cuáles no.',
+  controls: [
+    { id: 'A', label: 'Ángulo <b>θ</b>', min: 5, max: 85, step: 1, value: 35, unit: '°', dec: 0 },
+    { id: 'H', label: 'Hipotenusa', min: 2, max: 12, step: 1, value: 8, dec: 0 }],
+  presets: [{ label: '30° (hipotenusa 10)', values: { A: 30, H: 10 } }, { label: '45°', values: { A: 45, H: 10 } }, { label: '60°', values: { A: 60, H: 10 } }],
+  compute({ A, H }) {
+    const r = A * Math.PI / 180, s = Math.sin(r), c = Math.cos(r), t = Math.tan(r), op = H * s, ady = H * c;
+    return { A, H, op, ady, steps: [
+      { t: 'PASO 1 : Datos', html: `θ = ${A}° · hipotenusa = ${H}` },
+      { t: 'PASO 2 : Seno (opuesto / hipotenusa)', html: `sen ${A}° = ${N(s, 3)}<br>opuesto = ${H} × ${N(s, 3)}`, r: N(op), cls: 'good' },
+      { t: 'PASO 3 : Coseno (adyacente / hipotenusa)', html: `cos ${A}° = ${N(c, 3)}<br>adyacente = ${H} × ${N(c, 3)}`, r: N(ady), cls: 'good' },
+      { t: 'PASO 4 : Tangente (opuesto / adyacente)', html: `tan ${A}° = ${N(op)} / ${N(ady)}`, r: N(t, 3) },
+      { t: 'PASO 5 : Comprobación con Pitágoras', html: `opuesto² + adyacente² = ${N(op * op)} + ${N(ady * ady)}`, f: `= ${N(op * op + ady * ady)} = ${H}² = ${H * H}` },
+      { t: 'PASO 6 : Identidad fundamental', f: `sen² θ + cos² θ = ${N(s * s, 3)} + ${N(c * c, 3)} = ${N(s * s + c * c, 3)}` },
+      { t: 'PASO 7 : Aplicación', html: `Si estás a ${N(ady)} m de la base de un edificio y el ángulo de elevación es ${A}°:<br>altura = ${N(ady)} × tan ${A}°`, r: `${N(op)} m` }] };
+  },
+  draw(ctx, { A, H }, res, { W, H: HH }) {
+    const g = TP.plane(ctx, W, HH, { x0: 0, x1: 16, y0: 0, y1: 13, xt: 1, yt: 1, lm: 34 }), x0 = 1, r = A * Math.PI / 180;
+    const P = [[g.X(x0), g.Y(0)], [g.X(x0 + res.ady), g.Y(0)], [g.X(x0 + res.ady), g.Y(res.op)]];
+    ctx.fillStyle = 'rgba(77,224,193,.15)'; ctx.strokeStyle = '#4de0c1'; ctx.lineWidth = 3; ctx.beginPath(); P.forEach((p, i) => i ? ctx.lineTo(...p) : ctx.moveTo(...p)); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(P[0][0], P[0][1], 38, -r, 0); ctx.stroke(); TP.tx(ctx, 'θ = ' + A + '°', P[0][0] + 44, P[0][1] - 24, '#f59e0b', 'left');
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.5; ctx.strokeRect(P[1][0] - 10, P[1][1] - 10, 10, 10);
+    TP.tx(ctx, 'adyacente = ' + N(res.ady), (P[0][0] + P[1][0]) / 2, P[0][1] - 8, '#94a3b8'); TP.tx(ctx, 'opuesto = ' + N(res.op), P[1][0] + 8, (P[1][1] + P[2][1]) / 2, '#f472b6', 'left');
+    TP.tx(ctx, 'hipotenusa = ' + H, (P[0][0] + P[2][0]) / 2 - 10, (P[0][1] + P[2][1]) / 2 - 12, '#4de0c1', 'right');
+  },
+  retos: [
+    { text: 'Logra que <b>tan θ = 1</b> (el ángulo de 45°).', check: S => S.A === 45 },
+    { text: 'Con hipotenusa 10, haz que el cateto <b>opuesto mida 5</b>.', check: S => S.H === 10 && S.A === 30 },
+    { text: 'Encuentra un ángulo donde el <b>coseno sea mayor que el seno</b> y la <b>tangente menor que 0.5</b>.', check: S => { const r = S.A * Math.PI / 180; return Math.cos(r) > Math.sin(r) && Math.tan(r) < 0.5; } }],
+  info: [
+    { cls: 'materials', title: '📘 LAS TRES RAZONES', html: '<p><b>Seno:</b> cateto opuesto ÷ hipotenusa.</p><p><b>Coseno:</b> cateto adyacente ÷ hipotenusa.</p><p><b>Tangente:</b> cateto opuesto ÷ cateto adyacente.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Los topógrafos y los ingenieros miden alturas y distancias que no pueden alcanzar, usando solo un ángulo y una distancia conocida.</p><div class="highlight"><b>Regla de oro:</b> cambia solo la hipotenusa y verás que las razones no cambian: dependen solo del ángulo.</div>' }]
+});
+</script></body></html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Conservación de la masa</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num;
+const R = [
+  { n: 'Formación del agua', sp: ['H₂', 'O₂', 'H₂O'], at: [{ H: 2 }, { O: 2 }, { H: 2, O: 1 }], ok: [2, 1, 2] },
+  { n: 'Síntesis del amoníaco', sp: ['N₂', 'H₂', 'NH₃'], at: [{ N: 2 }, { H: 2 }, { N: 1, H: 3 }], ok: [1, 3, 2] },
+  { n: 'Oxidación del hierro', sp: ['Fe', 'O₂', 'Fe₂O₃'], at: [{ Fe: 1 }, { O: 2 }, { Fe: 2, O: 3 }], ok: [4, 3, 2] },
+  { n: 'Combustión del magnesio', sp: ['Mg', 'O₂', 'MgO'], at: [{ Mg: 1 }, { O: 2 }, { Mg: 1, O: 1 }], ok: [2, 1, 2] }];
+const COL = { H: '#7dd3fc', O: '#f87171', N: '#60a5fa', Fe: '#fb923c', Mg: '#4ade80' };
+const co = n => n === 1 ? '' : n;
+TP.lab({
+  icon: '⚖️', title: 'Laboratorio: Conservación de la masa', alt: 'Átomos de los reactivos y de los productos',
+  subtitle: 'Ajusta los <b>coeficientes</b> hasta que haya los mismos átomos de cada elemento a ambos lados.',
+  init: S => { S.rx = 0; S.done = new Set(); },
+  controls: [{ id: 'c1', label: 'Coeficiente del 1.er reactivo', min: 1, max: 6, step: 1, value: 1, dec: 0 }, { id: 'c2', label: 'Coeficiente del 2.º reactivo', min: 1, max: 6, step: 1, value: 1, dec: 0 }, { id: 'c3', label: 'Coeficiente del producto', min: 1, max: 6, step: 1, value: 1, dec: 0 }],
+  presets: R.map((r, i) => ({ label: r.n, apply: S => { S.rx = i; S.c1 = S.c2 = S.c3 = 1; } })),
+  compute(S) {
+    const r = R[S.rx], c = [S.c1, S.c2, S.c3], els = [...new Set(r.at.flatMap(a => Object.keys(a)))];
+    const L = {}, P = {}; els.forEach(e => { L[e] = c[0] * (r.at[0][e] || 0) + c[1] * (r.at[1][e] || 0); P[e] = c[2] * (r.at[2][e] || 0); });
+    const bal = els.every(e => L[e] === P[e]); if (bal) S.done.add(S.rx);
+    return { r, els, L, P, bal, steps: [
+      { t: `PASO 1 : ${r.n}`, f: `${co(c[0])}${r.sp[0]} + ${co(c[1])}${r.sp[1]} → ${co(c[2])}${r.sp[2]}` },
+      { t: 'PASO 2 : Átomos de los reactivos (coeficiente × subíndice)', html: els.map(e => `${e}: ${c[0]}×${r.at[0][e] || 0} + ${c[1]}×${r.at[1][e] || 0} = <b>${L[e]}</b>`).join('<br>') },
+      { t: 'PASO 3 : Átomos de los productos', html: els.map(e => `${e}: ${c[2]}×${r.at[2][e] || 0} = <b>${P[e]}</b>`).join('<br>') },
+      { t: 'PASO 4 : Comparación', html: els.map(e => `${e}: ${L[e]} ${L[e] === P[e] ? '=' : '≠'} ${P[e]} ${L[e] === P[e] ? '✅' : '❌'}`).join('<br>'), r: bal ? '¡Balanceada!' : 'Aún no está balanceada', cls: bal ? 'good' : 'bad' },
+      { t: 'RECUERDA', html: 'Solo se cambian los <b>coeficientes</b>. Cambiar un subíndice cambia la sustancia.' }] };
+  },
+  draw(ctx, S, res, { W, H }) {
+    ctx.fillStyle = 'rgba(10,14,39,.6)'; ctx.fillRect(0, 0, W, H);
+    TP.tx(ctx, 'REACTIVOS', 125, 28, '#94a3b8'); TP.tx(ctx, 'PRODUCTOS', 375, 28, '#94a3b8');
+    TP.tx(ctx, res.bal ? '=' : '≠', 250, 200, res.bal ? '#22c55e' : '#ef4444', 'center', 'bold 44px sans-serif');
+    res.els.forEach((e, i) => { const y = 60 + i * 110;
+      [[res.L[e], 20], [res.P[e], 270]].forEach(([n, x0]) => { TP.tx(ctx, `${e} × ${n}`, x0, y, COL[e], 'left');
+        for (let k = 0; k < n; k++) TP.dot(ctx, x0 + 11 + (k % 12) * 19, y + 22 + Math.floor(k / 12) * 19, 8, COL[e]); }); });
+  },
+  retos: [0, 1, 2].map(i => ({ text: `Balancea: <b>${R[i].n}</b> (${R[i].sp[0]} + ${R[i].sp[1]} → ${R[i].sp[2]}).`, check: S => S.done && S.done.has(i) })),
+  info: [
+    { cls: 'materials', title: '📘 ¿QUÉ ES BALANCEAR?', html: '<p>Una reacción reorganiza los átomos, pero <b>no los crea ni los destruye</b>. Por eso cada elemento debe aparecer en la misma cantidad en reactivos y productos.</p><p>El <b>coeficiente</b> multiplica toda la fórmula; el <b>subíndice</b> dice cuántos átomos hay en una molécula.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Los ingenieros químicos calculan cuánto reactivo necesitan para fabricar fertilizantes, medicinas o combustibles sin desperdiciar.</p><div class="highlight"><b>Ley de Lavoisier:</b> en una reacción química la masa total se conserva.</div>' }]
+});
+</script></body></html>

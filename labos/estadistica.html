@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Estadística</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num;
+TP.lab({
+  icon: '📊', title: 'Laboratorio: Estadística', alt: 'Histograma de los datos con la media y la mediana',
+  subtitle: 'Agrega datos y observa cómo se calcula cada medida paso a paso.',
+  init: S => { S.data = [65, 70, 75, 80, 85, 90, 95, 78, 82, 88]; S.sample = false; },
+  presets: [
+    { label: 'Notas de una clase', apply: S => { S.data = [65, 70, 75, 80, 85, 90, 95, 78, 82, 88]; } },
+    { label: 'Salarios (miles)', apply: S => { S.data = [20, 22, 21, 23, 200]; } },
+    { label: 'El anuncio engañoso (9 × 20 y 1 × 420)', apply: S => { S.data = [20, 20, 20, 20, 20, 20, 20, 20, 20, 420]; } },
+    { label: 'Edades de un grupo', apply: S => { S.data = [12, 13, 13, 14, 13, 15, 14, 13]; } }],
+  extra(box, S, update) {
+    const row = TP.h('div', 'control-group');
+    row.innerHTML = '<label for="nd">Agregar un dato (0 – 1000):</label><div class="input-row"><input type="number" id="nd" min="0" max="1000" step="any" placeholder="Ej: 85"><button class="btn btn-primary" id="add" type="button">Agregar</button><button class="btn btn-danger" id="clr" type="button">Limpiar</button></div><label class="check"><input type="checkbox" id="smp"> Desviación de muestra (dividir entre n − 1)</label><div class="dataset" id="dataset"></div>';
+    box.append(row);
+    const add = () => { const v = parseFloat(TP.$('nd').value); if (isNaN(v) || v < 0 || v > 1000) return; S.data.push(v); TP.$('nd').value = ''; update(); TP.$('nd').focus(); };
+    TP.$('add').onclick = add; TP.$('nd').addEventListener('keydown', e => { if (e.key === 'Enter') add(); });
+    TP.$('clr').onclick = () => { S.data = []; update(); }; TP.$('smp').onchange = e => { S.sample = e.target.checked; update(); };
+  },
+  onUpdate(S, res, update) {
+    const box = TP.$('dataset'); box.replaceChildren();
+    S.data.forEach((v, i) => { const c = TP.h('div', 'data-chip' + (res.outliers.includes(v) ? ' out' : ''), N(v)); const x = TP.h('button', '', '×'); x.type = 'button'; x.setAttribute('aria-label', 'Quitar ' + N(v)); x.onclick = () => { S.data.splice(i, 1); update(); }; c.append(x); box.append(c); });
+  },
+  compute(S) {
+    const d = S.data, n = d.length;
+    if (!n) return { top: 100, ymax: 3, bins: [], outliers: [], n, steps: [{ t: 'SIN DATOS', html: 'Agrega datos para ver los cálculos.' }] };
+    const s = [...d].sort((x, y) => x - y), sum = d.reduce((a, b) => a + b, 0), media = sum / n, mid = Math.floor(n / 2);
+    const mediana = n % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+    const freq = {}; d.forEach(x => freq[x] = (freq[x] || 0) + 1); const mf = Math.max(...Object.values(freq));
+    const modas = mf > 1 ? Object.keys(freq).filter(k => freq[k] === mf).map(Number).sort((p, q) => p - q) : [];
+    const ss = d.reduce((a, x) => a + (x - media) ** 2, 0), den = S.sample ? n - 1 : n, std = den > 0 ? Math.sqrt(ss / den) : NaN;
+    const q = p => { const pos = (n - 1) * p, l = Math.floor(pos), u = Math.ceil(pos); return s[l] + (pos - l) * (s[u] - s[l]); };
+    let outliers = [], q1, q3, iqr; if (n >= 4) { q1 = q(.25); q3 = q(.75); iqr = q3 - q1; outliers = s.filter(x => x < q1 - 1.5 * iqr || x > q3 + 1.5 * iqr); }
+    const top = Math.max(100, Math.ceil(Math.max(...d) / 10) * 10), bw = top / 10, bins = Array(10).fill(0); d.forEach(x => bins[Math.min(Math.floor(x / bw), 9)]++);
+    const list = d.length > 8 ? d.slice(0, 8).map(N).join(' + ') + ' + …' : d.map(N).join(' + '), diff = media - mediana;
+    const steps = [
+      { t: 'PASO 1 : Datos ordenados', f: s.map(N).join(', ') },
+      { t: 'PASO 2 : Media (Σxᵢ / n)', html: `Media = (${list}) / ${n}<br>Media = ${N(sum)} / ${n}`, r: N(media) },
+      { t: 'PASO 3 : Mediana (valor central)', html: n % 2 ? `Con n = ${n} (impar) se toma el valor del medio: ${N(s[mid])}` : `Con n = ${n} (par) se promedian los dos del medio:<br>(${N(s[mid - 1])} + ${N(s[mid])}) / 2`, r: N(mediana) },
+      { t: 'PASO 4 : Moda (el que más se repite)', r: modas.length ? modas.map(N).join(' y ') + ` (${mf} veces)` : 'No hay moda' },
+      { t: `PASO 5 : Desviación estándar (${S.sample ? 'de muestra, ÷ n − 1' : 'de población, ÷ n'})`, html: `σ = √( Σ(xᵢ − x̄)² / ${S.sample ? 'n − 1' : 'n'} )<br>Σ(xᵢ − ${N(media)})² = ${N(ss)}<br>σ = √( ${N(ss)} / ${den} )`, r: isNaN(std) ? '—' : N(std) },
+      { t: 'PASO 6 : Rango (máximo − mínimo)', html: `Rango = ${N(s[n - 1])} − ${N(s[0])}`, r: N(s[n - 1] - s[0]) },
+      { t: 'PASO 7 : Valores atípicos (regla 1.5 × IQR)', html: n >= 4 ? `Q1 = ${N(q1)}, Q3 = ${N(q3)}, IQR = ${N(iqr)}<br>Límites: [${N(q1 - 1.5 * iqr)} , ${N(q3 + 1.5 * iqr)}]` : 'Se necesitan al menos 4 datos.', r: outliers.length ? 'Atípico(s): ' + outliers.map(N).join(', ') : 'Sin valores atípicos', cls: outliers.length ? 'bad' : 'good' },
+      { t: 'CONCLUSIÓN', html: n >= 3 && Math.abs(diff) > 0.15 * Math.abs(mediana) ? '<span class="warning">La media y la mediana difieren mucho: la media está influida por valores extremos. La mediana describe mejor al grupo.</span>' : 'La media y la mediana son parecidas: los datos son bastante simétricos y la media es representativa.' }];
+    return { steps, top, bins, ymax: Math.max(Math.max(...bins) + 3, 4), media, mediana, outliers, n };
+  },
+  draw(ctx, S, res, { W, H }) {
+    const g = TP.plane(ctx, W, H, { x0: 0, x1: res.top, y0: 0, y1: res.ymax, xt: res.top / 10, yt: res.ymax > 8 ? 2 : 1 });
+    if (!res.n) { TP.tx(ctx, 'Agrega datos para ver el histograma', W / 2, H / 2, 'rgba(255,255,255,.4)', 'center', '14px sans-serif'); return; }
+    res.bins.forEach((cnt, i) => { const x0 = g.X(i * res.top / 10) + 3, x1 = g.X((i + 1) * res.top / 10) - 3, y = g.Y(cnt);
+      ctx.fillStyle = 'rgba(56,189,248,.6)'; ctx.fillRect(x0, y, x1 - x0, g.Y(0) - y); if (cnt) TP.tx(ctx, cnt, (x0 + x1) / 2, y - 5); });
+    const vline = (v, col, dash, txt, dy) => { const x = g.X(Math.min(v, res.top)); TP.line(ctx, x, g.t, x, g.b, col, 2, dash); TP.tx(ctx, txt, x + (x > W - 100 ? -5 : 5), g.t + dy, col, x > W - 100 ? 'right' : 'left', 'bold 11px sans-serif'); };
+    vline(res.media, '#f59e0b', [6, 4], `Media: ${N(res.media, 1)}`, 12); vline(res.mediana, '#22c55e', [3, 3], `Mediana: ${N(res.mediana, 1)}`, 27);
+    res.outliers.forEach(v => TP.dot(ctx, g.X(Math.min(v, res.top)), g.Y(0) - 7, 6, '#ef4444'));
+  },
+  retos: [
+    { text: 'Agrega un dato que el laboratorio marque como <b>valor atípico</b> (se pone en rojo).', check: (S, r) => r.outliers && r.outliers.length > 0 },
+    { text: 'Con solo <b>un dato</b> nuevo, logra que la media supere a la mediana en <b>más de 10 puntos</b>.', check: (S, r) => r.n > 0 && r.media - r.mediana > 10 }],
+  info: [
+    { cls: 'materials', title: '📘 ¿QUÉ ES CADA MEDIDA?', html: '<p><b>Media:</b> el promedio. Sumas todos los datos y divides entre cuántos son.</p><p><b>Mediana:</b> el valor central de los datos ordenados.</p><p><b>Moda:</b> el valor que más se repite.</p><p><b>Desviación estándar:</b> cuánto se alejan los datos de la media, en promedio.</p><p><b>Rango:</b> máximo menos mínimo.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Un promedio puede ocultar la realidad. Si 9 personas ganan 20 mil y una gana 420 mil, la media es 60 mil, pero casi nadie gana eso.</p><div class="highlight"><b>Regla de oro:</b> un valor extremo sube la media, pero casi no mueve la mediana. Cuando difieren mucho, sospecha de un valor atípico.</div>' }]
+});
+</script></body></html>

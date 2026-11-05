@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Pitágoras</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num;
+TP.lab({
+  icon: '📐', title: 'Laboratorio: Teorema de Pitágoras', alt: 'Triángulo rectángulo con un cuadrado sobre cada lado',
+  subtitle: '<b>a² + b² = c²</b> · Los cuadrados sobre los catetos suman el área del cuadrado sobre la hipotenusa.',
+  controls: [{ id: 'a', label: 'Cateto <b>a</b>', min: 1, max: 12, step: 1, value: 3, dec: 0 }, { id: 'b', label: 'Cateto <b>b</b>', min: 1, max: 12, step: 1, value: 4, dec: 0 }],
+  presets: [{ label: '3 · 4 · 5', values: { a: 3, b: 4 } }, { label: '5 · 12 · 13', values: { a: 5, b: 12 } }, { label: 'Isósceles (a = b)', values: { a: 6, b: 6 } }],
+  compute({ a, b }) {
+    const c2 = a * a + b * b, c = Math.sqrt(c2), int = Math.abs(c - Math.round(c)) < 1e-9;
+    return { c, c2, steps: [
+      { t: 'PASO 1 : Los catetos', html: `a = ${a} · b = ${b} (forman el ángulo recto)` },
+      { t: 'PASO 2 : Suma de los cuadrados', html: `a² + b² = ${a}² + ${b}² = ${a * a} + ${b * b}`, f: `c² = ${c2}` },
+      { t: 'PASO 3 : Hipotenusa', html: `c = √${c2}`, r: int ? String(Math.round(c)) : '≈ ' + N(c, 3), cls: 'good' },
+      { t: 'PASO 4 : ¿Es una terna pitagórica?', html: int ? `¡Sí! (${a}, ${b}, ${Math.round(c)}) son tres números enteros.` : `No: ${N(c, 3)} no es un número entero.` },
+      { t: 'PASO 5 : Comprobación', f: `${N(c * c, 2)} = ${a * a} + ${b * b} = ${c2}  ✅` },
+      { t: 'PASO 6 : Aplicación', html: `Una pantalla de ${a} × ${b} pulgadas tiene una diagonal de ${N(c, 2)} pulgadas.` }] };
+  },
+  draw(ctx, { a, b }, res, { W, H }) {
+    ctx.fillStyle = 'rgba(10,14,39,.6)'; ctx.fillRect(0, 0, W, H);
+    const u = 9, P = [180, 235], B = [P[0] + a * u, P[1]], C = [P[0], P[1] - b * u];
+    const poly = (pts, col, txt, cx, cy) => { ctx.fillStyle = col + '55'; ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(...p) : ctx.moveTo(...p)); ctx.closePath(); ctx.fill(); ctx.stroke(); TP.tx(ctx, txt, cx, cy, '#fff'); };
+    poly([P, B, [B[0], B[1] + a * u], [P[0], P[1] + a * u]], '#38bdf8', `a² = ${a * a}`, (P[0] + B[0]) / 2, P[1] + a * u / 2 + 4);
+    poly([P, C, [C[0] - b * u, C[1]], [P[0] - b * u, P[1]]], '#f472b6', `b² = ${b * b}`, P[0] - b * u / 2, (P[1] + C[1]) / 2 + 4);
+    let nx = C[1] - B[1], ny = -(C[0] - B[0]); if (nx * (P[0] - B[0]) + ny * (P[1] - B[1]) > 0) { nx = -nx; ny = -ny; }
+    poly([B, C, [C[0] + nx, C[1] + ny], [B[0] + nx, B[1] + ny]], '#22c55e', `c² = ${N(res.c2, 0)}`, (B[0] + C[0]) / 2 + nx / 2, (B[1] + C[1]) / 2 + ny / 2 + 4);
+    ctx.fillStyle = 'rgba(255,255,255,.15)'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(...P); ctx.lineTo(...B); ctx.lineTo(...C); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.strokeRect(P[0], P[1] - 9, 9, 9);
+  },
+  retos: [
+    { text: 'Forma la terna <b>5 · 12 · 13</b>.', check: S => (S.a === 5 && S.b === 12) || (S.a === 12 && S.b === 5) },
+    { text: 'Construye un triángulo <b>isósceles</b> (a = b).', check: S => S.a === S.b },
+    { text: 'Consigue una hipotenusa de <b>exactamente 10</b>.', check: S => (S.a === 6 && S.b === 8) || (S.a === 8 && S.b === 6) }],
+  info: [
+    { cls: 'materials', title: '📘 EL TEOREMA', html: '<p>En un triángulo <b>rectángulo</b> (con un ángulo de 90°), el cuadrado de la <b>hipotenusa</b> es igual a la suma de los cuadrados de los <b>catetos</b>: c² = a² + b².</p><p>La hipotenusa es el lado más largo, opuesto al ángulo recto.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Para fijar una torre de telecomunicaciones con cables tensores, la torre, el suelo y el cable forman un triángulo rectángulo: Pitágoras da la longitud del cable sin medirlo.</p><div class="highlight"><b>Regla de oro:</b> solo funciona si el triángulo tiene un ángulo recto.</div>' }]
+});
+</script></body></html>

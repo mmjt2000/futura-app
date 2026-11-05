@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Combinatoria</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, fact = n => n <= 1 ? 1 : n * fact(n - 1), C = (n, r) => r < 0 || r > n ? 0 : fact(n) / (fact(r) * fact(n - r));
+TP.lab({
+  icon: '🔢', title: 'Laboratorio: Permutaciones y combinaciones', alt: 'Triángulo de Pascal: combinaciones de n elementos tomados de k en k',
+  subtitle: 'Cuenta de cuántas formas se puede elegir y ordenar sin enumerar todas las posibilidades.',
+  controls: [{ id: 'n', label: 'Elementos disponibles <b>n</b>', min: 1, max: 10, step: 1, value: 5, dec: 0 }, { id: 'r', label: 'Elementos elegidos <b>r</b>', min: 0, max: 10, step: 1, value: 2, dec: 0 }],
+  presets: [{ label: 'Comité de 3 entre 6', values: { n: 6, r: 3 } }, { label: 'Podio: 3 entre 8', values: { n: 8, r: 3 } }, { label: 'Fila de 5 personas', values: { n: 5, r: 5 } }],
+  compute({ n, r }) {
+    if (r > n) return { ok: false, P: 0, steps: [{ t: '⚠️ ATENCIÓN', html: '<span class="warning">No puedes elegir más elementos (r) de los que tienes (n). Baja r o sube n.</span>' }] };
+    const P = fact(n) / fact(n - r), Cn = C(n, r);
+    return { ok: true, n, r, P, Cn, steps: [
+      { t: 'PASO 1 : Factorial  n!', html: `${n}! = ${Array.from({ length: n }, (_, i) => n - i).join(' × ')}`, r: String(fact(n)) },
+      { t: 'PASO 2 : Permutaciones (el orden importa)', html: `P(n, r) = n! / (n − r)! = ${n}! / ${n - r}!`, r: P.toLocaleString('en-US'), cls: 'good' },
+      { t: 'PASO 3 : Combinaciones (el orden NO importa)', html: `C(n, r) = n! / [r! (n − r)!] = ${n}! / (${r}! × ${n - r}!)`, r: Cn.toLocaleString('en-US'), cls: 'good' },
+      { t: 'PASO 4 : Relación', html: `P(n, r) = C(n, r) × r!`, f: `${P} = ${Cn} × ${fact(r)}` },
+      { t: 'PASO 5 : Ejemplo con personas', html: `En un grupo de ${n} personas:<br>• Elegir ${r} para un <b>comité</b>: ${Cn} formas.<br>• Elegir ${r} con <b>cargos distintos</b> (presidente, secretario…): ${P} formas.` }] };
+  },
+  draw(ctx, S, res, { W, H }) {
+    const n = S.n, row = Array.from({ length: n + 1 }, (_, k) => C(n, k)), mx = Math.max(...row), step = TP.nice(mx * 1.15, 5), ymax = Math.ceil(mx * 1.15 / step) * step;
+    const g = TP.plane(ctx, W, H, { x0: -0.6, x1: n + 0.6, y0: 0, y1: ymax, xt: 1, yt: step, lm: 50, xl: 'k' });
+    row.forEach((v, k) => { const x0 = g.X(k - 0.4), x1 = g.X(k + 0.4); ctx.fillStyle = k === S.r ? '#f59e0b' : 'rgba(56,189,248,.55)'; ctx.fillRect(x0, g.Y(v), x1 - x0, g.Y(0) - g.Y(v)); if (n <= 9 || k === S.r) TP.tx(ctx, v, (x0 + x1) / 2, g.Y(v) - 5, k === S.r ? '#f59e0b' : '#e8eaf6', 'center', 'bold 11px sans-serif'); });
+    TP.tx(ctx, `C(${n}, k) para k = 0 … ${n}`, g.l + 6, g.t + 12, '#94a3b8', 'left', '11px sans-serif');
+  },
+  retos: [
+    { text: 'Calcula cuántos <b>comités de 3 personas</b> hay en un grupo de 6.', check: (S, r) => r.ok && S.n === 6 && S.r === 3 },
+    { text: 'Encuentra el valor máximo de C(10, k): ¿qué <b>k</b> es? (k = 5).', check: (S, r) => r.ok && S.n === 10 && S.r === 5 },
+    { text: 'Consigue que las <b>permutaciones P(n, r) sean exactamente 120</b>.', check: (S, r) => r.ok && r.P === 120 }],
+  info: [
+    { cls: 'materials', title: '📘 ¿ORDEN O NO ORDEN?', html: '<p><b>Permutación:</b> importa el orden (presidente y secretario, un podio, un PIN).</p><p><b>Combinación:</b> no importa el orden (un comité, una mano de cartas).</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Contar posibilidades permite calcular probabilidades y saber qué tan seguro es un PIN o una contraseña.</p><div class="highlight"><b>Regla de oro:</b> cada combinación se puede ordenar de r! maneras, por eso P(n, r) = C(n, r) × r!.</div>' }]
+});
+</script></body></html>

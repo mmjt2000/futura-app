@@ -1,0 +1,4522 @@
+[
+  {
+    "id": "mat_ecuaciones_cuadraticas",
+    "target_user": "Maryse",
+    "field": "matematicas_ecuaciones_cuadraticas",
+    "curriculum_alignment": "SEP - 3° Secundaria - Matemáticas (ecuaciones cuadráticas)",
+    "pisa_competency": "Formular situaciones matemáticamente, emplear conceptos y razonar con ellos",
+    "title": "Ecuaciones cuadráticas: la matemática detrás de una parábola",
+    "contexte": {
+      "titre": "El balón que dibuja una parábola",
+      "texte": "Cuando lanzas un balón de básquetbol, su trayectoria forma una parábola. Las antenas parabólicas usan la misma forma para reunir la señal en un solo punto, el foco. Para diseñar ambas cosas se resuelven ecuaciones cuadráticas.",
+      "problema": "Un balón sigue la altura h = −5t² + 20t. ¿En qué momento vuelve al suelo?",
+      "meta": "Al terminar podrás resolver ecuaciones cuadráticas y decir cuántas soluciones tienen sin resolverlas.",
+      "question_reflexion": "Mira la tabla: ¿en qué segundo crees que el balón toca el suelo? Escribe tu predicción.",
+      "dato": {
+        "titulo": "Altura del balón",
+        "filas": [
+          [
+            "t = 0 s",
+            "h = 0 m"
+          ],
+          [
+            "t = 1 s",
+            "h = 15 m"
+          ],
+          [
+            "t = 2 s",
+            "h = 20 m"
+          ],
+          [
+            "t = 3 s",
+            "h = 15 m"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/algebra",
+      "skill": "Resolver ecuaciones cuadráticas: factorización y fórmula general",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/ecuaciones_cuadraticas.html",
+      "objective": "Mueve los deslizadores a, b y c y observa cómo cambia la parábola y dónde corta el eje x. Relaciona el discriminante con el número de soluciones."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Describe con tus propias palabras una situación real que pueda modelarse con una ecuación cuadrática y escribe la ecuación que la representa."
+      },
+      {
+        "process": "Emplear",
+        "question": "Elige un método (factorización o fórmula general) para resolver x² − 7x + 10 = 0 y explica por qué lo elegiste. Muestra todos tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿qué le sucede a la parábola cuando el discriminante es negativo? ¿Qué significa eso para las soluciones de la ecuación?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Siempre conviene usar la fórmula general? Da un ejemplo donde factorizar sea más rápido y otro donde no sea posible hacerlo fácilmente."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Un rectángulo tiene un largo que mide 3 m más que su ancho x, y su área es de 40 m². ¿Qué ecuación cuadrática resulta? Escríbela en la forma ax² + bx + c = 0 (por ejemplo: x² + 2x - 5 = 0).",
+        "expected_answer": "x²+3x-40=0|x^2+3x-40=0",
+        "feedback_success": "¡Excelente! Si el ancho es x, el largo es x + 3 y el área es x(x + 3) = 40. Al pasar el 40 al otro lado queda x² + 3x − 40 = 0. Traducir una situación real a una ecuación es la habilidad central de formular."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Resuelve x² − 5x + 6 = 0. Escribe las dos soluciones separadas por coma, de menor a mayor.",
+        "expected_answer": "2,3|2y3",
+        "feedback_success": "¡Muy bien! Buscamos dos números que sumen 5 y multipliquen 6: son 2 y 3. Entonces (x − 2)(x − 3) = 0 y las soluciones son x = 2 y x = 3."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "La altura de una pelota es h(t) = −5t² + 20t (en metros, con t en segundos). ¿En qué segundo vuelve al suelo? Escribe solo el número.",
+        "expected_answer": "4|4s|4seg|4segundos",
+        "feedback_success": "¡Correcto! Al resolver −5t² + 20t = 0 se factoriza −5t(t − 4) = 0, así que t = 0 (el lanzamiento) y t = 4 (el regreso al suelo). Interpretar significa decidir qué solución tiene sentido en la situación."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Ana y Luis resuelven x² − 4x − 12 = 0. Ana factoriza y obtiene x = 6 y x = −2. Luis usa la fórmula general y obtiene x = 6 y x = 2. Evalúa críticamente quién tiene razón: escribe un párrafo argumentado donde expliques el error (si lo hay) y cómo podrías comprobar las soluciones.",
+        "rubric_keywords": [
+          "factorizar",
+          "fórmula general",
+          "discriminante",
+          "comprobar",
+          "solución"
+        ],
+        "expected_answer": "Ana tiene razón. Al factorizar, x² − 4x − 12 = (x − 6)(x + 2), por lo que las soluciones son x = 6 y x = −2. Luis cometió un error al aplicar la fórmula general: el discriminante es b² − 4ac = 16 + 48 = 64, y x = (4 ± 8)/2 da 6 y −2, no 2. Para comprobar cada solución se sustituye en la ecuación: 6² − 24 − 12 = 0 y (−2)² + 8 − 12 = 0, mientras que 2² − 8 − 12 = −16, que no es cero.",
+        "feedback_success": "¡Análisis de nivel experto! Defendiste tu conclusión con argumentos y la comprobaste sustituyendo. Evaluar significa justificar, no solo calcular."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Una ecuación cuadrática tiene como máximo dos soluciones: los puntos donde la parábola corta el eje x.",
+      "mapa": [
+        "Forma ax² + bx + c = 0",
+        "Discriminante Δ",
+        "Fórmula general",
+        "Factorización",
+        "Vértice y apertura"
+      ],
+      "formulas": [
+        {
+          "t": "Discriminante",
+          "f": "Δ = b² − 4ac"
+        },
+        {
+          "t": "Fórmula general",
+          "f": "x = (−b ± √Δ) / 2a"
+        }
+      ],
+      "astucias": [
+        "Calcula primero Δ: te dice cuántas soluciones hay antes de resolver.",
+        "Si a = 1, busca dos números que sumen −b y multipliquen c."
+      ],
+      "errores": [
+        "Olvidar el signo de −b o los paréntesis en (−b)²."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Qué indica Δ < 0?",
+          "a": "Que no hay raíces reales: la parábola no toca el eje x."
+        },
+        {
+          "q": "¿Dónde está el vértice?",
+          "a": "En x = −b / 2a."
+        },
+        {
+          "q": "¿Hacia dónde abre la parábola si a < 0?",
+          "a": "Hacia abajo."
+        }
+      ]
+    }
+  },
+  {
+    "id": "bio_genetica_mendel",
+    "target_user": "Laeticia",
+    "field": "biologia_genetica",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Ciencias de la Vida (Biología: herencia y genética)",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Genética de Mendel: ¿por qué te pareces a tu familia?",
+    "contexte": {
+      "titre": "El jardinero que descubrió la herencia",
+      "texte": "Hace más de 150 años, Gregor Mendel cruzó miles de plantas de guisante y descubrió que los rasgos se heredan en unidades que hoy llamamos genes. Cada individuo recibe dos alelos de cada gen, uno de cada progenitor. Los agrónomos que mejoran cultivos como el cacao usan hoy las mismas reglas.",
+      "problema": "Si cruzas dos plantas de flor púrpura, ¿pueden nacer plantas de flor blanca?",
+      "meta": "Al terminar podrás usar un cuadro de Punnett para predecir proporciones de genotipos y fenotipos.",
+      "question_reflexion": "Predice: de 100 descendientes de ese cruce, ¿cuántos esperas con flor blanca? Explica tu idea.",
+      "dato": {
+        "titulo": "Un cruce de Mendel",
+        "filas": [
+          [
+            "Padres",
+            "dos plantas púrpura (Aa)"
+          ],
+          [
+            "Resultado observado",
+            "3 púrpura : 1 blanca"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/biology/classical-genetics",
+      "skill": "Genética clásica: leyes de Mendel y cuadros de Punnett",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/genetica_mendel.html",
+      "objective": "Elige el genotipo de los dos progenitores, observa el cuadro de Punnett y simula cientos de descendientes. Compara las proporciones esperadas con las obtenidas."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica que se pueda investigar cruzando dos plantas de guisante. ¿Qué rasgo observarías y qué resultado esperarías?"
+      },
+      {
+        "process": "Emplear",
+        "question": "Usa un cuadro de Punnett para cruzar dos individuos Aa. Dibuja el cuadro y escribe las proporciones de genotipos y de fenotipos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio simulaste 100 descendientes y los resultados no fueron exactamente 75 % y 25 %. ¿Por qué ocurre esa diferencia? ¿Qué pasa si simulas 500?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Qué limitaciones tienen las leyes de Mendel para explicar rasgos como la estatura o el color de la piel? Argumenta con ejemplos."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "En los guisantes, el alelo A (flor púrpura) es dominante sobre el alelo a (flor blanca). ¿Cuál es el fenotipo de una planta con genotipo Aa? Responde con una palabra (el color).",
+        "expected_answer": "púrpura|purpura|morada",
+        "feedback_success": "¡Muy bien! Como A es dominante, basta un alelo A para que la flor sea púrpura. El genotipo es lo que dicen los alelos; el fenotipo es lo que se observa."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Cruzas dos plantas Aa × Aa. ¿Qué porcentaje de la descendencia se espera con flores blancas? Escribe solo el número.",
+        "expected_answer": "25|25%",
+        "feedback_success": "¡Correcto! En el cuadro de Punnett aparecen AA, Aa, Aa y aa; solo aa (1 de 4) tiene flor blanca, es decir, 25 %."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Cruzas una planta de flor blanca con una de flor púrpura y la mitad de los descendientes tiene flor blanca. ¿El progenitor de flor púrpura es homocigoto o heterocigoto? Responde con una palabra.",
+        "expected_answer": "heterocigoto|heterocigota|heterocigótico|heterocigotico",
+        "feedback_success": "¡Excelente razonamiento! Si el progenitor púrpura fuera AA, ningún hijo sería blanco. Que aparezcan flores blancas prueba que porta un alelo a, o sea que es Aa (heterocigoto)."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «Si cruzas dos plantas de flor púrpura, todos los hijos tendrán flor púrpura porque ese color es dominante». Evalúa críticamente esta afirmación en un párrafo argumentado. ¿En qué caso es verdadera y en qué caso es falsa?",
+        "rubric_keywords": [
+          "heterocigoto",
+          "alelo",
+          "recesivo",
+          "genotipo",
+          "probabilidad"
+        ],
+        "expected_answer": "La afirmación es falsa en general. Que un alelo sea dominante no garantiza que todos los hijos lo expresen: el fenotipo púrpura puede corresponder a un genotipo AA o Aa. Si ambos progenitores son heterocigotos (Aa × Aa), cada hijo tiene una probabilidad de 25 % de recibir dos alelos recesivos (aa) y mostrar flor blanca, porque el alelo recesivo permanece oculto en el genotipo. Solo si al menos uno de los progenitores es AA, todos los hijos tendrán flor púrpura.",
+        "feedback_success": "¡Análisis de nivel experto! Distinguiste entre genotipo y fenotipo y usaste la probabilidad para refutar una idea intuitiva. Eso es pensar como un científico."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Cada individuo recibe un alelo de cada progenitor; el alelo dominante se expresa aunque esté solo.",
+      "mapa": [
+        "Genes y alelos",
+        "Dominante y recesivo",
+        "Genotipo y fenotipo",
+        "Cuadro de Punnett",
+        "Proporción 3 : 1"
+      ],
+      "formulas": [
+        {
+          "t": "Cruce Aa × Aa",
+          "f": "25 % AA · 50 % Aa · 25 % aa"
+        },
+        {
+          "t": "Fenotipos",
+          "f": "3 dominante : 1 recesivo"
+        }
+      ],
+      "astucias": [
+        "Dibuja siempre el cuadro de Punnett: son 4 casillas.",
+        "Un hijo de fenotipo recesivo recibió un alelo recesivo de cada padre."
+      ],
+      "errores": [
+        "Confundir el genotipo (las letras) con el fenotipo (lo que se ve)."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Genotipo de una flor blanca (a recesivo)?",
+          "a": "aa"
+        },
+        {
+          "q": "En Aa × Aa, ¿qué porcentaje es aa?",
+          "a": "25 %"
+        },
+        {
+          "q": "¿Qué es un individuo heterocigoto?",
+          "a": "El que tiene dos alelos distintos (Aa)."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_interes_compuesto",
+    "target_user": "Maryse",
+    "field": "matematicas_interes_compuesto",
+    "curriculum_alignment": "SEP - 3° Secundaria - Matemáticas (crecimiento exponencial y educación financiera)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "El poder del interés compuesto: tu dinero trabajando para ti",
+    "contexte": {
+      "titre": "El dinero que se multiplica solo",
+      "texte": "Si guardas $1,000 con un interés de 8 % anual, en 30 años tendrás más de $10,000 sin añadir nada. Eso ocurre porque el interés compuesto se calcula sobre el capital y también sobre los intereses ya ganados. Las inversiones, los bancos y las deudas de tarjeta funcionan así.",
+      "problema": "¿Cuánto más gana el dinero con interés compuesto que con interés simple, y por qué?",
+      "meta": "Al terminar podrás calcular un monto con interés compuesto y decidir cuándo te conviene.",
+      "question_reflexion": "Antes de calcular: a 30 años, ¿crees que el compuesto da el doble, el triple o más del triple que el simple? Explica tu idea.",
+      "dato": {
+        "titulo": "$1,000 al 8 % anual",
+        "filas": [
+          [
+            "10 años",
+            "$2,159 (compuesto)"
+          ],
+          [
+            "20 años",
+            "$4,661 (compuesto)"
+          ],
+          [
+            "30 años",
+            "$10,063 (compuesto)"
+          ],
+          [
+            "30 años",
+            "$3,400 (simple)"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/economics-finance-domain/core-finance",
+      "skill": "Interés simple, interés compuesto y crecimiento exponencial",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/interes_compuesto.html",
+      "objective": "Cambia el capital, la tasa y los años, y compara cuánto crece el dinero con interés simple y con interés compuesto."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Describe una situación real en la que el dinero crezca con interés compuesto y escribe la fórmula M = C(1 + r)ⁿ identificando cada letra."
+      },
+      {
+        "process": "Emplear",
+        "question": "Calcula cuánto tendrías después de 3 años si inviertes $2,000 al 5 % anual compuesto. Muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿por qué la curva del interés compuesto se separa cada vez más de la recta del interés simple?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Es justo que un banco cobre interés compuesto en una deuda? Argumenta con ventajas y riesgos para el cliente."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Un capital de $1,000 gana interés simple del 5 % anual. ¿Cuántos pesos de interés gana en 1 año? Escribe solo el número.",
+        "expected_answer": "50|$50|50pesos",
+        "feedback_success": "¡Correcto! El 5 % de 1,000 es 1,000 × 0.05 = 50. Identificar qué operación modela la situación es formular."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Inviertes $1,000 al 10 % anual con interés compuesto durante 2 años. ¿Cuánto dinero tienes al final? Escribe solo el número.",
+        "expected_answer": "1210|$1210|1,210|$1,210",
+        "feedback_success": "¡Muy bien! M = 1,000 × (1.10)² = 1,000 × 1.21 = 1,210. El segundo año el interés se calcula sobre 1,100, no sobre 1,000."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Según la regla del 72, ¿en cuántos años se duplica aproximadamente un capital con una tasa del 6 % anual? Escribe solo el número.",
+        "expected_answer": "12|12años|12anos",
+        "feedback_success": "¡Exacto! 72 ÷ 6 = 12 años. Es una estimación rápida muy usada por quienes trabajan en finanzas."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Una persona paga solo el pago mínimo de su tarjeta de crédito, que cobra interés compuesto mensual. Evalúa críticamente esta decisión en un párrafo argumentado: ¿qué consecuencias tiene a largo plazo y qué alternativa recomendarías?",
+        "rubric_keywords": [
+          "interés compuesto",
+          "tasa",
+          "plazo",
+          "deuda",
+          "capital"
+        ],
+        "expected_answer": "Pagar solo el mínimo es una mala decisión porque el interés compuesto se calcula sobre la deuda que queda, incluidos los intereses anteriores. Con una tasa alta y un plazo largo, la deuda crece casi como si fuera un capital que se multiplica, y la persona termina pagando mucho más que el capital original. Recomendaría pagar más que el mínimo, comparar la tasa de otras opciones y evitar nuevas compras mientras exista la deuda.",
+        "feedback_success": "¡Análisis de nivel experto! Relacionaste la fórmula con una decisión real y propusiste una alternativa fundamentada."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "En el interés compuesto los intereses también generan intereses: el dinero crece como una curva, no como una recta.",
+      "mapa": [
+        "Capital inicial C",
+        "Tasa r",
+        "Tiempo n",
+        "Simple vs compuesto",
+        "Regla del 72"
+      ],
+      "formulas": [
+        {
+          "t": "Interés simple",
+          "f": "M = C(1 + r·n)"
+        },
+        {
+          "t": "Interés compuesto",
+          "f": "M = C(1 + r)ⁿ"
+        }
+      ],
+      "astucias": [
+        "Regla del 72: años para duplicar ≈ 72 ÷ tasa (en %).",
+        "Convierte siempre el porcentaje a decimal: 8 % = 0.08."
+      ],
+      "errores": [
+        "Usar 8 en lugar de 0.08 dentro de la fórmula."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Cuánto vale (1 + r)ⁿ si r = 0.10 y n = 2?",
+          "a": "1.21"
+        },
+        {
+          "q": "¿En cuántos años se duplica un capital al 6 %?",
+          "a": "Aproximadamente 72 ÷ 6 = 12 años."
+        },
+        {
+          "q": "¿Cuándo supera el compuesto al simple?",
+          "a": "Siempre que n > 1, y la diferencia crece con el tiempo."
+        }
+      ]
+    }
+  },
+  {
+    "id": "qui_estructura_atomica",
+    "target_user": "Maryse",
+    "field": "quimica_estructura_atomica",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias III (Química): estructura de la materia y modelo atómico",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Dentro del átomo: del modelo de Bohr a la tabla periódica",
+    "contexte": {
+      "titre": "Lo que hacen los electrones de afuera",
+      "texte": "Los teléfonos, las antenas y los chips funcionan gracias al comportamiento de los electrones. En 1913, Niels Bohr propuso que se mueven en capas con energía definida alrededor del núcleo. Aunque hoy sabemos que el modelo es incompleto, sirve para explicar cómo reaccionan los elementos.",
+      "problema": "¿Por qué el sodio reacciona con violencia y el neón casi nunca reacciona?",
+      "meta": "Al terminar podrás dibujar la distribución de electrones y predecir si un átomo gana o pierde electrones.",
+      "question_reflexion": "Observa la tabla: ¿qué tiene el neón en su última capa que lo hace tan estable?",
+      "dato": {
+        "titulo": "Electrones por capa",
+        "filas": [
+          [
+            "Sodio (Z = 11)",
+            "2 · 8 · 1"
+          ],
+          [
+            "Neón (Z = 10)",
+            "2 · 8"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/chemistry",
+      "skill": "Estructura del átomo y configuración electrónica",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/modelo_bohr.html",
+      "objective": "Cambia el número atómico Z, observa cómo se llenan las capas de electrones y relaciona la capa externa con la reactividad."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre por qué algunos elementos, como el sodio, reaccionan con tanta facilidad."
+      },
+      {
+        "process": "Emplear",
+        "question": "Usa el laboratorio para escribir la distribución de electrones por capa del cloro (Z = 17)."
+      },
+      {
+        "process": "Interpretar",
+        "question": "¿Qué relación observas entre los electrones de la última capa y el comportamiento del elemento?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Qué limitaciones tiene el modelo de Bohr y por qué se sigue enseñando?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "¿Cuántos electrones tiene un átomo neutro de carbono (Z = 6)? Escribe solo el número.",
+        "expected_answer": "6|6electrones",
+        "feedback_success": "¡Correcto! En un átomo neutro, el número de electrones es igual al de protones, es decir, Z."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "El oxígeno (Z = 8) tiene sus electrones distribuidos en 2 capas. ¿Cuántos electrones hay en la última capa? Escribe solo el número.",
+        "expected_answer": "6|6electrones",
+        "feedback_success": "¡Muy bien! Los primeros 2 electrones llenan la capa 1 y los 6 restantes quedan en la capa 2."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "El sodio (Z = 11) tiene la distribución 2, 8, 1. ¿Es más probable que pierda o que gane electrones? Responde con una palabra: «pierde» o «gana».",
+        "expected_answer": "pierde|perder|pierda",
+        "feedback_success": "¡Excelente razonamiento! Perder un solo electrón es más fácil que ganar siete, y así queda con la capa anterior completa."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero dice: «El modelo de Bohr es incorrecto, así que no sirve». Evalúa críticamente esa afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "electrón",
+          "capas",
+          "modelo",
+          "limitaciones",
+          "evidencia"
+        ],
+        "expected_answer": "Los modelos científicos no son copias exactas de la realidad, sino herramientas para explicar. El modelo de Bohr tiene limitaciones, porque hoy sabemos que el electrón no sigue órbitas fijas, pero explica con claridad las capas de energía y la valencia. La evidencia del espectro del hidrógeno respalda su idea central, y por eso sigue siendo útil para predecir cómo reaccionan los elementos.",
+        "feedback_success": "¡Análisis de nivel experto! Entendiste que un modelo puede ser limitado y aun así valioso, una idea central de la ciencia."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "El átomo tiene un núcleo con protones y electrones en capas; los de la última capa deciden cómo reacciona.",
+      "mapa": [
+        "Protones y electrones",
+        "Capas 2-8-8",
+        "Electrones de valencia",
+        "Gases nobles estables",
+        "Iones"
+      ],
+      "formulas": [
+        {
+          "t": "Átomo neutro",
+          "f": "protones = electrones = Z"
+        },
+        {
+          "t": "Capas",
+          "f": "2, 8, 8, …"
+        }
+      ],
+      "astucias": [
+        "Llena las capas en orden: 2, luego 8, luego 8.",
+        "Pocos electrones de valencia (1–3): tiende a perder; muchos (5–7): tiende a ganar."
+      ],
+      "errores": [
+        "Confundir el número atómico Z con la masa del átomo."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Distribución del sodio (Z = 11)?",
+          "a": "2, 8, 1"
+        },
+        {
+          "q": "¿Qué tiende a hacer el sodio?",
+          "a": "Perder 1 electrón."
+        },
+        {
+          "q": "¿Por qué los gases nobles casi no reaccionan?",
+          "a": "Tienen la última capa completa."
+        }
+      ]
+    }
+  },
+  {
+    "id": "bio_celula",
+    "target_user": "Laeticia",
+    "field": "biologia_celula",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Ciencias de la Vida (Biología): la célula como unidad de la vida",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "La célula: la fábrica más pequeña de la vida",
+    "contexte": {
+      "titre": "La fábrica más pequeña de la vida",
+      "texte": "Tu cuerpo tiene unos 30 billones de células y cada una funciona como una pequeña fábrica con departamentos llamados organelos. Unas producen energía, otras fabrican proteínas y otras guardan las instrucciones genéticas.",
+      "problema": "¿Por qué una célula del músculo tiene muchísimas más mitocondrias que una célula de la piel?",
+      "meta": "Al terminar podrás relacionar cada organelo con su función y comparar célula animal y vegetal.",
+      "question_reflexion": "Si una ciudad tiene una central eléctrica, ¿qué organelo crees que cumple esa función en la célula?",
+      "dato": {
+        "titulo": "Mitocondrias por célula (aproximado)",
+        "filas": [
+          [
+            "Célula de la piel",
+            "cientos"
+          ],
+          [
+            "Célula del corazón",
+            "miles"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/biology",
+      "skill": "La célula: estructura y organelos",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/celula.html",
+      "objective": "Alterna entre célula animal y vegetal, y haz clic en cada organelo para descubrir su función."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre por qué las células de los músculos y las de la piel son diferentes."
+      },
+      {
+        "process": "Emplear",
+        "question": "Compara con ejemplos la célula animal y la vegetal usando el laboratorio."
+      },
+      {
+        "process": "Interpretar",
+        "question": "Una célula del hígado tiene muchas mitocondrias. ¿Qué te dice eso sobre su trabajo?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Es correcto decir que un virus es una célula? Argumenta con lo que aprendiste."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "¿Qué organelo produce la mayor parte de la energía (ATP) de la célula? Responde con una palabra.",
+        "expected_answer": "mitocondria|mitocondrias|lamitocondria",
+        "feedback_success": "¡Correcto! La mitocondria obtiene energía de los nutrientes mediante la respiración celular."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "¿Qué organelo, presente en las células vegetales y ausente en las animales, realiza la fotosíntesis? Responde con una palabra.",
+        "expected_answer": "cloroplasto|cloroplastos|elcloroplasto",
+        "feedback_success": "¡Muy bien! Los cloroplastos contienen clorofila, que capta la luz solar."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Una célula muscular necesita mucha energía. ¿Esperarías encontrar en ella pocas o muchas mitocondrias? Responde con una palabra.",
+        "expected_answer": "muchas|muchas.",
+        "feedback_success": "¡Excelente razonamiento! La estructura de una célula se relaciona con su función: más trabajo implica más mitocondrias."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Se dice que la célula es la unidad básica de la vida. Evalúa esta afirmación en un párrafo argumentado, usando como ejemplos un organismo unicelular y uno pluricelular.",
+        "rubric_keywords": [
+          "organelos",
+          "unicelular",
+          "pluricelular",
+          "función",
+          "membrana"
+        ],
+        "expected_answer": "La afirmación es correcta porque toda forma de vida está formada por una o más células. Un organismo unicelular, como una bacteria, realiza todas sus funciones vitales con una sola célula. En un organismo pluricelular, como una persona, las células se especializan y cooperan, pero cada una tiene membrana, organelos y material genético propios para cumplir su función.",
+        "feedback_success": "¡Análisis de nivel experto! Conectaste estructura y función, y lo aplicaste a organismos distintos."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La célula es la unidad básica de la vida y cada organelo cumple una función.",
+      "mapa": [
+        "Núcleo (ADN)",
+        "Mitocondria (energía)",
+        "Ribosoma (proteínas)",
+        "Membrana (control)",
+        "Solo vegetales: pared y cloroplasto"
+      ],
+      "formulas": [
+        {
+          "t": "Respiración celular",
+          "f": "glucosa + O₂ → CO₂ + H₂O + energía"
+        },
+        {
+          "t": "Estructura y función",
+          "f": "más trabajo → más mitocondrias"
+        }
+      ],
+      "astucias": [
+        "Piensa en una ciudad: el núcleo es el ayuntamiento y la mitocondria, la central eléctrica.",
+        "Célula vegetal = animal + pared + cloroplastos + vacuola grande."
+      ],
+      "errores": [
+        "Decir que un virus es una célula: no tiene estructura celular."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Qué organelo produce ATP?",
+          "a": "La mitocondria."
+        },
+        {
+          "q": "¿Dónde ocurre la fotosíntesis?",
+          "a": "En los cloroplastos."
+        },
+        {
+          "q": "¿Qué controla la entrada y salida de sustancias?",
+          "a": "La membrana plasmática."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_funcion_lineal",
+    "target_user": "Laeticia",
+    "field": "matematicas_funcion_lineal",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Matemática (funciones lineales y sus gráficas)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "La función lineal: modelar costos y planes de la vida real",
+    "contexte": {
+      "titre": "El taxímetro y su fórmula",
+      "texte": "Cuando tomas un taxi, el precio tiene una parte fija (la bajada) y otra que crece por cada kilómetro. Lo mismo pasa con los planes de celular, la luz o los envíos. Estas situaciones se modelan con la función lineal y = mx + b.",
+      "problema": "Un taxi cobra $30 de bajada y $12 por km. ¿Cuánto cuesta un viaje de 7 km y cómo se escribe como fórmula?",
+      "meta": "Al terminar podrás escribir y graficar una función lineal e interpretar m y b.",
+      "question_reflexion": "Mira la tabla: ¿cuánto crees que costará un viaje de 5 km? Explica cómo lo calculaste.",
+      "dato": {
+        "titulo": "Precio del viaje",
+        "filas": [
+          [
+            "0 km",
+            "$30"
+          ],
+          [
+            "1 km",
+            "$42"
+          ],
+          [
+            "2 km",
+            "$54"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/algebra",
+      "skill": "Funciones lineales: pendiente y ordenada al origen",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/funcion_lineal.html",
+      "objective": "Mueve la pendiente m y la ordenada b, y observa cómo cambia la recta y dónde corta cada eje."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Describe una situación cotidiana que se modele con una función lineal e identifica qué representan m y b."
+      },
+      {
+        "process": "Emplear",
+        "question": "Escribe la función de un taxi con bajada de $30 y $12 por kilómetro, y calcula el costo de 7 km."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿qué significa que la pendiente sea negativa? Da un ejemplo real."
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Siempre es mejor el plan con menor costo fijo? Argumenta con un ejemplo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Un taxi cobra $30 de bajada y $12 por kilómetro. Escribe la función del costo y en términos de los kilómetros x, con el formato y = mx + b.",
+        "expected_answer": "y=12x+30|f(x)=12x+30|c=12x+30",
+        "feedback_success": "¡Correcto! La bajada es el valor inicial (b = 30) y el costo por kilómetro es la pendiente (m = 12)."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Evalúa la función f(x) = 3x − 2 cuando x = 5. Escribe solo el número.",
+        "expected_answer": "13",
+        "feedback_success": "¡Muy bien! f(5) = 3 × 5 − 2 = 15 − 2 = 13."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Una recta pasa por los puntos (0, 4) y (2, 10). ¿Cuál es su pendiente? Escribe solo el número.",
+        "expected_answer": "3|m=3",
+        "feedback_success": "¡Excelente! La pendiente es (10 − 4) ÷ (2 − 0) = 6 ÷ 2 = 3, así que y aumenta 3 por cada unidad de x."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "El plan A de celular cuesta $200 fijos más $5 por cada gigabyte; el plan B cuesta $50 fijos más $10 por gigabyte. Evalúa en un párrafo argumentado cuál plan conviene según el uso, e indica cuándo cuestan lo mismo.",
+        "rubric_keywords": [
+          "pendiente",
+          "ordenada",
+          "intersección",
+          "comparar",
+          "costo"
+        ],
+        "expected_answer": "Los dos planes se modelan con funciones lineales: A(x) = 5x + 200 y B(x) = 10x + 50. Para comparar los costos igualamos las expresiones y obtenemos x = 30 gigabytes. Si se usan menos de 30, conviene el plan B porque tiene menor ordenada; si se usan más, conviene el plan A porque su pendiente es menor. El costo fijo por sí solo no decide cuál es mejor.",
+        "feedback_success": "¡Análisis de nivel experto! Comparaste dos modelos y encontraste el punto donde cambia la decisión."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "En y = mx + b, m es cuánto cambia y por cada unidad de x, y b es el valor inicial.",
+      "mapa": [
+        "Pendiente m",
+        "Ordenada b",
+        "Corte con el eje x",
+        "Tabla de valores",
+        "Rectas que suben o bajan"
+      ],
+      "formulas": [
+        {
+          "t": "Función lineal",
+          "f": "y = m·x + b"
+        },
+        {
+          "t": "Pendiente",
+          "f": "m = (y₂ − y₁) / (x₂ − x₁)"
+        }
+      ],
+      "astucias": [
+        "Si m > 0 la recta sube, si m < 0 baja y si m = 0 es horizontal.",
+        "Para el corte con el eje x, haz y = 0."
+      ],
+      "errores": [
+        "Restar las coordenadas en distinto orden al calcular la pendiente."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Pendiente entre (1, 2) y (3, 8)?",
+          "a": "3"
+        },
+        {
+          "q": "¿Qué es b?",
+          "a": "El valor de y cuando x = 0."
+        },
+        {
+          "q": "Taxi con $30 de bajada y $12 por km: ¿función?",
+          "a": "y = 12x + 30"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_semejanza_tales",
+    "target_user": "Maryse",
+    "field": "matematicas_semejanza",
+    "curriculum_alignment": "SEP - 3° Secundaria - Matemáticas (semejanza de triángulos y teorema de Tales)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Semejanza y proporción: medir lo que no se puede alcanzar",
+    "contexte": {
+      "titre": "Medir una torre sin subirse",
+      "texte": "Hace más de 2,500 años, Tales de Mileto midió la altura de una pirámide comparando su sombra con la de un bastón. Hoy se usa la misma idea para estimar torres y edificios. El secreto son los triángulos semejantes: tienen la misma forma y sus lados son proporcionales.",
+      "problema": "Un poste de 2 m proyecta 3 m de sombra. ¿Cuánto mide una torre cuya sombra es de 30 m?",
+      "meta": "Al terminar podrás usar la semejanza para calcular alturas que no puedes medir.",
+      "question_reflexion": "Sin calcular: ¿la torre mide más o menos de 30 m? Explica por qué.",
+      "dato": {
+        "titulo": "Sombras al mismo tiempo",
+        "filas": [
+          [
+            "Poste",
+            "2 m de alto → sombra de 3 m"
+          ],
+          [
+            "Torre",
+            "? m de alto → sombra de 30 m"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/geometry",
+      "skill": "Triángulos semejantes y proporcionalidad",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/semejanza.html",
+      "objective": "Cambia la razón de semejanza k y observa cómo cambian los lados, el perímetro y el área del triángulo."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula un problema real que puedas resolver con triángulos semejantes y dibuja un esquema."
+      },
+      {
+        "process": "Emplear",
+        "question": "Un poste de 1.5 m proyecta una sombra de 2 m. Calcula la altura de un árbol que proyecta 12 m de sombra. Muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿por qué el área cambia distinto que el perímetro cuando duplicas los lados?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Qué suposiciones se hacen al medir una torre con sombras? ¿Cuándo el método falla?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Dos triángulos son semejantes con razón de semejanza 3. Si un lado del triángulo pequeño mide 4 cm, ¿cuánto mide el lado correspondiente del grande? Escribe solo el número.",
+        "expected_answer": "12|12cm",
+        "feedback_success": "¡Correcto! Cada lado se multiplica por la razón: 4 × 3 = 12 cm."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Un poste de 2 m proyecta una sombra de 3 m. En el mismo momento, una torre proyecta una sombra de 30 m. ¿Cuántos metros mide la torre? Escribe solo el número.",
+        "expected_answer": "20|20m|20metros",
+        "feedback_success": "¡Muy bien! Los triángulos son semejantes, así que 2/3 = h/30 y h = 20 m."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Si la razón de semejanza entre dos triángulos es 2, ¿por qué factor se multiplica el perímetro? Escribe solo el número.",
+        "expected_answer": "2|x2|×2",
+        "feedback_success": "¡Excelente! El perímetro es una suma de lados y cada lado se multiplica por 2, así que el perímetro también."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «Si duplico los lados de un triángulo, su área también se duplica». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "razón de semejanza",
+          "área",
+          "cuadrado",
+          "perímetro",
+          "proporcional"
+        ],
+        "expected_answer": "La afirmación es falsa. Cuando la razón de semejanza es 2, el perímetro es proporcional a los lados y se duplica, pero el área se multiplica por el cuadrado de la razón, es decir, por 4. Por ejemplo, un triángulo de lados 3, 4 y 5 tiene área 6, y al duplicar sus lados el área es 24.",
+        "feedback_success": "¡Análisis de nivel experto! Distinguiste cómo escalan la longitud y el área."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Las figuras semejantes tienen la misma forma: ángulos iguales y lados proporcionales con razón k.",
+      "mapa": [
+        "Razón de semejanza k",
+        "Lados proporcionales",
+        "Perímetro × k",
+        "Área × k²",
+        "Teorema de Tales"
+      ],
+      "formulas": [
+        {
+          "t": "Lados",
+          "f": "a′ = k · a"
+        },
+        {
+          "t": "Áreas",
+          "f": "A′ = k² · A"
+        }
+      ],
+      "astucias": [
+        "Longitudes × k, áreas × k², volúmenes × k³.",
+        "Para medir una torre, compara su sombra con la de un objeto conocido."
+      ],
+      "errores": [
+        "Multiplicar el área por k en lugar de por k²."
+      ],
+      "tarjetas": [
+        {
+          "q": "Si k = 3, ¿cuánto cambia el área?",
+          "a": "Se multiplica por 9."
+        },
+        {
+          "q": "¿Qué se conserva en figuras semejantes?",
+          "a": "Los ángulos."
+        },
+        {
+          "q": "Poste de 2 m con sombra de 3 m; torre con sombra de 30 m. ¿Altura?",
+          "a": "20 m, porque 2/3 = h/30."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_trigonometria",
+    "target_user": "Laeticia",
+    "field": "matematicas_trigonometria",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Matemática (razones trigonométricas en el triángulo rectángulo)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Trigonometría: medir alturas y distancias con un ángulo",
+    "contexte": {
+      "titre": "Medir una altura con un ángulo",
+      "texte": "Los topógrafos, los ingenieros y los pilotos miden alturas y distancias que no pueden alcanzar usando un ángulo y una distancia conocida. La trigonometría relaciona los ángulos de un triángulo rectángulo con sus lados mediante seno, coseno y tangente.",
+      "problema": "Estás a 20 m de un edificio y ves su azotea con un ángulo de 45°. ¿Cuánto mide el edificio?",
+      "meta": "Al terminar podrás usar seno, coseno y tangente para calcular lados y alturas.",
+      "question_reflexion": "Con un ángulo de 45°, ¿crees que el edificio mide más, menos o casi lo mismo que tu distancia (20 m)? ¿Por qué?",
+      "dato": {
+        "titulo": "Datos de la medición",
+        "filas": [
+          [
+            "Distancia a la base",
+            "20 m"
+          ],
+          [
+            "Ángulo de elevación",
+            "45°"
+          ],
+          [
+            "Altura del edificio",
+            "? m"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/trigonometry",
+      "skill": "Razones trigonométricas en triángulos rectángulos",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/trigonometria.html",
+      "objective": "Mueve el ángulo y la hipotenusa, y observa cómo cambian el seno, el coseno y la tangente."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula un problema real donde necesites calcular una altura o distancia con un ángulo."
+      },
+      {
+        "process": "Emplear",
+        "question": "Una rampa de 8 m de largo forma un ángulo de 20° con el suelo. Plantea cómo calcular la altura que alcanza."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, cambia solo la hipotenusa: ¿qué razones trigonométricas cambian y cuáles no? Explica por qué."
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Qué fuentes de error tendría medir la altura de un árbol con este método?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "En un triángulo rectángulo, la razón cateto opuesto ÷ hipotenusa se llama... Responde con una palabra.",
+        "expected_answer": "seno|sen|elseno",
+        "feedback_success": "¡Correcto! sen θ = opuesto ÷ hipotenusa."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "En un triángulo rectángulo, la hipotenusa mide 10 y el ángulo θ mide 30°. ¿Cuánto mide el cateto opuesto? (sen 30° = 0.5). Escribe solo el número.",
+        "expected_answer": "5|5m|5unidades",
+        "feedback_success": "¡Muy bien! Opuesto = hipotenusa × sen θ = 10 × 0.5 = 5."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Desde un punto situado a 20 m de la base de un edificio, el ángulo de elevación hacia la cima es de 45° (tan 45° = 1). ¿Cuántos metros mide el edificio? Escribe solo el número.",
+        "expected_answer": "20|20m|20metros",
+        "feedback_success": "¡Excelente! tan θ = altura ÷ distancia, así que altura = 20 × 1 = 20 m."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un estudiante afirma que es imposible conocer la altura de un árbol sin trepar a él. Evalúa críticamente esa afirmación en un párrafo argumentado, explicando qué método usarías y qué limitaciones tiene.",
+        "rubric_keywords": [
+          "tangente",
+          "ángulo",
+          "distancia",
+          "altura",
+          "error"
+        ],
+        "expected_answer": "La afirmación es falsa. Basta medir la distancia horizontal al árbol y el ángulo de elevación hacia su copa, y aplicar la tangente: altura = distancia × tan(ángulo), sumando la altura de los ojos de quien mide. El método tiene un error si el suelo no es plano o si el ángulo se mide con poca precisión.",
+        "feedback_success": "¡Análisis de nivel experto! Aplicaste la tangente a un caso real y reconociste sus límites."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Seno, coseno y tangente relacionan un ángulo con los lados de un triángulo rectángulo.",
+      "mapa": [
+        "Cateto opuesto",
+        "Cateto adyacente",
+        "Hipotenusa",
+        "Seno, coseno y tangente",
+        "Ángulo de elevación"
+      ],
+      "formulas": [
+        {
+          "t": "Seno",
+          "f": "sen θ = opuesto / hipotenusa"
+        },
+        {
+          "t": "Tangente",
+          "f": "tan θ = opuesto / adyacente"
+        }
+      ],
+      "astucias": [
+        "SOH-CAH-TOA: Seno = Opuesto/Hipotenusa, Coseno = Adyacente/Hipotenusa, Tangente = Opuesto/Adyacente.",
+        "Las razones solo dependen del ángulo, no del tamaño del triángulo."
+      ],
+      "errores": [
+        "Tener la calculadora en radianes cuando el ángulo está en grados."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Cuánto vale tan 45°?",
+          "a": "1"
+        },
+        {
+          "q": "¿Cuánto vale sen 30°?",
+          "a": "0.5"
+        },
+        {
+          "q": "Altura = distancia × ¿qué?",
+          "a": "La tangente del ángulo de elevación."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_estadistica",
+    "target_user": "Laeticia",
+    "field": "matematicas_estadistica",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Matemática (estadística descriptiva: medidas de tendencia central)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Estadística: ¿cómo saber si un promedio dice la verdad?",
+    "contexte": {
+      "titre": "Un promedio que engaña",
+      "texte": "Cada día aparecen cifras como «el salario promedio es…». Pero un promedio puede ocultar la realidad si hay datos muy extremos. La media, la mediana y la moda ayudan a describir un conjunto de datos y a detectar cuándo una cifra engaña.",
+      "problema": "Una empresa dice que su salario promedio es $60,000. ¿Gana eso la mayoría de sus empleados?",
+      "meta": "Al terminar podrás calcular media, mediana y moda y detectar valores atípicos.",
+      "question_reflexion": "Con esos datos, ¿qué salario crees que gana la persona «típica» de esa empresa? Explica tu elección.",
+      "dato": {
+        "titulo": "Salarios de 10 empleados (en miles)",
+        "filas": [
+          [
+            "9 empleados",
+            "20 cada uno"
+          ],
+          [
+            "1 empleado",
+            "420"
+          ],
+          [
+            "Media",
+            "60"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/statistics-probability",
+      "skill": "Media, mediana, moda y valores atípicos",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/estadistica.html",
+      "objective": "Escribe tus propios datos y observa cómo se comportan la media y la mediana cuando agregas un valor extremo."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta que se pueda responder recolectando datos en tu curso y decide qué medida usarías."
+      },
+      {
+        "process": "Emplear",
+        "question": "Calcula la media, la mediana y la moda de: 2, 3, 3, 5, 7. Muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, agrega un valor muy grande: ¿qué pasa con la media y con la mediana? ¿Por qué?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Cuándo es engañoso un promedio? Da un ejemplo real."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Calcula la media de 4, 6, 8, 10 y 12. Escribe solo el número.",
+        "expected_answer": "8",
+        "feedback_success": "¡Correcto! (4 + 6 + 8 + 10 + 12) ÷ 5 = 40 ÷ 5 = 8."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Calcula la mediana de 3, 9, 4, 7 y 5. Escribe solo el número.",
+        "expected_answer": "5",
+        "feedback_success": "¡Muy bien! Ordenados: 3, 4, 5, 7, 9. El valor central es 5."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Los salarios (en miles) de un grupo son 20, 22, 21, 23 y 200. ¿Qué medida describe mejor al grupo: la media o la mediana? Responde con una palabra.",
+        "expected_answer": "mediana|lamediana",
+        "feedback_success": "¡Excelente razonamiento! El valor extremo 200 sube mucho la media, pero la mediana (22) refleja mejor a la mayoría."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Una empresa anuncia: «El salario promedio es de $60,000». En realidad, 9 personas ganan $20,000 y una gana $420,000. Evalúa críticamente el anuncio en un párrafo argumentado.",
+        "rubric_keywords": [
+          "media",
+          "mediana",
+          "valor atípico",
+          "distribución",
+          "representativo"
+        ],
+        "expected_answer": "El anuncio es engañoso. La media es 60,000, pero ese valor no es representativo, porque un valor atípico de 420,000 la eleva mucho. La mediana es 20,000 y describe mejor lo que gana la mayoría. Para entender la distribución de los salarios hay que comparar la media con la mediana.",
+        "feedback_success": "¡Análisis de nivel experto! Detectaste cómo un valor atípico distorsiona la media."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Media, mediana y moda resumen un conjunto de datos; un valor atípico puede engañar a la media.",
+      "mapa": [
+        "Media",
+        "Mediana",
+        "Moda",
+        "Desviación estándar",
+        "Valores atípicos"
+      ],
+      "formulas": [
+        {
+          "t": "Media",
+          "f": "x̄ = Σxᵢ / n"
+        },
+        {
+          "t": "Rango",
+          "f": "máximo − mínimo"
+        }
+      ],
+      "astucias": [
+        "Ordena los datos antes de buscar la mediana.",
+        "Si la media y la mediana difieren mucho, busca un valor atípico."
+      ],
+      "errores": [
+        "Presentar la media como «lo típico» cuando hay valores extremos."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Mediana de 3, 9, 4, 7, 5?",
+          "a": "5"
+        },
+        {
+          "q": "¿Qué medida resiste mejor a los extremos?",
+          "a": "La mediana."
+        },
+        {
+          "q": "¿Qué mide la desviación estándar?",
+          "a": "Qué tan lejos están los datos de la media."
+        }
+      ]
+    }
+  },
+  {
+    "id": "qui_tabla_periodica",
+    "target_user": "Maryse",
+    "field": "quimica_tabla_periodica",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias III (Química): tabla periódica, enlaces y balanceo de ecuaciones",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Tabla periódica viva: por qué reaccionan los elementos",
+    "contexte": {
+      "titre": "De un metal explosivo a la sal de mesa",
+      "texte": "El sodio es un metal que reacciona con violencia al tocar el agua y el cloro es un gas tóxico. Sin embargo, juntos forman NaCl, la sal de tu comida. La clave está en los electrones de la última capa y en la posición de cada elemento en la tabla periódica.",
+      "problema": "¿Cómo se puede predecir qué compuesto forman dos elementos con solo mirar la tabla?",
+      "meta": "Al terminar podrás predecir fórmulas de compuestos y balancear una neutralización.",
+      "question_reflexion": "Si el cloro necesita 1 electrón y el magnesio puede dar 2, ¿cuántos átomos de cloro crees que se combinan con uno de magnesio?",
+      "dato": {
+        "titulo": "Electrones de valencia",
+        "filas": [
+          [
+            "Sodio (grupo 1)",
+            "1"
+          ],
+          [
+            "Magnesio (grupo 2)",
+            "2"
+          ],
+          [
+            "Cloro (grupo 17)",
+            "7"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/chemistry",
+      "skill": "Tabla periódica, enlaces iónicos y covalentes, y balanceo de ecuaciones",
+      "estimated_minutes": 30
+    },
+    "labo": {
+      "file": "labos/tabla_periodica.html",
+      "objective": "Explora la tabla, predice qué ocurre al combinar dos elementos y balancea ecuaciones de neutralización."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica para explicar por qué el sodio reacciona con tanta facilidad y el neón no reacciona."
+      },
+      {
+        "process": "Emplear",
+        "question": "Usa el laboratorio para predecir la fórmula del compuesto que forman el calcio y el cloro. Explica cuántos átomos de cada uno se necesitan y por qué."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el predictor, compara metal + no metal con no metal + no metal. ¿En qué se diferencian: los electrones se donan o se comparten?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "La conservación de la masa exige balancear las ecuaciones. ¿Qué pasaría si una ecuación de neutralización no estuviera balanceada? Argumenta con un ejemplo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "¿Cuántos electrones de valencia tiene el cloro (Z = 17)? Escribe solo el número.",
+        "expected_answer": "7|7electrones",
+        "feedback_success": "¡Correcto! El cloro tiene la distribución 2, 8, 7: siete electrones en su última capa, por eso necesita recibir uno para completarla."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "En la ecuación H₂SO₄ + ?NaOH → Na₂SO₄ + 2H₂O, ¿qué coeficiente va delante de NaOH? Escribe solo el número.",
+        "expected_answer": "2",
+        "feedback_success": "¡Muy bien! El ácido aporta 2 H y cada NaOH aporta 1 OH, así que se necesitan 2 NaOH para formar 2 moléculas de agua: H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "El magnesio (grupo 2) reacciona con el cloro (grupo 17). ¿Cuántos átomos de cloro se necesitan por cada átomo de magnesio? Escribe solo el número.",
+        "expected_answer": "2|2atomos",
+        "feedback_success": "¡Excelente razonamiento! Cada Mg dona 2 electrones y cada Cl recibe solo 1, así que se necesitan 2 átomos de cloro: la fórmula es MgCl₂."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero dice: «El helio no reacciona con ningún elemento porque no tiene electrones». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "capa de valencia",
+          "completa",
+          "estable",
+          "gas noble",
+          "electrones"
+        ],
+        "expected_answer": "La afirmación es falsa. El helio sí tiene electrones: tiene 2, y forman su única capa de valencia, que está completa. Por ser un gas noble con la capa completa, es muy estable y no necesita donar, recibir ni compartir electrones, por eso casi no reacciona. Lo mismo ocurre con el neón y el argón, que tienen 8 electrones en su última capa.",
+        "feedback_success": "¡Análisis de nivel experto! Corregiste la idea y la explicaste con la capa de valencia, que es la clave de toda la química de la tabla periódica."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La posición en la tabla dice cuántos electrones de valencia tiene un elemento y cómo se combina.",
+      "mapa": [
+        "Grupos (columnas)",
+        "Períodos (filas)",
+        "Metales y no metales",
+        "Enlace iónico",
+        "Balanceo"
+      ],
+      "formulas": [
+        {
+          "t": "Neutralización",
+          "f": "ácido + base → sal + agua"
+        },
+        {
+          "t": "Cargas típicas",
+          "f": "grupo 1 → +1 · grupo 17 → −1"
+        }
+      ],
+      "astucias": [
+        "Los elementos de un mismo grupo tienen los mismos electrones de valencia.",
+        "Para balancear una neutralización empieza por los H y los OH."
+      ],
+      "errores": [
+        "Cambiar subíndices en lugar de coeficientes al balancear."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Electrones de valencia del cloro?",
+          "a": "7"
+        },
+        {
+          "q": "¿Fórmula del cloruro de magnesio?",
+          "a": "MgCl₂"
+        },
+        {
+          "q": "¿Cómo se balancea H₂SO₄ + NaOH?",
+          "a": "H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O"
+        }
+      ]
+    }
+  },
+  {
+    "id": "qui_ph_acidos_bases",
+    "target_user": "Maryse",
+    "field": "quimica_ph",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias III (Química): ácidos, bases y escala de pH",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "El pH: la escala que mide la acidez",
+    "contexte": {
+      "titre": "Una unidad que vale diez veces",
+      "texte": "Tu estómago produce un ácido con pH cercano a 2, más ácido que el jugo de limón, y tu cuerpo lo resiste. En cambio, el pH de tu sangre se mantiene casi siempre entre 7.35 y 7.45: un cambio de apenas 0.5 unidades puede ser muy peligroso.",
+      "problema": "¿Por qué una diferencia pequeña en el pH puede significar una diferencia enorme de acidez?",
+      "meta": "Al terminar podrás calcular pOH y concentración de H⁺, y comparar acideces con la escala logarítmica.",
+      "question_reflexion": "Predice: ¿cuántas veces más ácido crees que es el jugo de limón (pH 2) que el café (pH 5)?",
+      "dato": {
+        "titulo": "pH de algunas sustancias",
+        "filas": [
+          [
+            "Jugo de limón",
+            "2"
+          ],
+          [
+            "Café",
+            "5"
+          ],
+          [
+            "Agua pura",
+            "7"
+          ],
+          [
+            "Lejía",
+            "13"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/chemistry",
+      "skill": "Ácidos, bases y la escala de pH",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/ph_acidos_bases.html",
+      "objective": "Mueve el pH, observa el color del indicador y compara cuántas veces cambia la concentración de iones H⁺."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre cómo saber si un producto de tu casa (jugo, jabón o limpiador) es ácido o básico sin probarlo."
+      },
+      {
+        "process": "Emplear",
+        "question": "Calcula el pOH y la concentración de iones H⁺ de una solución con pH 4. Muestra los pasos con pH + pOH = 14 y [H⁺] = 10⁻ᵖᴴ."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, compara pH 2 y pH 5. ¿Cuántas veces cambia la concentración de H⁺? ¿Por qué la escala es logarítmica?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "Un champú anuncia un pH de 5.5 como «igual que tu piel». ¿Qué evidencia necesitarías para evaluar si el anuncio es cierto y si realmente importa?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "¿Cuál es el pH del agua pura a 25 °C? Escribe solo el número.",
+        "expected_answer": "7",
+        "feedback_success": "¡Correcto! El agua pura es neutra: pH 7, con [H⁺] = [OH⁻]."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Una solución tiene pH 3. ¿Cuál es su pOH? (recuerda que pH + pOH = 14). Escribe solo el número.",
+        "expected_answer": "11",
+        "feedback_success": "¡Muy bien! pOH = 14 − 3 = 11."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Una solución de pH 3 es ¿cuántas veces más ácida que una de pH 5? Escribe solo el número.",
+        "expected_answer": "100|100veces",
+        "feedback_success": "¡Excelente! Hay 2 unidades de diferencia y cada una multiplica por 10: 10 × 10 = 100."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «El pH 2 es solo un poco más ácido que el pH 5, porque la diferencia es de apenas 3 unidades». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "escala logarítmica",
+          "concentración",
+          "10 veces",
+          "ácida",
+          "iones de hidrógeno"
+        ],
+        "expected_answer": "La afirmación es falsa. El pH es una escala logarítmica: cada unidad de diferencia significa que la concentración de iones de hidrógeno cambia 10 veces. Entre pH 5 y pH 2 hay 3 unidades, o sea 10 × 10 × 10 = 1000 veces más ácida la solución de pH 2. Por eso una diferencia que parece pequeña en la escala es enorme en la realidad.",
+        "feedback_success": "¡Análisis de nivel experto! Entendiste que una escala logarítmica comprime diferencias enormes en números pequeños."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "El pH mide la acidez en una escala logarítmica: cada unidad cambia la acidez 10 veces.",
+      "mapa": [
+        "Ácido: pH < 7",
+        "Neutro: pH = 7",
+        "Básico: pH > 7",
+        "pH + pOH = 14",
+        "Escala logarítmica"
+      ],
+      "formulas": [
+        {
+          "t": "pH",
+          "f": "pH = −log [H⁺]"
+        },
+        {
+          "t": "Relación",
+          "f": "pH + pOH = 14"
+        }
+      ],
+      "astucias": [
+        "Cada unidad de pH son 10 veces; dos unidades, 100 veces.",
+        "Los ácidos suelen ser agrios (limón) y las bases, resbalosas (jabón)."
+      ],
+      "errores": [
+        "Pensar que pH 2 es «un poco» más ácido que pH 5: es 1000 veces más."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿pH del agua pura?",
+          "a": "7"
+        },
+        {
+          "q": "Si pH = 3, ¿cuánto vale pOH?",
+          "a": "11"
+        },
+        {
+          "q": "¿Cuántas veces más ácido es pH 3 que pH 5?",
+          "a": "100 veces."
+        }
+      ]
+    }
+  },
+  {
+    "id": "qui_conservacion_masa",
+    "target_user": "Maryse",
+    "field": "quimica_conservacion_masa",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias III (Química): reacciones químicas y ley de conservación de la masa",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Balanceo de ecuaciones: ni un átomo se pierde",
+    "contexte": {
+      "titre": "¿A dónde va la leña que se quema?",
+      "texte": "Cuando una fogata se apaga, la leña parece haber desaparecido. En 1789 Antoine Lavoisier explicó que, si se mide todo (cenizas, humo y gases), la masa total es la misma: los átomos solo se reorganizan. Esa idea es la base del balanceo de ecuaciones.",
+      "problema": "¿Cómo comprobar que ningún átomo se perdió en una reacción?",
+      "meta": "Al terminar podrás balancear ecuaciones sencillas contando los átomos de cada lado.",
+      "question_reflexion": "Sin balancear: ¿cuántos átomos de oxígeno hay a la izquierda de H₂ + O₂ → H₂O y cuántos a la derecha? ¿Qué problema ves?",
+      "dato": {
+        "titulo": "Formación del agua",
+        "filas": [
+          [
+            "Reactivos",
+            "H₂ + O₂"
+          ],
+          [
+            "Producto",
+            "H₂O"
+          ],
+          [
+            "¿Balanceada?",
+            "Aún no"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/chemistry",
+      "skill": "Reacciones químicas y balanceo de ecuaciones",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/conservacion_masa.html",
+      "objective": "Ajusta los coeficientes hasta que cada elemento tenga la misma cantidad de átomos en reactivos y productos."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre qué pasa con la masa cuando se quema un papel o una vela."
+      },
+      {
+        "process": "Emplear",
+        "question": "Balancea Na + Cl₂ → NaCl con tus propios pasos y comprueba contando los átomos de cada lado."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿qué significa que aparezca el signo ≠ y qué debes cambiar para llegar a =?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Por qué no se puede balancear una ecuación cambiando los subíndices? Argumenta con el ejemplo del agua y del peróxido de hidrógeno."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "En la ecuación 2Mg + O₂ → 2MgO, ¿cuántos átomos de oxígeno hay en el lado de los reactivos? Escribe solo el número.",
+        "expected_answer": "2|2atomos",
+        "feedback_success": "¡Correcto! O₂ tiene 2 átomos de oxígeno y su coeficiente es 1."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Balancea N₂ + ?H₂ → 2NH₃. ¿Qué coeficiente va delante de H₂? Escribe solo el número.",
+        "expected_answer": "3",
+        "feedback_success": "¡Muy bien! 2NH₃ tiene 6 átomos de hidrógeno, así que se necesitan 3H₂ (3 × 2 = 6)."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "En la ecuación 4Fe + 3O₂ → 2Fe₂O₃, ¿cuántos átomos de hierro hay en total en el lado de los productos? Escribe solo el número.",
+        "expected_answer": "4|4atomos",
+        "feedback_success": "¡Excelente! Son 2 moléculas de Fe₂O₃ y cada una tiene 2 átomos de hierro: 2 × 2 = 4, igual que los 4Fe de los reactivos."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero dice: «Para balancear H₂ + O₂ → H₂O basta cambiar el subíndice del agua a H₂O₂ para que haya 2 oxígenos». Evalúa críticamente esta propuesta en un párrafo argumentado.",
+        "rubric_keywords": [
+          "coeficientes",
+          "subíndices",
+          "conservación de la masa",
+          "átomos",
+          "sustancia"
+        ],
+        "expected_answer": "Es incorrecto. Para balancear se cambian los coeficientes, no los subíndices, porque cambiar un subíndice transforma la sustancia: H₂O₂ es peróxido de hidrógeno, no agua. La conservación de la masa exige el mismo número de átomos de cada elemento en reactivos y productos, así que la ecuación correcta es 2H₂ + O₂ → 2H₂O.",
+        "feedback_success": "¡Análisis de nivel experto! Distinguiste entre coeficientes y subíndices y justificaste con la conservación de la masa."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "En una reacción los átomos se reorganizan pero no se crean ni se destruyen: la masa se conserva.",
+      "mapa": [
+        "Reactivos → productos",
+        "Coeficientes",
+        "Subíndices",
+        "Contar átomos",
+        "Ley de Lavoisier"
+      ],
+      "formulas": [
+        {
+          "t": "Conservación",
+          "f": "masa de reactivos = masa de productos"
+        },
+        {
+          "t": "Átomos",
+          "f": "coeficiente × subíndice"
+        }
+      ],
+      "astucias": [
+        "Balancea primero los elementos que aparecen en una sola sustancia de cada lado.",
+        "Deja el oxígeno y el hidrógeno para el final."
+      ],
+      "errores": [
+        "Cambiar un subíndice: eso cambia la sustancia (H₂O no es H₂O₂)."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Qué se cambia para balancear?",
+          "a": "Solo los coeficientes."
+        },
+        {
+          "q": "¿Cómo se balancea H₂ + O₂ → H₂O?",
+          "a": "2H₂ + O₂ → 2H₂O"
+        },
+        {
+          "q": "¿Qué dice la ley de Lavoisier?",
+          "a": "La masa total se conserva."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_sistemas_ecuaciones",
+    "target_user": "Maryse",
+    "field": "matematicas_sistemas",
+    "curriculum_alignment": "SEP - 3° Secundaria - Matemáticas (sistemas de ecuaciones lineales 2 × 2)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Sistemas de ecuaciones: ¿cuándo cuestan lo mismo?",
+    "contexte": {
+      "titre": "¿Cuál imprenta conviene?",
+      "texte": "Dos tiendas de impresión cobran distinto: A pide $50 fijos más $2 por copia y B pide $20 fijos más $5 por copia. A veces conviene una y a veces la otra. Para decidir se plantea un sistema de ecuaciones, cuya solución es el punto donde las dos rectas se cruzan.",
+      "problema": "¿A partir de cuántas copias conviene la tienda A?",
+      "meta": "Al terminar podrás resolver un sistema 2 × 2 y decidir entre dos opciones con datos.",
+      "question_reflexion": "Mira la tabla: en 5 copias gana B y en 20 copias gana A. ¿Cerca de cuántas copias crees que cuestan lo mismo?",
+      "dato": {
+        "titulo": "Costo según las copias",
+        "filas": [
+          [
+            "5 copias",
+            "A: $60 · B: $45"
+          ],
+          [
+            "20 copias",
+            "A: $90 · B: $120"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/algebra",
+      "skill": "Sistemas de ecuaciones lineales: gráfico, sustitución e igualación",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/sistemas_ecuaciones.html",
+      "objective": "Mueve las pendientes y ordenadas de dos rectas y observa si se cruzan, son paralelas o coinciden."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula un sistema de dos ecuaciones para una situación real (dos planes de celular, dos taxis, dos tiendas)."
+      },
+      {
+        "process": "Emplear",
+        "question": "Resuelve por igualación: y = 2x + 1 y y = −x + 7. Muestra tus pasos y verifica la solución."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿qué tienen en común las rectas cuando el sistema no tiene solución? ¿Y cuando tiene infinitas?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Siempre conviene la opción con menor costo fijo? Argumenta con un ejemplo de sistema."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Dos números suman 10 y su diferencia es 2. ¿Cuál es el número mayor? Escribe solo el número.",
+        "expected_answer": "6",
+        "feedback_success": "¡Correcto! x + y = 10 y x − y = 2: al sumar queda 2x = 12, así que x = 6."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Resuelve el sistema x + y = 7 y x − y = 1. ¿Cuánto vale x? Escribe solo el número.",
+        "expected_answer": "4",
+        "feedback_success": "¡Muy bien! Al sumar las ecuaciones: 2x = 8, entonces x = 4 (y y = 3)."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Las rectas y = 2x + 1 y y = 2x + 5 tienen la misma pendiente y distinta ordenada. ¿Cuántas soluciones tiene el sistema? Escribe solo el número.",
+        "expected_answer": "0|cero|ninguna",
+        "feedback_success": "¡Excelente razonamiento! Son rectas paralelas: nunca se cruzan, así que el sistema no tiene solución."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "La tienda A cobra $50 fijos más $2 por copia y la tienda B cobra $20 fijos más $5 por copia. Un compañero dice: «B siempre es más barata porque cobra menos fijo». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "sistema",
+          "punto de intersección",
+          "pendiente",
+          "costo fijo",
+          "10 copias"
+        ],
+        "expected_answer": "La afirmación es falsa. Cada tienda se modela con una ecuación lineal y juntas forman un sistema. Al igualar 50 + 2x = 20 + 5x se obtiene x = 10 copias, que es el punto de intersección de las rectas. Con menos de 10 copias conviene B por su menor costo fijo, pero con más de 10 conviene A porque su pendiente, que es el costo por copia, es menor.",
+        "feedback_success": "¡Análisis de nivel experto! Encontraste el punto donde cambia la decisión."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La solución de un sistema 2 × 2 es el punto donde se cruzan las dos rectas.",
+      "mapa": [
+        "Dos ecuaciones lineales",
+        "Igualación",
+        "Sustitución",
+        "Reducción",
+        "Tipos de solución"
+      ],
+      "formulas": [
+        {
+          "t": "Igualación",
+          "f": "m₁x + b₁ = m₂x + b₂"
+        },
+        {
+          "t": "Intersección",
+          "f": "x = (b₂ − b₁) / (m₁ − m₂)"
+        }
+      ],
+      "astucias": [
+        "Pendientes iguales y ordenadas distintas: sin solución (paralelas).",
+        "Verifica siempre sustituyendo en las dos ecuaciones."
+      ],
+      "errores": [
+        "Encontrar x y olvidar calcular y."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Qué significa llegar a 0 = 0?",
+          "a": "Infinitas soluciones: las rectas coinciden."
+        },
+        {
+          "q": "¿Qué significa llegar a 0 = 5?",
+          "a": "Sin solución: rectas paralelas."
+        },
+        {
+          "q": "¿Cómo compruebas la solución?",
+          "a": "Sustituyéndola en ambas ecuaciones."
+        }
+      ]
+    }
+  },
+  {
+    "id": "bio_ecosistemas",
+    "target_user": "Laeticia",
+    "field": "biologia_ecosistemas",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Ciencias de la Vida (Biología): ecosistemas y flujo de energía",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Ecosistemas: el viaje de la energía",
+    "contexte": {
+      "titre": "¿Por qué hay pocos depredadores?",
+      "texte": "Toda la energía de un manglar, de un bosque o de tu comida viene del sol. Los productores la captan con la fotosíntesis, pero en cada paso de la cadena alimentaria solo pasa cerca del 10 % al siguiente nivel; el resto se libera como calor o se gasta en vivir.",
+      "problema": "Si los productores tienen 10 000 kcal, ¿cuánta energía llega al tercer nivel de la cadena?",
+      "meta": "Al terminar podrás calcular la energía en cada nivel trófico y explicar la forma de la pirámide.",
+      "question_reflexion": "Predice: ¿cuántas kcal llegarán a los consumidores primarios? Escribe un número.",
+      "dato": {
+        "titulo": "Energía por nivel",
+        "filas": [
+          [
+            "Productores",
+            "10 000 kcal"
+          ],
+          [
+            "Consumidores primarios",
+            "¿?"
+          ],
+          [
+            "Consumidores secundarios",
+            "¿?"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/biology",
+      "skill": "Ecología: flujo de energía y niveles tróficos",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/ecosistemas.html",
+      "objective": "Cambia la energía de los productores y la eficiencia, y observa cuánta llega a cada nivel trófico."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre cómo cambiaría un ecosistema si desaparecieran los productores."
+      },
+      {
+        "process": "Emplear",
+        "question": "Con 50 000 kcal en los productores y una transferencia del 10 %, calcula la energía en cada nivel. Muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿por qué la barra del consumidor terciario casi no se ve? ¿Qué te dice sobre el número de depredadores?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Qué ventajas y límites tiene comer más cerca de los productores para aprovechar mejor la energía?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "¿Cómo se llama el organismo que produce su propio alimento mediante la fotosíntesis? Responde con una palabra.",
+        "expected_answer": "productor|productores|elproductor|losproductores",
+        "feedback_success": "¡Correcto! Los productores, como las plantas y las algas, son la base de la cadena alimentaria."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Los productores tienen 10 000 kcal y se transfiere el 10 %. ¿Cuántas kcal llegan a los consumidores primarios? Escribe solo el número.",
+        "expected_answer": "1000|1,000|1000kcal",
+        "feedback_success": "¡Muy bien! 10 000 × 0.10 = 1 000 kcal."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Con la regla del 10 % y 10 000 kcal en los productores, ¿cuántas kcal llegan a los consumidores secundarios? Escribe solo el número.",
+        "expected_answer": "100|100kcal",
+        "feedback_success": "¡Excelente! De 1 000 kcal pasa el 10 %: 100 kcal. Cada nivel recibe 10 veces menos."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero dice que comer más cerca de los productores aprovecha mejor la energía, y otro responde que no importa porque «la energía no se pierde». Evalúa críticamente ambas ideas en un párrafo argumentado.",
+        "rubric_keywords": [
+          "nivel trófico",
+          "productores",
+          "energía",
+          "calor",
+          "10 %"
+        ],
+        "expected_answer": "La energía no se pierde, pero se transforma: en cada nivel trófico solo pasa cerca del 10 % a los consumidores y el resto se libera como calor o se usa en la vida del organismo. Por eso hay menos energía disponible en los niveles altos y las cadenas son cortas. Comer más cerca de los productores aprovecha mejor la energía, aunque la dieta también depende de la nutrición, la cultura y el ambiente.",
+        "feedback_success": "¡Análisis de nivel experto! Diferenciaste conservación y disponibilidad de la energía, y reconociste los límites del argumento."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La energía fluye en una dirección y en cada nivel trófico solo pasa cerca del 10 %.",
+      "mapa": [
+        "Productores",
+        "Consumidores",
+        "Descomponedores",
+        "Regla del 10 %",
+        "Pirámide de energía"
+      ],
+      "formulas": [
+        {
+          "t": "Transferencia",
+          "f": "E(siguiente) = E(actual) × 10 %"
+        },
+        {
+          "t": "Pérdida",
+          "f": "cerca del 90 % como calor"
+        }
+      ],
+      "astucias": [
+        "Multiplica por 0.1 en cada nivel: 10 000 → 1000 → 100 → 10.",
+        "Las cadenas cortas dejan más energía disponible."
+      ],
+      "errores": [
+        "Pensar que la energía desaparece: se transforma en calor."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Qué son los productores?",
+          "a": "Seres que hacen su alimento con la luz (fotosíntesis)."
+        },
+        {
+          "q": "Con 10 000 kcal en productores, ¿cuánto llega a los consumidores secundarios?",
+          "a": "100 kcal."
+        },
+        {
+          "q": "¿Por qué hay pocos depredadores?",
+          "a": "Llega muy poca energía a los últimos niveles."
+        }
+      ]
+    }
+  },
+  {
+    "id": "fis_movimiento_mru",
+    "target_user": "Laeticia",
+    "field": "fisica_mru",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Ciencias de la Naturaleza (Física): movimiento rectilíneo uniforme",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Movimiento rectilíneo uniforme: ¿cuándo se encuentran?",
+    "contexte": {
+      "titre": "¿Cuándo la alcanza?",
+      "texte": "Los controladores de tráfico, los GPS y los ingenieros de carreteras usan ecuaciones de movimiento para saber cuándo y dónde se cruzan dos vehículos. Si un cuerpo se mueve en línea recta con velocidad constante, su posición es x = x₀ + v·t.",
+      "problema": "El ciclista A parte de 0 m a 5 m/s y el B parte de 60 m a 2 m/s. ¿Cuándo y dónde A alcanza a B?",
+      "meta": "Al terminar podrás escribir x = x₀ + v·t y encontrar cuándo se cruzan dos móviles.",
+      "question_reflexion": "Predice: ¿en cuántos segundos crees que A alcanza a B? Escribe un número y por qué.",
+      "dato": {
+        "titulo": "Los dos ciclistas",
+        "filas": [
+          [
+            "A",
+            "x₀ = 0 m · v = 5 m/s"
+          ],
+          [
+            "B",
+            "x₀ = 60 m · v = 2 m/s"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/physics",
+      "skill": "Movimiento en una dimensión y gráficas posición-tiempo",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/movimiento_mru.html",
+      "objective": "Cambia la posición inicial y la velocidad de dos ciclistas y encuentra cuándo y dónde se cruzan."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre cómo saber si un vehículo alcanzará a otro que va adelante."
+      },
+      {
+        "process": "Emplear",
+        "question": "Un ciclista parte de 20 m a 3 m/s. Escribe su ecuación x = x₀ + v·t y calcula su posición a los 10 s."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En la gráfica del laboratorio, ¿qué representa la pendiente de cada recta y qué representa el punto donde se cruzan?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Qué supuestos hace el modelo de velocidad constante? ¿Cuándo deja de describir bien un viaje real?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Un auto viaja a 20 m/s con velocidad constante. ¿Cuántos metros recorre en 5 s? Escribe solo el número.",
+        "expected_answer": "100|100m",
+        "feedback_success": "¡Correcto! Distancia = velocidad × tiempo = 20 × 5 = 100 m."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Usa x = x₀ + v·t con x₀ = 10 m, v = 4 m/s y t = 6 s. ¿Cuál es la posición final en metros? Escribe solo el número.",
+        "expected_answer": "34|34m",
+        "feedback_success": "¡Muy bien! x = 10 + 4 × 6 = 10 + 24 = 34 m."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "En una gráfica posición-tiempo, una recta con mayor inclinación indica mayor... Responde con una palabra.",
+        "expected_answer": "velocidad|rapidez|lavelocidad",
+        "feedback_success": "¡Excelente! La pendiente de la recta posición-tiempo es la velocidad."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "El ciclista A parte de 0 m a 5 m/s y el ciclista B parte de 60 m a 2 m/s, en el mismo sentido. Un compañero afirma: «A siempre va adelante porque su velocidad es mayor». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "posición inicial",
+          "velocidad",
+          "pendiente",
+          "alcanza",
+          "tiempo"
+        ],
+        "expected_answer": "Es falso. Tener mayor velocidad no implica ir adelante: también cuenta la posición inicial. El ciclista B empieza a 60 m y A lo alcanza cuando 5t = 60 + 2t, es decir en 20 s, a 100 m. Antes de ese tiempo B va adelante; después, A. En la gráfica posición-tiempo, A tiene mayor pendiente y las rectas se cruzan en ese punto.",
+        "feedback_success": "¡Análisis de nivel experto! Usaste la posición inicial y la pendiente para predecir el encuentro."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "En el MRU la velocidad es constante: la posición crece en línea recta con el tiempo.",
+      "mapa": [
+        "Posición inicial x₀",
+        "Velocidad v",
+        "x = x₀ + v·t",
+        "Gráfica posición–tiempo",
+        "Punto de encuentro"
+      ],
+      "formulas": [
+        {
+          "t": "Posición",
+          "f": "x = x₀ + v·t"
+        },
+        {
+          "t": "Encuentro",
+          "f": "t = (x₀B − x₀A) / (vA − vB)"
+        }
+      ],
+      "astucias": [
+        "En la gráfica posición–tiempo, la pendiente es la velocidad.",
+        "Para el encuentro, iguala las dos ecuaciones de posición."
+      ],
+      "errores": [
+        "Olvidar la posición inicial al comparar dos móviles."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Qué distancia recorre un auto a 20 m/s en 5 s?",
+          "a": "100 m"
+        },
+        {
+          "q": "¿Qué es la pendiente en la gráfica x–t?",
+          "a": "La velocidad."
+        },
+        {
+          "q": "¿Va adelante siempre el más veloz?",
+          "a": "No: también importa la posición inicial."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_pitagoras",
+    "target_user": "Maryse",
+    "field": "matematicas_pitagoras",
+    "curriculum_alignment": "SEP - 3° Secundaria - Matemáticas (teorema de Pitágoras)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Teorema de Pitágoras: medir lo que no se puede medir",
+    "contexte": {
+      "titre": "El cable que no se puede medir",
+      "texte": "Para mantener firme una torre de telecomunicaciones se usan cables tensores anclados al suelo. La torre, el suelo y el cable forman un triángulo rectángulo. El teorema de Pitágoras da la longitud del cable sin necesidad de medirlo.",
+      "problema": "Una torre mide 12 m y el ancla está a 5 m de su base. ¿Cuánto debe medir el cable?",
+      "meta": "Al terminar podrás calcular cualquier lado de un triángulo rectángulo.",
+      "question_reflexion": "Escribe tu estimación: ¿el cable mide más de 12 m? ¿Cuántos metros crees que son?",
+      "dato": {
+        "titulo": "Medidas del triángulo",
+        "filas": [
+          [
+            "Torre (cateto)",
+            "12 m"
+          ],
+          [
+            "Distancia al ancla (cateto)",
+            "5 m"
+          ],
+          [
+            "Cable (hipotenusa)",
+            "? m"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/geometry",
+      "skill": "Teorema de Pitágoras y ternas pitagóricas",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/pitagoras.html",
+      "objective": "Cambia los dos catetos y observa cómo el área del cuadrado de la hipotenusa siempre es la suma de las áreas de los otros dos."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Describe una situación real donde necesites una distancia que no puedes medir directamente y dibuja el triángulo rectángulo correspondiente."
+      },
+      {
+        "process": "Emplear",
+        "question": "Un cable tensor une la punta de una torre de 12 m con un punto del suelo a 5 m de su base. Calcula su longitud con Pitágoras."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿qué relación observas entre las áreas de los tres cuadrados? ¿Por qué se llama hipotenusa al lado mayor?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Se puede usar el teorema en cualquier triángulo? Da un ejemplo en el que funcione y otro en el que no."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Los catetos de un triángulo rectángulo miden 6 y 8. ¿Cuánto mide la hipotenusa? Escribe solo el número.",
+        "expected_answer": "10|10cm|10m|10unidades",
+        "feedback_success": "¡Correcto! c² = 6² + 8² = 36 + 64 = 100, así que c = 10."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "La hipotenusa de un triángulo rectángulo mide 13 y uno de sus catetos mide 5. ¿Cuánto mide el otro cateto? Escribe solo el número.",
+        "expected_answer": "12|12cm|12m",
+        "feedback_success": "¡Muy bien! b² = 13² − 5² = 169 − 25 = 144, así que b = 12."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Una escalera de 5 m se apoya en una pared con su base a 3 m de la pared. ¿A qué altura llega sobre la pared? Escribe solo el número en metros.",
+        "expected_answer": "4|4m|4metros",
+        "feedback_success": "¡Excelente! La escalera es la hipotenusa: h² = 5² − 3² = 16, así que h = 4 m."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «El teorema de Pitágoras sirve para cualquier triángulo; por ejemplo, en uno de lados 5, 6 y 9 la hipotenusa es √(5² + 6²)». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "triángulo rectángulo",
+          "hipotenusa",
+          "ángulo recto",
+          "catetos",
+          "cuadrado"
+        ],
+        "expected_answer": "La afirmación es falsa. El teorema de Pitágoras solo se cumple en un triángulo rectángulo, es decir, con un ángulo recto. En ese caso el cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos. En el triángulo de lados 5, 6 y 9, 5² + 6² = 61 no es igual a 9² = 81, por lo tanto no tiene un ángulo recto.",
+        "feedback_success": "¡Análisis de nivel experto! Comprobaste la condición del teorema con un contraejemplo numérico."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "En un triángulo rectángulo, el cuadrado de la hipotenusa es la suma de los cuadrados de los catetos.",
+      "mapa": [
+        "Triángulo rectángulo",
+        "Catetos a y b",
+        "Hipotenusa c",
+        "Ternas pitagóricas",
+        "Aplicaciones"
+      ],
+      "formulas": [
+        {
+          "t": "Teorema",
+          "f": "c² = a² + b²"
+        },
+        {
+          "t": "Cateto",
+          "f": "a = √(c² − b²)"
+        }
+      ],
+      "astucias": [
+        "Aprende ternas: 3-4-5, 5-12-13, 8-15-17 y sus múltiplos.",
+        "La hipotenusa es el lado más largo y está frente al ángulo recto."
+      ],
+      "errores": [
+        "Aplicarlo a triángulos que no tienen ángulo recto."
+      ],
+      "tarjetas": [
+        {
+          "q": "Catetos 6 y 8: ¿hipotenusa?",
+          "a": "10"
+        },
+        {
+          "q": "Hipotenusa 13 y cateto 5: ¿otro cateto?",
+          "a": "12"
+        },
+        {
+          "q": "¿Cuándo NO sirve Pitágoras?",
+          "a": "Cuando el triángulo no es rectángulo."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_probabilidad",
+    "target_user": "Maryse",
+    "field": "matematicas_probabilidad",
+    "curriculum_alignment": "SEP - 3° Secundaria - Matemáticas (probabilidad)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Probabilidad: el azar tiene reglas",
+    "contexte": {
+      "titre": "El 7 gana casi siempre",
+      "texte": "En muchos juegos de mesa se lanzan dos dados y se suman los puntos. No todas las sumas son igual de probables: hay 6 formas de obtener 7, pero solo 1 de obtener 2 o 12. La probabilidad ayuda a predecir qué ocurrirá a largo plazo.",
+      "problema": "Si lanzas dos dados muchas veces, ¿qué suma saldrá más y cuánto más que las demás?",
+      "meta": "Al terminar podrás calcular probabilidades y explicar por qué la frecuencia se acerca a ellas.",
+      "question_reflexion": "Predice: de 600 lanzamientos de dos dados, ¿cuántas veces saldrá la suma 7? Escribe un número.",
+      "dato": {
+        "titulo": "Formas de obtener cada suma (de 36 posibles)",
+        "filas": [
+          [
+            "Suma 2 o 12",
+            "1 forma"
+          ],
+          [
+            "Suma 6 u 8",
+            "5 formas"
+          ],
+          [
+            "Suma 7",
+            "6 formas"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/statistics-probability",
+      "skill": "Probabilidad simple y frecuencia relativa",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/probabilidad_dados.html",
+      "objective": "Lanza dos dados 10, 100 o 1000 veces y compara la frecuencia observada con la probabilidad teórica de cada suma."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta que se pueda responder lanzando dos dados muchas veces."
+      },
+      {
+        "process": "Emplear",
+        "question": "Calcula la probabilidad de obtener suma 9 con dos dados y exprésala como fracción y como porcentaje."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, compara 10 lanzamientos con 1000. ¿Qué cambia entre la frecuencia observada y la probabilidad teórica?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Un resultado poco común prueba que un dado está trucado? ¿Qué evidencia necesitarías?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Al lanzar un dado de 6 caras, ¿cuál es la probabilidad de obtener un 6? Escribe una fracción como 1/2.",
+        "expected_answer": "1/6",
+        "feedback_success": "¡Correcto! Hay 1 caso favorable entre 6 casos posibles igual de probables."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Con dos dados, ¿de cuántas formas distintas se puede obtener una suma de 7? Escribe solo el número.",
+        "expected_answer": "6|6formas",
+        "feedback_success": "¡Muy bien! (1,6), (2,5), (3,4), (4,3), (5,2) y (6,1): son 6 formas."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "La probabilidad de obtener suma 7 con dos dados es 6/36. ¿Qué porcentaje aproximado es? Redondea a un número entero y escribe solo el número.",
+        "expected_answer": "17|17%|16.7|16.67",
+        "feedback_success": "¡Excelente! 6 ÷ 36 = 0.1666… es aproximadamente 17 %."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero lanza una moneda 10 veces, obtiene 7 caras y dice: «La moneda está trucada, porque debería salir 5 y 5». Evalúa críticamente esta conclusión en un párrafo argumentado.",
+        "rubric_keywords": [
+          "ley de los grandes números",
+          "muestra",
+          "azar",
+          "frecuencia",
+          "probabilidad"
+        ],
+        "expected_answer": "La conclusión es apresurada. Con solo 10 lanzamientos la frecuencia observada puede alejarse mucho de la probabilidad teórica de 0.5 por puro azar. La ley de los grandes números dice que, al aumentar la muestra, la frecuencia relativa se acerca a la probabilidad. Para sospechar de la moneda habría que lanzarla cientos de veces y comparar con el 50 %.",
+        "feedback_success": "¡Análisis de nivel experto! Distinguiste entre la probabilidad teórica y los resultados de una muestra pequeña."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Probabilidad = casos favorables ÷ casos posibles; con muchas pruebas, la frecuencia se acerca a ella.",
+      "mapa": [
+        "Espacio muestral",
+        "Casos favorables",
+        "Probabilidad teórica",
+        "Frecuencia observada",
+        "Ley de grandes números"
+      ],
+      "formulas": [
+        {
+          "t": "Probabilidad",
+          "f": "P = favorables / posibles"
+        },
+        {
+          "t": "Dos dados",
+          "f": "36 resultados posibles"
+        }
+      ],
+      "astucias": [
+        "Haz una tabla de 6 × 6 para las sumas de dos dados.",
+        "La probabilidad siempre está entre 0 y 1 (0 % y 100 %)."
+      ],
+      "errores": [
+        "Creer que después de varias caras seguidas «toca» cruz."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Probabilidad de sumar 7 con dos dados?",
+          "a": "6/36 = 1/6, cerca de 17 %."
+        },
+        {
+          "q": "¿Qué suma es la más probable?",
+          "a": "El 7."
+        },
+        {
+          "q": "¿Qué dice la ley de grandes números?",
+          "a": "Con más pruebas, la frecuencia se acerca a la probabilidad."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_volumen_cilindro_cono",
+    "target_user": "Maryse",
+    "field": "matematicas_volumen",
+    "curriculum_alignment": "SEP - 3° Secundaria - Matemáticas (volumen de cuerpos geométricos)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Volumen de cilindros y conos: ¿cuánto cabe?",
+    "contexte": {
+      "titre": "¿Cuánta agua cabe en el tanque?",
+      "texte": "Un tanque de agua, una lata y un silo de granos tienen forma de cilindro; un embudo o un cono de helado, forma de cono. Su capacidad se calcula con una fórmula sencilla: área de la base por altura. Con la misma base y altura, un cono guarda la tercera parte de un cilindro.",
+      "problema": "Un tanque cilíndrico tiene 1 m de radio y 2 m de altura. ¿Cuántos litros guarda?",
+      "meta": "Al terminar podrás calcular el volumen de cilindros y conos y convertirlo a litros.",
+      "question_reflexion": "Estima: ¿el tanque guardará más o menos de 5,000 litros? Explica cómo lo pensaste.",
+      "dato": {
+        "titulo": "Datos del tanque",
+        "filas": [
+          [
+            "Radio",
+            "1 m"
+          ],
+          [
+            "Altura",
+            "2 m"
+          ],
+          [
+            "Equivalencia",
+            "1 m³ = 1000 litros"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/geometry",
+      "skill": "Volumen de cilindros, conos y esferas",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/volumen_cilindro_cono.html",
+      "objective": "Cambia el radio y la altura y observa cómo cambian los volúmenes del cilindro y del cono."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta sobre cuánta agua cabe en un tanque o cuánto material necesita un cono de helado."
+      },
+      {
+        "process": "Emplear",
+        "question": "Calcula el volumen de un cilindro de radio 4 cm y altura 10 cm con π ≈ 3.14 y exprésalo en litros."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿cuántos conos caben en un cilindro de la misma base y altura? ¿Qué le pasa al volumen si duplicas la altura?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "Una empresa dice que duplicar el radio de sus tanques duplica su capacidad. ¿Estás de acuerdo? Argumenta."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Un cilindro tiene un radio de 5 cm. ¿Cuál es el área de su base? Usa π ≈ 3.14 y escribe solo el número.",
+        "expected_answer": "78.5|78,5",
+        "feedback_success": "¡Correcto! A = π r² = 3.14 × 25 = 78.5 cm²."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Calcula el volumen de un cilindro de radio 2 cm y altura 10 cm con π ≈ 3.14. Escribe solo el número.",
+        "expected_answer": "125.6|125,6",
+        "feedback_success": "¡Muy bien! V = 3.14 × 2² × 10 = 3.14 × 40 = 125.6 cm³."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Un cilindro y un cono tienen el mismo radio y la misma altura. Si el cilindro tiene un volumen de 90 cm³, ¿cuánto vale el volumen del cono? Escribe solo el número.",
+        "expected_answer": "30|30cm3|30cm³",
+        "feedback_success": "¡Excelente! El cono ocupa la tercera parte: 90 ÷ 3 = 30 cm³."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Una empresa afirma: «Si duplicamos el radio de nuestros tanques cilíndricos, su capacidad se duplica». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "cuadrado",
+          "radio",
+          "volumen",
+          "cuatro",
+          "altura"
+        ],
+        "expected_answer": "Es falso. El volumen del cilindro es V = πr²h, y el radio está elevado al cuadrado. Si se duplica el radio, el área de la base se multiplica por cuatro y, con la misma altura, el volumen también se multiplica por cuatro, no por dos. En cambio, si se duplica la altura, el volumen sí se duplica.",
+        "feedback_success": "¡Análisis de nivel experto! Reconociste que el radio interviene al cuadrado."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Volumen = área de la base × altura; el cono guarda la tercera parte de un cilindro de igual base y altura.",
+      "mapa": [
+        "Área de la base πr²",
+        "Cilindro V = πr²h",
+        "Cono V = ⅓πr²h",
+        "3 conos = 1 cilindro",
+        "1000 cm³ = 1 litro"
+      ],
+      "formulas": [
+        {
+          "t": "Cilindro",
+          "f": "V = π r² h"
+        },
+        {
+          "t": "Cono",
+          "f": "V = ⅓ π r² h"
+        }
+      ],
+      "astucias": [
+        "El radio está al cuadrado: duplicar r multiplica el volumen por 4.",
+        "Si te dan el diámetro, divídelo entre 2 antes de calcular."
+      ],
+      "errores": [
+        "Usar el diámetro como si fuera el radio."
+      ],
+      "tarjetas": [
+        {
+          "q": "Si duplicas h, ¿cuánto cambia V?",
+          "a": "Se duplica."
+        },
+        {
+          "q": "Si duplicas r, ¿cuánto cambia V?",
+          "a": "Se multiplica por 4."
+        },
+        {
+          "q": "¿Cuántos cm³ hay en 1 litro?",
+          "a": "1000 cm³."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_notacion_cientifica",
+    "target_user": "Maryse",
+    "field": "matematicas_notacion_cientifica",
+    "curriculum_alignment": "SEP - 3° Secundaria - Matemáticas (potencias y notación científica)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Notación científica: números gigantes y diminutos",
+    "contexte": {
+      "titre": "Ceros de más, ceros de menos",
+      "texte": "Un Wi-Fi vibra unos 2 400 000 000 de veces por segundo, la luz viaja a 300 000 000 m/s y un átomo mide 0.0000000001 m. Con tantos ceros es fácil equivocarse, por eso los ingenieros de telecomunicaciones usan la notación científica.",
+      "problema": "¿Cómo escribir estos tres números de forma corta y comparar su tamaño de un vistazo?",
+      "meta": "Al terminar podrás escribir y leer números en notación científica y calcular una longitud de onda.",
+      "question_reflexion": "Sin ayuda: ¿cuántos ceros tiene 300 000 000 y cómo lo escribirías con una potencia de 10?",
+      "dato": {
+        "titulo": "Tres números reales",
+        "filas": [
+          [
+            "Frecuencia del Wi-Fi",
+            "2 400 000 000 Hz"
+          ],
+          [
+            "Velocidad de la luz",
+            "300 000 000 m/s"
+          ],
+          [
+            "Tamaño de un átomo",
+            "0.0000000001 m"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/algebra",
+      "skill": "Potencias de 10 y notación científica",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/notacion_cientifica.html",
+      "objective": "Cambia la mantisa y el exponente, ubica el número en la escala y compáralo con objetos reales."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Describe una situación real con números muy grandes o muy pequeños (por ejemplo, distancias en el espacio o el tamaño de una célula)."
+      },
+      {
+        "process": "Emplear",
+        "question": "Escribe 0.000045 y 3 600 000 en notación científica y explica cómo moviste el punto decimal."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿qué le pasa a la posición del número en la recta cuando aumentas el exponente en 1?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Por qué los ingenieros prefieren la notación científica para frecuencias y longitudes de onda?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Escribe 5 000 000 en notación científica como 5 × 10ⁿ. ¿Cuál es el valor de n? Escribe solo el número.",
+        "expected_answer": "6",
+        "feedback_success": "¡Correcto! 5 000 000 = 5 × 1 000 000 = 5 × 10⁶."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Escribe en forma decimal el número 3.2 × 10⁻³.",
+        "expected_answer": "0.0032|0,0032",
+        "feedback_success": "¡Muy bien! El exponente −3 mueve el punto decimal 3 lugares a la izquierda: 0.0032."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Un Wi-Fi tiene una frecuencia de 2.4 × 10⁹ Hz y la luz viaja a 3 × 10⁸ m/s. Calcula la longitud de onda λ = c / f en metros y escríbela en forma decimal.",
+        "expected_answer": "0.125|0,125",
+        "feedback_success": "¡Excelente! λ = (3 × 10⁸) / (2.4 × 10⁹) = 0.125 m, es decir, 12.5 cm."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero escribe 12 × 10⁴ y dice que ya está en notación científica. Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "mantisa",
+          "entre 1 y 10",
+          "potencia de 10",
+          "1.2",
+          "exponente"
+        ],
+        "expected_answer": "No está en notación científica estándar. La notación científica exige que el coeficiente, llamado mantisa, esté entre 1 y 10 y se multiplique por una potencia de 10. Como 12 es mayor que 10, hay que mover el punto un lugar: 12 × 10⁴ = 1.2 × 10⁵, con exponente 5. El valor sigue siendo 120 000.",
+        "feedback_success": "¡Análisis de nivel experto! Aplicaste la condición de la mantisa y corregiste el exponente."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "m × 10ⁿ con 1 ≤ m < 10 permite escribir números enormes o diminutos de forma corta.",
+      "mapa": [
+        "Mantisa m",
+        "Exponente n",
+        "Mover el punto decimal",
+        "Orden de magnitud",
+        "Ondas de radio"
+      ],
+      "formulas": [
+        {
+          "t": "Notación científica",
+          "f": "m × 10ⁿ  (1 ≤ m < 10)"
+        },
+        {
+          "t": "Longitud de onda",
+          "f": "λ = c / f"
+        }
+      ],
+      "astucias": [
+        "Exponente positivo: el punto va a la derecha; negativo: a la izquierda.",
+        "Cuenta los lugares que mueves el punto: ese número es el exponente."
+      ],
+      "errores": [
+        "Dejar 12 × 10⁴ sin corregir: debe ser 1.2 × 10⁵."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿5 000 000 en notación científica?",
+          "a": "5 × 10⁶"
+        },
+        {
+          "q": "¿Valor decimal de 3.2 × 10⁻³?",
+          "a": "0.0032"
+        },
+        {
+          "q": "¿Qué pasa si el exponente sube en 1?",
+          "a": "El número se hace 10 veces mayor."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_exponencial",
+    "target_user": "Laeticia",
+    "field": "matematicas_exponencial",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Matemática (funciones exponenciales)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Crecimiento exponencial: cuando el cambio se acelera",
+    "contexte": {
+      "titre": "Cuando el cambio se acelera",
+      "texte": "Una bacteria que se divide cada hora genera más de un millón de descendientes en 20 horas. Las poblaciones, los virus y el dinero con interés compuesto crecen así; los medicamentos y los materiales radiactivos decaen de la misma forma.",
+      "problema": "Si hoy hay 100 bacterias y se duplican cada hora, ¿cuántas habrá en 10 horas?",
+      "meta": "Al terminar podrás modelar crecimiento y decaimiento con N = N₀(1 + g)ᵗ.",
+      "question_reflexion": "Predice: ¿llegarán a 10,000 bacterias antes o después de las 8 horas? Explica tu idea.",
+      "dato": {
+        "titulo": "Bacterias por hora",
+        "filas": [
+          [
+            "0 h",
+            "100"
+          ],
+          [
+            "1 h",
+            "200"
+          ],
+          [
+            "2 h",
+            "400"
+          ],
+          [
+            "3 h",
+            "800"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/algebra",
+      "skill": "Funciones exponenciales: crecimiento y decaimiento",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/exponencial.html",
+      "objective": "Cambia la cantidad inicial, la tasa y los períodos, y compara la curva exponencial con un crecimiento lineal."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una situación real que crezca o decaiga exponencialmente y escribe su modelo N = N₀(1 + g)ᵗ."
+      },
+      {
+        "process": "Emplear",
+        "question": "Una población de 200 individuos crece 50 % por período. Calcula cuántos habrá después de 2 períodos y muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, compara la curva exponencial con la lineal. ¿Cuándo empiezan a separarse de forma notable?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Es razonable que una población crezca exponencialmente para siempre? ¿Qué factores lo limitan en la realidad?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Una población de 100 bacterias se duplica cada hora. ¿Cuántas habrá después de 3 horas? Escribe solo el número.",
+        "expected_answer": "800",
+        "feedback_success": "¡Correcto! 100 → 200 → 400 → 800: se multiplica por 2 en cada hora, es decir, 100 × 2³ = 800."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Usa N = N₀(1 + g)ᵗ con N₀ = 200, g = 0.5 y t = 2. ¿Cuánto vale N? Escribe solo el número.",
+        "expected_answer": "450",
+        "feedback_success": "¡Muy bien! N = 200 × (1.5)² = 200 × 2.25 = 450."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Un medicamento pierde el 50 % de su cantidad cada hora. Si ahora hay 80 mg en la sangre, ¿cuántos mg quedan después de 3 horas? Escribe solo el número.",
+        "expected_answer": "10|10mg",
+        "feedback_success": "¡Excelente! 80 → 40 → 20 → 10: se multiplica por 0.5 en cada hora, es decir, 80 × 0.5³ = 10 mg."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «Crecer 10 % cada año durante 10 años equivale a crecer 100 % en total». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "exponencial",
+          "acumula",
+          "lineal",
+          "1.1",
+          "porcentaje"
+        ],
+        "expected_answer": "Es falso. Un crecimiento del 10 % anual es exponencial, no lineal: cada año el porcentaje se calcula sobre la cantidad que ya incluye el crecimiento anterior, por eso se acumula. Después de 10 años la cantidad se multiplica por 1.1¹⁰ ≈ 2.59, es decir, crece cerca de 159 % y no 100 %. Un modelo lineal solo sumaría el 10 % del valor inicial cada año.",
+        "feedback_success": "¡Análisis de nivel experto! Distinguiste el modelo lineal del exponencial con un cálculo concreto."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "En el crecimiento exponencial la cantidad se multiplica por el mismo factor en cada período.",
+      "mapa": [
+        "Cantidad inicial N₀",
+        "Factor 1 + g",
+        "Crecimiento (g > 0)",
+        "Decaimiento (g < 0)",
+        "Duplicación y vida media"
+      ],
+      "formulas": [
+        {
+          "t": "Modelo",
+          "f": "N = N₀ (1 + g)ᵗ"
+        },
+        {
+          "t": "Duplicación",
+          "f": "t = ln 2 / ln(1 + g)"
+        }
+      ],
+      "astucias": [
+        "Si se duplica cada hora: 1, 2, 4, 8… se multiplica por 2 en cada paso.",
+        "Si pierde 50 % cada hora, se multiplica por 0.5."
+      ],
+      "errores": [
+        "Sumar el porcentaje al valor inicial en cada período: eso es lineal."
+      ],
+      "tarjetas": [
+        {
+          "q": "100 bacterias se duplican cada hora: ¿cuántas hay tras 3 h?",
+          "a": "800"
+        },
+        {
+          "q": "80 mg que pierden 50 % por hora: ¿cuántos quedan tras 3 h?",
+          "a": "10 mg"
+        },
+        {
+          "q": "¿Qué factor tiene un decaimiento del 20 %?",
+          "a": "0.8"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_geometria_analitica",
+    "target_user": "Laeticia",
+    "field": "matematicas_geometria_analitica",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Matemática (geometría analítica)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Geometría analítica: distancia entre dos puntos",
+    "contexte": {
+      "titre": "¿A qué distancia está tu amiga?",
+      "texte": "Una aplicación de mapas calcula la distancia entre dos lugares con las coordenadas de dos puntos. La fórmula es el teorema de Pitágoras en el plano. También calcula el punto medio para proponer un lugar de encuentro y la pendiente para describir qué tan inclinada es una calle.",
+      "problema": "Tú estás en A(1, 1) y tu amiga en B(4, 5). ¿Qué distancia hay en línea recta?",
+      "meta": "Al terminar podrás calcular distancia, punto medio y pendiente entre dos puntos.",
+      "question_reflexion": "Sin calcular: ¿la distancia será mayor o menor que 7 (que es 3 + 4)? ¿Por qué?",
+      "dato": {
+        "titulo": "Coordenadas",
+        "filas": [
+          [
+            "A (tú)",
+            "(1, 1)"
+          ],
+          [
+            "B (tu amiga)",
+            "(4, 5)"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/algebra",
+      "skill": "Distancia, punto medio y pendiente",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/geometria_analitica.html",
+      "objective": "Mueve dos puntos y observa la distancia, el punto medio, la pendiente y la ecuación de la recta que los une."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula un problema real en el que necesites la distancia entre dos puntos de un mapa o de un plano."
+      },
+      {
+        "process": "Emplear",
+        "question": "Calcula la distancia y el punto medio entre A(−2, 1) y B(4, 9). Muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿qué triángulo rectángulo aparece al unir dos puntos? ¿Qué representan sus catetos?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Cuándo no se puede usar la pendiente m = Δy / Δx? ¿Qué tipo de recta ocurre entonces?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Calcula la distancia entre los puntos (0, 0) y (6, 8). Escribe solo el número.",
+        "expected_answer": "10",
+        "feedback_success": "¡Correcto! d = √(6² + 8²) = √100 = 10."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Calcula el punto medio entre (2, 4) y (8, 10). Escríbelo con el formato (x, y).",
+        "expected_answer": "(5,7)|5,7",
+        "feedback_success": "¡Muy bien! Se promedian las coordenadas: ((2 + 8)/2 , (4 + 10)/2) = (5, 7)."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Calcula la pendiente de la recta que pasa por (1, 2) y (3, 8). Escribe solo el número.",
+        "expected_answer": "3|m=3",
+        "feedback_success": "¡Excelente! m = (8 − 2) / (3 − 1) = 6 / 2 = 3."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero dice: «La distancia entre (1, 1) y (4, 5) es 7, porque 3 + 4 = 7». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "distancia",
+          "Pitágoras",
+          "hipotenusa",
+          "línea recta",
+          "catetos"
+        ],
+        "expected_answer": "Es incorrecto. Sumar 3 + 4 da el recorrido si solo te mueves en horizontal y vertical, pero la distancia entre los puntos es la longitud del segmento en línea recta. Ese segmento es la hipotenusa de un triángulo rectángulo con catetos de 3 y 4, así que por Pitágoras la distancia es √(3² + 4²) = 5, no 7.",
+        "feedback_success": "¡Análisis de nivel experto! Diferenciaste recorrido y distancia usando Pitágoras."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Con coordenadas se calculan distancias, puntos medios y pendientes usando Pitágoras y promedios.",
+      "mapa": [
+        "Plano cartesiano",
+        "Distancia",
+        "Punto medio",
+        "Pendiente",
+        "Ecuación de la recta"
+      ],
+      "formulas": [
+        {
+          "t": "Distancia",
+          "f": "d = √[(x₂−x₁)² + (y₂−y₁)²]"
+        },
+        {
+          "t": "Punto medio",
+          "f": "M = ((x₁+x₂)/2 , (y₁+y₂)/2)"
+        }
+      ],
+      "astucias": [
+        "Dibuja el triángulo rectángulo con catetos Δx y Δy.",
+        "El punto medio es el promedio de cada coordenada."
+      ],
+      "errores": [
+        "Sumar Δx + Δy en lugar de aplicar Pitágoras."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Distancia de (0, 0) a (6, 8)?",
+          "a": "10"
+        },
+        {
+          "q": "¿Punto medio de (2, 4) y (8, 10)?",
+          "a": "(5, 7)"
+        },
+        {
+          "q": "¿Pendiente de una recta vertical?",
+          "a": "No está definida."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_combinatoria",
+    "target_user": "Laeticia",
+    "field": "matematicas_combinatoria",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Matemática (combinatoria y conteo)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Combinatoria: contar sin enumerar",
+    "contexte": {
+      "titre": "¿Cuántos PIN posibles hay?",
+      "texte": "Un PIN de 4 dígitos tiene 10 000 posibilidades; una contraseña de 8 letras, más de 200 mil millones. Para contar sin escribir todas las opciones se usan las permutaciones, cuando el orden importa, y las combinaciones, cuando no importa.",
+      "problema": "De un grupo de 6 estudiantes, ¿de cuántas formas se elige un presidente y un secretario? ¿Y un comité de 2?",
+      "meta": "Al terminar podrás distinguir permutaciones y combinaciones y calcularlas.",
+      "question_reflexion": "Predice: ¿habrá más formas de elegir presidente y secretario, o de elegir un comité de 2? ¿Por qué?",
+      "dato": {
+        "titulo": "Cuántas posibilidades hay",
+        "filas": [
+          [
+            "PIN de 4 dígitos",
+            "10 000"
+          ],
+          [
+            "Contraseña de 8 letras",
+            "más de 200 mil millones"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/statistics-probability",
+      "skill": "Permutaciones y combinaciones",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/combinatoria.html",
+      "objective": "Cambia n y r y observa las permutaciones, las combinaciones y la fila del triángulo de Pascal."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una situación real donde importe el orden y otra donde no importe, y explica la diferencia."
+      },
+      {
+        "process": "Emplear",
+        "question": "Calcula de cuántas formas se pueden elegir un presidente, un secretario y un tesorero entre 7 estudiantes. Muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿por qué la fila C(n, k) es simétrica y tiene su máximo en el centro?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Por qué se dice que P(n, r) = C(n, r) × r!? Explícalo con un ejemplo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Calcula 5! (cinco factorial). Escribe solo el número.",
+        "expected_answer": "120",
+        "feedback_success": "¡Correcto! 5! = 5 × 4 × 3 × 2 × 1 = 120."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "¿De cuántas formas distintas pueden formarse en fila 4 personas? Escribe solo el número.",
+        "expected_answer": "24",
+        "feedback_success": "¡Muy bien! Es una permutación de 4 elementos: 4! = 24."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "De un grupo de 5 estudiantes se debe elegir un comité de 2 personas, sin importar el orden. ¿Cuántos comités distintos hay? Escribe solo el número.",
+        "expected_answer": "10",
+        "feedback_success": "¡Excelente! C(5, 2) = 5! / (2! × 3!) = 10."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero dice: «Elegir presidente y secretario entre 6 personas se calcula igual que elegir un comité de 2, o sea 15». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "orden",
+          "permutaciones",
+          "combinaciones",
+          "cargos",
+          "30"
+        ],
+        "expected_answer": "Es incorrecto. En la elección de presidente y secretario el orden importa, porque no es lo mismo que A sea presidente y B secretario a lo contrario; por eso se usan permutaciones: 6 × 5 = 30 formas. En un comité de 2 personas el orden no importa, así que se usan combinaciones: 30 / 2 = 15. Los resultados son distintos porque cada comité corresponde a 2 ordenaciones de los cargos.",
+        "feedback_success": "¡Análisis de nivel experto! Reconociste cuándo el orden cambia el conteo."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Las permutaciones cuentan arreglos con orden; las combinaciones cuentan grupos sin orden.",
+      "mapa": [
+        "Factorial n!",
+        "Permutaciones P(n, r)",
+        "Combinaciones C(n, r)",
+        "¿Importa el orden?",
+        "Triángulo de Pascal"
+      ],
+      "formulas": [
+        {
+          "t": "Permutaciones",
+          "f": "P(n, r) = n! / (n − r)!"
+        },
+        {
+          "t": "Combinaciones",
+          "f": "C(n, r) = n! / [r! (n − r)!]"
+        }
+      ],
+      "astucias": [
+        "Pregúntate: ¿cambiar el orden da un resultado distinto? Si sí, es permutación.",
+        "P(n, r) = C(n, r) × r!"
+      ],
+      "errores": [
+        "Usar combinaciones para cargos distintos (presidente, secretario)."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Cuánto es 5!?",
+          "a": "120"
+        },
+        {
+          "q": "¿De cuántas formas se ordenan 4 personas en fila?",
+          "a": "24"
+        },
+        {
+          "q": "¿Cuánto es C(5, 2)?",
+          "a": "10"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_sucesiones",
+    "target_user": "Laeticia",
+    "field": "matematicas_sucesiones",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Matemática (progresiones)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Sucesiones: sumar o multiplicar",
+    "contexte": {
+      "titre": "100 pesos más… o el doble",
+      "texte": "Si ahorras 100 pesos más cada mes, tus ahorros siguen una progresión aritmética. Si un capital se duplica cada período, sigue una geométrica. Al principio parecen similares, pero la geométrica termina siendo mucho mayor. Una leyenda cuenta que un sabio pidió granos de arroz duplicando en cada casilla del ajedrez, y el rey no pudo pagar.",
+      "problema": "¿Qué conviene más: recibir $100 el día 1, $200 el día 2, $300 el día 3… o $1 el día 1 duplicando cada día?",
+      "meta": "Al terminar podrás reconocer progresiones aritméticas y geométricas y calcular términos y sumas.",
+      "question_reflexion": "Predice: ¿en qué día crees que la opción B (duplicar) supera a la A?",
+      "dato": {
+        "titulo": "Lo que recibes cada día",
+        "filas": [
+          [
+            "Día 5",
+            "A: $500 · B: $16"
+          ],
+          [
+            "Día 10",
+            "A: $1,000 · B: $512"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/algebra",
+      "skill": "Sucesiones aritméticas y geométricas",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/sucesiones.html",
+      "objective": "Cambia el primer término, la diferencia o razón y la cantidad de términos, y compara los dos tipos de progresión."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una situación real que siga una progresión aritmética y otra que siga una geométrica."
+      },
+      {
+        "process": "Emplear",
+        "question": "Calcula el término 10 y la suma de los 10 primeros términos de la progresión aritmética 5, 8, 11, … Muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, compara una aritmética con d = 4 y una geométrica con r = 2. ¿En qué término la geométrica supera a la aritmética?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Siempre conviene la progresión que empieza con más? Argumenta con un ejemplo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "En la sucesión 3, 7, 11, 15, … ¿cuál es el siguiente término? Escribe solo el número.",
+        "expected_answer": "19",
+        "feedback_success": "¡Correcto! La diferencia es 4, así que 15 + 4 = 19."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Usa aₙ = a₁ + (n − 1)d con a₁ = 5 y d = 3. ¿Cuánto vale a₁₀? Escribe solo el número.",
+        "expected_answer": "32",
+        "feedback_success": "¡Muy bien! a₁₀ = 5 + 9 × 3 = 5 + 27 = 32."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "En la sucesión geométrica 2, 6, 18, 54, … ¿cuál es la razón? Escribe solo el número.",
+        "expected_answer": "3|r=3",
+        "feedback_success": "¡Excelente! Cada término se multiplica por 3: 6 ÷ 2 = 3."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «La sucesión 1, 2, 4, 8, … crece más lento que 100, 200, 300, … porque empieza mucho más baja». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "geométrica",
+          "aritmética",
+          "razón",
+          "diferencia",
+          "exponencial"
+        ],
+        "expected_answer": "La afirmación es falsa a largo plazo. La sucesión 100, 200, 300… es aritmética: suma siempre la misma diferencia, 100, y crece de forma lineal. La sucesión 1, 2, 4, 8… es geométrica con razón 2: multiplica por 2, es decir, crece de forma exponencial. Aunque al principio es menor, en el término 12 ya vale 2048 frente a 1200, y después la distancia aumenta cada vez más.",
+        "feedback_success": "¡Análisis de nivel experto! Comparaste crecimiento lineal y exponencial con números concretos."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "En una progresión aritmética se suma una diferencia fija; en una geométrica se multiplica por una razón fija.",
+      "mapa": [
+        "Aritmética (d)",
+        "Geométrica (r)",
+        "Término general",
+        "Suma de n términos",
+        "Lineal vs exponencial"
+      ],
+      "formulas": [
+        {
+          "t": "Aritmética",
+          "f": "aₙ = a₁ + (n − 1)d"
+        },
+        {
+          "t": "Geométrica",
+          "f": "aₙ = a₁ · rⁿ⁻¹"
+        }
+      ],
+      "astucias": [
+        "Resta términos consecutivos: si siempre da lo mismo, es aritmética; si al dividir da lo mismo, es geométrica.",
+        "El exponente es n − 1, no n."
+      ],
+      "errores": [
+        "Usar n en lugar de n − 1 en el término general."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Siguiente término de 3, 7, 11, 15?",
+          "a": "19"
+        },
+        {
+          "q": "¿Razón de 2, 6, 18?",
+          "a": "3"
+        },
+        {
+          "q": "¿a₁₀ con a₁ = 5 y d = 3?",
+          "a": "32"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mat_porcentajes",
+    "target_user": "Laeticia",
+    "field": "matematicas_porcentajes",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Matemática (porcentajes y educación financiera)",
+    "pisa_competency": "Formular situaciones matemáticamente y razonar con ellas",
+    "title": "Porcentajes: descuentos e impuestos",
+    "contexte": {
+      "titre": "30 % + 20 % no es 50 %",
+      "texte": "Una tienda anuncia «30 % + 20 % de descuento». ¿Es lo mismo que 50 %? No: el segundo descuento se aplica sobre un precio que ya bajó, así que el total es 44 %. Además, al precio final se le suma un impuesto como el ITBIS (18 % en República Dominicana) o el IVA.",
+      "problema": "Un artículo cuesta $1,000. ¿Cuánto pagas con 30 % de descuento y luego 20 % más?",
+      "meta": "Al terminar podrás calcular descuentos e impuestos sucesivos y comprobar si una oferta es real.",
+      "question_reflexion": "Predice: ¿pagarás $500, más de $500 o menos de $500? Explica tu idea.",
+      "dato": {
+        "titulo": "Precio paso a paso",
+        "filas": [
+          [
+            "Precio original",
+            "$1,000"
+          ],
+          [
+            "Con 30 % de descuento",
+            "$700"
+          ],
+          [
+            "Con 20 % más",
+            "¿?"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/math/arithmetic",
+      "skill": "Porcentajes: descuentos, impuestos y variación porcentual",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/porcentajes.html",
+      "objective": "Aplica dos descuentos sucesivos y un impuesto, y compara con lo que pasaría si los porcentajes se sumaran."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una situación de compra donde se apliquen un descuento y un impuesto."
+      },
+      {
+        "process": "Emplear",
+        "question": "Un artículo de $500 tiene 20 % de descuento y luego 18 % de impuesto. Calcula su precio final y muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿por qué dos descuentos de 30 % y 20 % no equivalen a uno de 50 %?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Es lo mismo subir 10 % y luego bajar 10 % que dejar el precio igual? Argumenta con un ejemplo."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Un artículo cuesta $400 y tiene 25 % de descuento. ¿Cuánto cuesta ahora? Escribe solo el número.",
+        "expected_answer": "300|$300",
+        "feedback_success": "¡Correcto! El 25 % de 400 es 100, así que 400 − 100 = 300."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Un artículo de $200 sube 10 % y luego baja 10 %. ¿Cuánto cuesta al final? Escribe solo el número.",
+        "expected_answer": "198|$198",
+        "feedback_success": "¡Muy bien! 200 × 1.10 = 220 y luego 220 × 0.90 = 198: no vuelve al precio inicial."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Dos descuentos sucesivos de 20 % y 10 % equivalen a un único descuento de ¿qué porcentaje? Escribe solo el número.",
+        "expected_answer": "28|28%",
+        "feedback_success": "¡Excelente! 0.80 × 0.90 = 0.72, o sea que se paga el 72 % y el descuento total es 28 %."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un cartel dice: «¡30 % + 20 % de descuento = 50 % de descuento!». Evalúa críticamente este anuncio en un párrafo argumentado.",
+        "rubric_keywords": [
+          "descuentos sucesivos",
+          "precio",
+          "44",
+          "porcentaje",
+          "no se suman"
+        ],
+        "expected_answer": "El anuncio es engañoso. Los porcentajes de descuentos sucesivos no se suman, porque el segundo descuento se aplica sobre el precio que ya fue rebajado. Si el precio es 100, con 30 % baja a 70 y con 20 % más baja a 56, así que el descuento total es 44 % y no 50 %. Comprobar el precio final es la mejor forma de evaluar una oferta.",
+        "feedback_success": "¡Análisis de nivel experto! Mostraste con números que los descuentos se multiplican, no se suman."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Los descuentos sucesivos se multiplican, no se suman: cada uno se aplica sobre el precio ya rebajado.",
+      "mapa": [
+        "Factor 1 − d",
+        "Factor 1 + i",
+        "Descuentos sucesivos",
+        "Impuesto (ITBIS o IVA)",
+        "Precio final"
+      ],
+      "formulas": [
+        {
+          "t": "Descuento",
+          "f": "P × (1 − d/100)"
+        },
+        {
+          "t": "Impuesto",
+          "f": "P × (1 + i/100)"
+        }
+      ],
+      "astucias": [
+        "Convierte cada porcentaje en un factor y multiplica: −20 % → 0.80; +18 % → 1.18.",
+        "Comprueba el precio final, no el porcentaje del cartel."
+      ],
+      "errores": [
+        "Sumar 30 % + 20 % y creer que es 50 %."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Qué descuento total dan 20 % y 10 % sucesivos?",
+          "a": "28 %"
+        },
+        {
+          "q": "Un precio de 200 sube 10 % y baja 10 %: ¿cuánto vale?",
+          "a": "198"
+        },
+        {
+          "q": "¿Qué factor tiene un impuesto del 18 %?",
+          "a": "1.18"
+        }
+      ]
+    }
+  },
+  {
+    "id": "qui_enlaces",
+    "target_user": "Maryse",
+    "field": "quimica_enlaces",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias III (Química): enlaces químicos",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Enlaces químicos: ¿cómo se unen los átomos?",
+    "contexte": {
+      "titre": "Sal que se disuelve, aceite que no",
+      "texte": "La sal de mesa es un sólido duro que se disuelve en agua; el aceite, en cambio, no se mezcla con ella. La diferencia está en cómo se unen los átomos: en la sal se transfieren electrones y en el agua se comparten de forma desigual. La electronegatividad lo explica.",
+      "problema": "¿Cómo saber, con un número, si un enlace es iónico o covalente?",
+      "meta": "Al terminar podrás clasificar un enlace según Δχ y explicar propiedades de la sal y del agua.",
+      "question_reflexion": "Observa la tabla: ¿qué par de átomos crees que tiene mayor diferencia, Na–Cl o H–O?",
+      "dato": {
+        "titulo": "Electronegatividad",
+        "filas": [
+          [
+            "Sodio (Na)",
+            "0.9"
+          ],
+          [
+            "Hidrógeno (H)",
+            "2.2"
+          ],
+          [
+            "Oxígeno (O)",
+            "3.4"
+          ],
+          [
+            "Cloro (Cl)",
+            "3.2"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/chemistry",
+      "skill": "Enlaces iónico, covalente y electronegatividad",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/enlaces_quimicos.html",
+      "objective": "Cambia la electronegatividad de dos átomos y observa si los electrones se transfieren o se comparten."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre por qué la sal se disuelve en agua pero el aceite no."
+      },
+      {
+        "process": "Emplear",
+        "question": "Calcula Δχ entre el carbono (2.6) y el oxígeno (3.4) y decide el tipo de enlace con las reglas del laboratorio."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, compara Na–Cl con H–O. ¿Qué diferencia hay en el reparto de los electrones?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Por qué la regla de Δχ es solo una guía y no una frontera exacta? Da un ejemplo de enlace difícil de clasificar."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Cuando la diferencia de electronegatividad entre dos átomos es muy grande (mayor que 1.7), ¿cómo se llama el enlace? Responde con una palabra.",
+        "expected_answer": "iónico|ionico",
+        "feedback_success": "¡Correcto! Con una diferencia tan grande, un átomo le arranca el electrón al otro y se forman iones."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Calcula Δχ entre el sodio (χ = 0.9) y el cloro (χ = 3.2). Escribe solo el número.",
+        "expected_answer": "2.3|2,3",
+        "feedback_success": "¡Muy bien! Δχ = 3.2 − 0.9 = 2.3, mucho mayor que 1.7."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "En el agua, el oxígeno (χ = 3.4) atrae a los electrones más que el hidrógeno (χ = 2.2). ¿Qué tipo de enlace es: iónico, covalente polar o covalente no polar?",
+        "expected_answer": "covalente polar|polar|covalentepolar",
+        "feedback_success": "¡Excelente! Δχ = 1.2: los átomos comparten electrones, pero de forma desigual, y por eso el oxígeno queda con carga parcial negativa."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «La sal de mesa está formada por moléculas de NaCl que comparten electrones, como el agua». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "red cristalina",
+          "iones",
+          "transferencia",
+          "electronegatividad",
+          "moléculas"
+        ],
+        "expected_answer": "Es incorrecto. El NaCl es un compuesto iónico: la diferencia de electronegatividad entre el sodio y el cloro es grande, por lo que ocurre una transferencia de electrones y se forman iones Na⁺ y Cl⁻. Esos iones se atraen y forman una red cristalina, no moléculas independientes. En el agua, en cambio, los átomos comparten electrones y sí forman moléculas.",
+        "feedback_success": "¡Análisis de nivel experto! Distinguiste entre transferencia y compartición de electrones y entre red cristalina y moléculas."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La diferencia de electronegatividad decide si los electrones se transfieren (iónico) o se comparten (covalente).",
+      "mapa": [
+        "Electronegatividad",
+        "Δχ > 1.7: iónico",
+        "0.5 a 1.7: covalente polar",
+        "Δχ < 0.5: no polar",
+        "Red cristalina o molécula"
+      ],
+      "formulas": [
+        {
+          "t": "Diferencia",
+          "f": "Δχ = |χ_B − χ_A|"
+        },
+        {
+          "t": "Reglas",
+          "f": "< 0.5 no polar · 0.5–1.7 polar · > 1.7 iónico"
+        }
+      ],
+      "astucias": [
+        "Metal + no metal suele ser iónico; no metal + no metal, covalente.",
+        "El átomo más electronegativo queda con carga parcial negativa (δ⁻)."
+      ],
+      "errores": [
+        "Decir que el NaCl forma moléculas: forma una red de iones."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Δχ de Na–Cl (0.9 y 3.2)?",
+          "a": "2.3, es iónico."
+        },
+        {
+          "q": "¿Cómo es el enlace H–O del agua?",
+          "a": "Covalente polar (Δχ = 1.2)."
+        },
+        {
+          "q": "¿Qué es una red cristalina?",
+          "a": "Un ordenamiento repetido de iones."
+        }
+      ]
+    }
+  },
+  {
+    "id": "qui_mol",
+    "target_user": "Maryse",
+    "field": "quimica_mol",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias III (Química): cantidad de sustancia, mol y masa molar",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "El mol: contar átomos pesando",
+    "contexte": {
+      "titre": "Contar átomos pesando",
+      "texte": "Una gota de agua contiene más de mil trillones de moléculas: imposible contarlas una por una. Los químicos las cuentan pesando: un mol de cualquier sustancia contiene 6.022 × 10²³ partículas, y su masa en gramos es la masa molar.",
+      "problema": "¿Por qué 18 g de agua y 58.5 g de sal tienen el mismo número de partículas?",
+      "meta": "Al terminar podrás pasar de gramos a moles y de moles al número de partículas.",
+      "question_reflexion": "Predice: ¿1 mol de hierro pesará más, menos o igual que 1 mol de agua? ¿Por qué?",
+      "dato": {
+        "titulo": "Masa de 1 mol",
+        "filas": [
+          [
+            "Agua (H₂O)",
+            "18 g"
+          ],
+          [
+            "Sal (NaCl)",
+            "58.5 g"
+          ],
+          [
+            "Hierro (Fe)",
+            "55.8 g"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/chemistry",
+      "skill": "El mol, la masa molar y el número de Avogadro",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/mol.html",
+      "objective": "Elige una sustancia, cambia la masa y observa cuántos moles y cuántas partículas contiene."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre cómo contar partículas que no se pueden ver."
+      },
+      {
+        "process": "Emplear",
+        "question": "Calcula la masa molar del CO₂ (C = 12, O = 16) y los moles que hay en 88 g. Muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿por qué las rectas de las sustancias tienen distinta pendiente aunque todas representen moles contra gramos?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Es correcto decir que 1 mol de cualquier sustancia pesa lo mismo? Argumenta con dos ejemplos."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "¿Cuántas partículas hay en 1 mol? Escribe el exponente n de 6.022 × 10ⁿ.",
+        "expected_answer": "23",
+        "feedback_success": "¡Correcto! El número de Avogadro es 6.022 × 10²³ partículas por mol."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Calcula la masa molar del NaCl (Na = 23, Cl = 35.5) en g/mol. Escribe solo el número.",
+        "expected_answer": "58.5|58,5",
+        "feedback_success": "¡Muy bien! M = 23 + 35.5 = 58.5 g/mol."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "¿Cuántos moles hay en 90 g de agua (M = 18 g/mol)? Escribe solo el número.",
+        "expected_answer": "5|5mol",
+        "feedback_success": "¡Excelente! n = m / M = 90 / 18 = 5 mol."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero dice: «1 mol de hierro y 1 mol de agua tienen la misma masa, porque los dos son 1 mol». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "masa molar",
+          "número de Avogadro",
+          "partículas",
+          "mismo número",
+          "gramos"
+        ],
+        "expected_answer": "Es falso. Un mol siempre contiene el mismo número de partículas, 6.022 × 10²³, que es el número de Avogadro, pero la masa de ese mol depende de la masa molar de cada sustancia. Un mol de agua pesa 18 gramos y un mol de hierro, unos 55.8 gramos. Tienen el mismo número de partículas, pero no la misma masa.",
+        "feedback_success": "¡Análisis de nivel experto! Separaste cantidad de partículas y masa."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "El mol cuenta partículas pesando: 1 mol = 6.022 × 10²³ partículas y su masa es la masa molar.",
+      "mapa": [
+        "Número de Avogadro",
+        "Masa molar M",
+        "n = m / M",
+        "Moles y gramos",
+        "Partículas = n × 6.022 × 10²³"
+      ],
+      "formulas": [
+        {
+          "t": "Moles",
+          "f": "n = m / M"
+        },
+        {
+          "t": "Partículas",
+          "f": "N = n × 6.022 × 10²³"
+        }
+      ],
+      "astucias": [
+        "La masa molar es la suma de las masas atómicas de la fórmula.",
+        "Triángulo m–n–M: tapa la letra que buscas."
+      ],
+      "errores": [
+        "Creer que 1 mol de cualquier sustancia pesa lo mismo."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Masa molar del H₂O?",
+          "a": "18 g/mol."
+        },
+        {
+          "q": "¿Cuántos moles hay en 90 g de agua?",
+          "a": "5 mol."
+        },
+        {
+          "q": "¿Cuántas partículas tiene 1 mol?",
+          "a": "6.022 × 10²³."
+        }
+      ]
+    }
+  },
+  {
+    "id": "fis_ley_ohm",
+    "target_user": "Laeticia",
+    "field": "fisica_ley_ohm",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Ciencias de la Naturaleza (Física): electricidad y ley de Ohm",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "La ley de Ohm: voltaje, corriente y resistencia",
+    "contexte": {
+      "titre": "Lo que pasa dentro del cargador",
+      "texte": "Cuando conectas un cargador al celular circula una corriente por los cables. Los ingenieros eligen las resistencias de cada circuito con una ley que descubrió Georg Ohm: la corriente es el voltaje dividido entre la resistencia, I = V / R. También sirve para calcular la potencia y el consumo.",
+      "problema": "Si conectas el mismo voltaje a una resistencia el doble de grande, ¿qué le pasa a la corriente?",
+      "meta": "Al terminar podrás usar I = V / R y P = V·I y explicar cómo cambian al variar V o R.",
+      "question_reflexion": "Predice: con R = 8 Ω, ¿la corriente será mayor, menor o igual que 3 A? ¿Cuánto?",
+      "dato": {
+        "titulo": "Circuito de 12 V",
+        "filas": [
+          [
+            "R = 4 Ω",
+            "I = 3 A"
+          ],
+          [
+            "R = 8 Ω",
+            "I = ?"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/physics",
+      "skill": "Circuitos eléctricos y ley de Ohm",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/ley_ohm.html",
+      "objective": "Cambia el voltaje y la resistencia y observa cómo cambian la corriente, la potencia y la gráfica V–I."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre qué determina cuánta corriente pasa por un aparato eléctrico."
+      },
+      {
+        "process": "Emplear",
+        "question": "Un foco de 6 Ω se conecta a 12 V. Calcula la corriente y la potencia. Muestra tus pasos."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿qué representa la pendiente de la recta I contra V? ¿Cómo cambia si aumentas R?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Por qué es peligroso tocar un cable conectado a la red eléctrica aunque la resistencia del cuerpo sea alta? Argumenta con la ley de Ohm."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Un circuito tiene un voltaje de 12 V y una resistencia de 4 Ω. ¿Cuál es la corriente en amperios? Escribe solo el número.",
+        "expected_answer": "3|3a",
+        "feedback_success": "¡Correcto! I = V / R = 12 / 4 = 3 A."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Por una resistencia de 6 Ω circula una corriente de 2 A. ¿Cuál es el voltaje en voltios? Escribe solo el número.",
+        "expected_answer": "12|12v",
+        "feedback_success": "¡Muy bien! V = I × R = 2 × 6 = 12 V."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Si duplicas la resistencia sin cambiar el voltaje, ¿por qué número se multiplica la corriente? Escribe un decimal o una fracción.",
+        "expected_answer": "0.5|0,5|1/2|mitad",
+        "feedback_success": "¡Excelente! I = V / (2R) = ½ · (V / R): la corriente se reduce a la mitad."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «Para que un foco brille más hay que bajar el voltaje, porque menos voltaje significa más corriente». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "ley de Ohm",
+          "corriente",
+          "voltaje",
+          "resistencia",
+          "proporcional"
+        ],
+        "expected_answer": "Es incorrecto. Según la ley de Ohm, I = V / R: la corriente es directamente proporcional al voltaje e inversamente proporcional a la resistencia. Si bajas el voltaje con la misma resistencia, la corriente disminuye y el foco brilla menos. Para obtener más corriente hay que subir el voltaje o reducir la resistencia.",
+        "feedback_success": "¡Análisis de nivel experto! Usaste la proporcionalidad de la ley de Ohm para refutar una idea intuitiva."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La corriente es directamente proporcional al voltaje e inversamente proporcional a la resistencia.",
+      "mapa": [
+        "Voltaje V",
+        "Corriente I",
+        "Resistencia R",
+        "I = V / R",
+        "Potencia P = V · I"
+      ],
+      "formulas": [
+        {
+          "t": "Ley de Ohm",
+          "f": "I = V / R"
+        },
+        {
+          "t": "Potencia",
+          "f": "P = V · I"
+        }
+      ],
+      "astucias": [
+        "Triángulo V–I–R: tapa lo que buscas.",
+        "Si duplicas R con el mismo V, la corriente se reduce a la mitad."
+      ],
+      "errores": [
+        "Mezclar unidades: mA con A, o kΩ con Ω."
+      ],
+      "tarjetas": [
+        {
+          "q": "Con 12 V y 4 Ω, ¿cuánto vale I?",
+          "a": "3 A"
+        },
+        {
+          "q": "Con 2 A y 6 Ω, ¿cuánto vale V?",
+          "a": "12 V"
+        },
+        {
+          "q": "¿Qué le pasa a I si R se duplica?",
+          "a": "Se reduce a la mitad."
+        }
+      ]
+    }
+  },
+  {
+    "id": "bio_fotosintesis",
+    "target_user": "Laeticia",
+    "field": "biologia_fotosintesis",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Ciencias de la Vida (Biología): fotosíntesis y factores que la afectan",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Fotosíntesis: ¿qué frena a una planta?",
+    "contexte": {
+      "titre": "¿Qué frena a una planta?",
+      "texte": "En un invernadero se controlan la luz, el dióxido de carbono y la temperatura para producir más alimento. Pero subir solo uno de esos factores no siempre sirve: la fotosíntesis se frena por el factor que está más escaso, llamado factor limitante.",
+      "problema": "Una planta recibe luz al máximo pero casi no hay CO₂. ¿Mejorará su crecimiento si le pones aún más luz?",
+      "meta": "Al terminar podrás identificar el factor limitante y decidir qué mejorar.",
+      "question_reflexion": "Predice: ¿qué factor crees que está frenando la fotosíntesis en ese invernadero?",
+      "dato": {
+        "titulo": "Condiciones del invernadero",
+        "filas": [
+          [
+            "Luz",
+            "100 % (máxima)"
+          ],
+          [
+            "CO₂",
+            "muy bajo"
+          ],
+          [
+            "Temperatura",
+            "25 °C (ideal)"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/biology",
+      "skill": "Fotosíntesis y factores limitantes",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/fotosintesis.html",
+      "objective": "Cambia la luz, el CO₂ y la temperatura y descubre cuál es el factor limitante de la fotosíntesis."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre cómo se podría aumentar la cosecha de un cultivo en un invernadero."
+      },
+      {
+        "process": "Emplear",
+        "question": "Con luz al 100 %, CO₂ de 0.04 % y 25 °C, ¿qué factor limita? Usa el laboratorio y explica cómo lo sabes."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿por qué la curva de la luz se aplana a partir de cierto valor? ¿Qué significa esa saturación?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Por qué una temperatura demasiado alta también frena la fotosíntesis, aunque haya mucha luz y CO₂?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "¿Qué gas del aire absorben las plantas en la fotosíntesis? Responde con la fórmula o con el nombre.",
+        "expected_answer": "co₂|co2|dióxido de carbono|dioxido de carbono",
+        "feedback_success": "¡Correcto! Las plantas toman CO₂ del aire y lo convierten en glucosa."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "¿Qué gas liberan las plantas durante la fotosíntesis? Responde con la fórmula o con el nombre.",
+        "expected_answer": "o₂|o2|oxígeno|oxigeno",
+        "feedback_success": "¡Muy bien! El oxígeno (O₂) es un producto de la fotosíntesis."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Una planta tiene mucha luz y la temperatura ideal, pero muy poco CO₂, y su fotosíntesis no mejora. ¿Cuál es el factor que la está frenando? Responde con el nombre del factor.",
+        "expected_answer": "co₂|co2|dióxido de carbono|dioxido de carbono|carbono",
+        "feedback_success": "¡Excelente razonamiento! El CO₂ es el factor limitante: mientras siga escaso, subir la luz no sirve."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un agricultor afirma: «Para aumentar la cosecha de mi invernadero basta con poner la luz al máximo». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "factor limitante",
+          "saturación",
+          "temperatura",
+          "CO₂",
+          "fotosíntesis"
+        ],
+        "expected_answer": "No siempre. La fotosíntesis depende de varios factores y la tasa la fija el factor limitante, el que está más escaso. Si la luz ya llegó a la saturación, aumentarla no sube la producción: ahora pueden limitar el CO₂ o la temperatura. El agricultor debe medir cuál factor limita y mejorar ese, no solo la luz.",
+        "feedback_success": "¡Análisis de nivel experto! Entendiste que mejorar un factor que no limita no cambia el resultado."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La fotosíntesis convierte luz, agua y CO₂ en glucosa y oxígeno; su tasa la fija el factor limitante.",
+      "mapa": [
+        "Luz",
+        "CO₂ y agua",
+        "Cloroplasto",
+        "Glucosa y O₂",
+        "Factor limitante"
+      ],
+      "formulas": [
+        {
+          "t": "Ecuación",
+          "f": "6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂"
+        },
+        {
+          "t": "Tasa",
+          "f": "la fija el factor más escaso"
+        }
+      ],
+      "astucias": [
+        "Piensa en una cadena: se rompe por el eslabón más débil, el factor limitante.",
+        "Más luz no sirve si falta CO₂."
+      ],
+      "errores": [
+        "Creer que las plantas solo respiran de noche: respiran siempre; la fotosíntesis es la que necesita luz."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Qué gas se absorbe en la fotosíntesis?",
+          "a": "CO₂"
+        },
+        {
+          "q": "¿Qué gas se libera?",
+          "a": "O₂"
+        },
+        {
+          "q": "¿Qué es un factor limitante?",
+          "a": "El factor más escaso, que frena el proceso."
+        }
+      ]
+    }
+  },
+  {
+    "id": "qui_estequiometria",
+    "target_user": "Maryse",
+    "field": "quimica_estequiometria",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias III (Química): cálculos con ecuaciones químicas y reactivo limitante",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Estequiometría: la química como receta",
+    "contexte": {
+      "titre": "El ingrediente que se acaba primero",
+      "texte": "Un cohete que usa hidrógeno y oxígeno como combustible no puede llevar cantidades al azar: lo que sobra es peso inútil. La ecuación balanceada funciona como una receta, y el ingrediente que se acaba primero decide cuánto producto se forma.",
+      "problema": "Con 6 mol de H₂ y 2 mol de O₂, ¿cuánta agua se puede formar y qué reactivo sobra?",
+      "meta": "Al terminar podrás identificar el reactivo limitante y calcular el producto y el sobrante.",
+      "question_reflexion": "Antes de calcular: ¿qué reactivo crees que se agotará primero, el H₂ o el O₂? Explica tu idea.",
+      "dato": {
+        "titulo": "La receta",
+        "filas": [
+          [
+            "2 mol de H₂",
+            "+ 1 mol de O₂"
+          ],
+          [
+            "Producen",
+            "2 mol de H₂O"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/chemistry",
+      "skill": "Estequiometría y reactivo limitante",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/estequiometria.html",
+      "objective": "Cambia los moles iniciales de hidrógeno y oxígeno y observa cuál se agota primero y cuánta agua se forma."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre cuánto reactivo necesitas para fabricar cierta cantidad de producto sin desperdiciar."
+      },
+      {
+        "process": "Emplear",
+        "question": "Con 3 mol de H₂ y 2 mol de O₂, calcula cuántas «recetas» permite cada uno, el reactivo limitante y los mol de agua que se forman."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, observa las barras finales: ¿qué ocurre con el reactivo en exceso? ¿Se destruye? Explícalo con la conservación de la masa."
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Por qué una empresa podría usar un reactivo en exceso a propósito? Argumenta ventajas y costos."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "En la reacción 2H₂ + O₂ → 2H₂O, ¿cuántos mol de agua se obtienen a partir de 2 mol de O₂ si el H₂ sobra? Escribe solo el número.",
+        "expected_answer": "4|4mol",
+        "feedback_success": "¡Correcto! Por cada mol de O₂ se forman 2 mol de H₂O, así que 2 mol de O₂ dan 4 mol de agua."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "En la misma reacción, ¿cuántos mol de O₂ reaccionan exactamente con 6 mol de H₂? Escribe solo el número.",
+        "expected_answer": "3|3mol",
+        "feedback_success": "¡Muy bien! La razón es 2 H₂ : 1 O₂, así que 6 mol de H₂ necesitan 3 mol de O₂."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Se mezclan 4 mol de H₂ con 4 mol de O₂ para formar agua. ¿Cuál es el reactivo limitante? Responde con la fórmula o el nombre.",
+        "expected_answer": "h₂|h2|hidrógeno|hidrogeno",
+        "feedback_success": "¡Excelente razonamiento! 4 mol de H₂ solo necesitan 2 mol de O₂: el H₂ se agota primero y sobran 2 mol de O₂."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «Si duplicamos la cantidad de cualquier reactivo, siempre se duplica la cantidad de producto». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "reactivo limitante",
+          "exceso",
+          "proporción",
+          "moles",
+          "coeficientes"
+        ],
+        "expected_answer": "Es falso. La cantidad de producto la determina el reactivo limitante, el que se agota primero, y no el que está en exceso. Si se duplica un reactivo que ya estaba en exceso, la producción no cambia, porque la proporción de moles que exigen los coeficientes de la ecuación sigue limitada por el otro reactivo. Solo si se duplica el reactivo limitante aumenta el producto.",
+        "feedback_success": "¡Análisis de nivel experto! Distinguiste el reactivo limitante del reactivo en exceso."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Los coeficientes de la ecuación son la receta; el reactivo limitante decide cuánto producto se forma.",
+      "mapa": [
+        "Ecuación balanceada",
+        "Razón molar",
+        "Reactivo limitante",
+        "Reactivo en exceso",
+        "De moles a gramos"
+      ],
+      "formulas": [
+        {
+          "t": "Receta",
+          "f": "2 H₂ + O₂ → 2 H₂O"
+        },
+        {
+          "t": "Recetas posibles",
+          "f": "n(reactivo) / coeficiente"
+        }
+      ],
+      "astucias": [
+        "Divide los moles de cada reactivo entre su coeficiente: el menor es el limitante.",
+        "Convierte siempre a moles antes de comparar."
+      ],
+      "errores": [
+        "Elegir el limitante sin dividir entre el coeficiente."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Qué es el reactivo limitante?",
+          "a": "El que se agota primero."
+        },
+        {
+          "q": "Con 4 mol de H₂ y 4 mol de O₂, ¿cuál limita?",
+          "a": "El H₂."
+        },
+        {
+          "q": "¿Cuántos mol de agua salen de 2 mol de O₂ con H₂ de sobra?",
+          "a": "4 mol."
+        }
+      ]
+    }
+  },
+  {
+    "id": "qui_rapidez_reaccion",
+    "target_user": "Maryse",
+    "field": "quimica_rapidez_reaccion",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias III (Química): rapidez de reacción y factores que la modifican",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Rapidez de reacción: ¿por qué unas reacciones son más rápidas?",
+    "contexte": {
+      "titre": "Por qué el frío frena las reacciones",
+      "texte": "Un antiácido efervescente se disuelve más rápido en agua caliente que en agua fría, y la comida se echa a perder más lento en el refrigerador. La rapidez de una reacción depende de cuántas veces chocan las partículas y con cuánta energía.",
+      "problema": "¿Qué tres factores puedes cambiar para que una reacción sea más rápida?",
+      "meta": "Al terminar podrás explicar con colisiones por qué cambia la rapidez y predecir el efecto de cada factor.",
+      "question_reflexion": "Predice: ¿qué crees que pasará con el tiempo si el antiácido está triturado en polvo? Explica por qué.",
+      "dato": {
+        "titulo": "Antiácido en agua (valores de ejemplo)",
+        "filas": [
+          [
+            "Agua a 5 °C",
+            "≈ 90 s"
+          ],
+          [
+            "Agua a 25 °C",
+            "≈ 45 s"
+          ],
+          [
+            "Agua a 45 °C",
+            "≈ 20 s"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/chemistry",
+      "skill": "Rapidez de reacción y teoría de colisiones",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/rapidez_reaccion.html",
+      "objective": "Cambia la temperatura, la concentración y la superficie de contacto y observa cuánto tarda la reacción."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre por qué un trozo de carbón arde más lento que carbón en polvo."
+      },
+      {
+        "process": "Emplear",
+        "question": "Usa la regla de que la rapidez se duplica cada 10 °C: calcula por cuánto se multiplica a 45 °C respecto de 25 °C."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, compara el trozo entero con el polvo (superficie ×10). ¿Qué cambia en la curva y por qué?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Qué riesgos tiene acelerar una reacción aumentando mucho la temperatura o la concentración en una fábrica?"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Con la regla aproximada de que la rapidez se duplica cada 10 °C que sube la temperatura, ¿por qué número se multiplica si la temperatura sube 20 °C? Escribe solo el número.",
+        "expected_answer": "4",
+        "feedback_success": "¡Correcto! Se duplica dos veces: 2 × 2 = 4."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Un comprimido entero tarda 60 s en disolverse y, triturado, tarda mucho menos. ¿Qué factor de la rapidez de reacción cambió? Responde con el nombre del factor.",
+        "expected_answer": "superficie de contacto|superficie|area",
+        "feedback_success": "¡Muy bien! Al triturarlo, el comprimido expone más partículas al agua: aumenta la superficie de contacto."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "En el modelo del laboratorio, si la concentración pasa de 1 M a 2 M y todo lo demás queda igual, ¿por qué número se multiplica la constante de rapidez k? Escribe solo el número.",
+        "expected_answer": "2",
+        "feedback_success": "¡Excelente! En este modelo la rapidez es proporcional a la concentración: el doble de concentración, el doble de rapidez."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «Guardar los alimentos en el refrigerador detiene las reacciones que los descomponen». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "temperatura",
+          "rapidez de reacción",
+          "energía",
+          "colisiones",
+          "no se detienen"
+        ],
+        "expected_answer": "Es inexacto. El refrigerador no detiene las reacciones, solo las hace más lentas, porque al bajar la temperatura disminuye la energía de las partículas y hay menos colisiones eficaces por segundo. Por eso la rapidez de reacción baja, pero los alimentos se descomponen igual con el tiempo: las reacciones no se detienen por completo.",
+        "feedback_success": "¡Análisis de nivel experto! Relacionaste la temperatura con la energía y las colisiones."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "Una reacción es más rápida cuando hay más choques eficaces: más temperatura, concentración o superficie.",
+      "mapa": [
+        "Teoría de colisiones",
+        "Temperatura",
+        "Concentración",
+        "Superficie de contacto",
+        "Catalizadores"
+      ],
+      "formulas": [
+        {
+          "t": "Regla aproximada",
+          "f": "+10 °C → rapidez × 2"
+        },
+        {
+          "t": "Tiempo de mitad",
+          "f": "t½ = ln 2 / k"
+        }
+      ],
+      "astucias": [
+        "Piensa en choques: más partículas, más energía o más superficie dan más choques.",
+        "Triturar un sólido aumenta su superficie de contacto."
+      ],
+      "errores": [
+        "Creer que el refrigerador detiene las reacciones: solo las hace más lentas."
+      ],
+      "tarjetas": [
+        {
+          "q": "Si sube 20 °C, ¿cuánto cambia la rapidez?",
+          "a": "Se multiplica por 4 (regla aproximada)."
+        },
+        {
+          "q": "¿Qué factor cambia al triturar un sólido?",
+          "a": "La superficie de contacto."
+        },
+        {
+          "q": "¿Qué hace un catalizador?",
+          "a": "Acelera la reacción sin consumirse."
+        }
+      ]
+    }
+  },
+  {
+    "id": "fis_leyes_newton",
+    "target_user": "Laeticia",
+    "field": "fisica_leyes_newton",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Ciencias de la Naturaleza (Física): leyes de Newton y dinámica",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Leyes de Newton: la fuerza y el movimiento",
+    "contexte": {
+      "titre": "Por qué te vas hacia atrás cuando el autobús arranca",
+      "texte": "Cuando un autobús arranca, sientes que tu cuerpo se va hacia atrás: es la inercia, la primera ley de Newton. La segunda ley dice que la aceleración es proporcional a la fuerza neta e inversa a la masa: F = m·a. Los ingenieros la usan para calcular la fuerza de un cohete, un ascensor o un tren.",
+      "problema": "Empujas con la misma fuerza un carrito vacío y uno lleno de libros. ¿Cuál acelera más y cuántas veces más?",
+      "meta": "Al terminar podrás usar F = m·a con fricción y explicar cómo cambia la aceleración con la masa.",
+      "question_reflexion": "Predice: si el carrito pesa el doble, ¿su aceleración será el doble, la mitad u otra? Explica.",
+      "dato": {
+        "titulo": "Mismo empuje de 20 N",
+        "filas": [
+          [
+            "Carrito vacío (4 kg)",
+            "a = ?"
+          ],
+          [
+            "Carrito lleno (8 kg)",
+            "a = ?"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/physics",
+      "skill": "Fuerza, masa y aceleración: segunda ley de Newton",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/leyes_newton.html",
+      "objective": "Cambia la fuerza, la masa y la fricción, y observa la aceleración y la velocidad del objeto."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre qué determina qué tan rápido acelera un objeto."
+      },
+      {
+        "process": "Emplear",
+        "question": "Un carrito de 8 kg recibe una fuerza de 40 N con fricción de 8 N. Calcula la fuerza neta y la aceleración."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, ¿qué ocurre con la aceleración cuando la fuerza no supera la fricción? ¿Qué ley explica que el objeto siga en reposo?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Por qué los autos pesados necesitan frenos más potentes que los livianos a igual velocidad? Argumenta con F = m·a."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "Una fuerza de 20 N actúa sobre una masa de 4 kg sin fricción. ¿Cuál es la aceleración en m/s²? Escribe solo el número.",
+        "expected_answer": "5",
+        "feedback_success": "¡Correcto! a = F / m = 20 / 4 = 5 m/s²."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "Un objeto de 10 kg acelera a 3 m/s². ¿Qué fuerza neta actúa sobre él, en newtons? Escribe solo el número.",
+        "expected_answer": "30|30n",
+        "feedback_success": "¡Muy bien! F = m · a = 10 × 3 = 30 N."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Con la misma fuerza neta, si se duplica la masa, ¿por qué número se multiplica la aceleración? Escribe un decimal o una fracción.",
+        "expected_answer": "0.5|0,5|1/2|mitad",
+        "feedback_success": "¡Excelente! a = F / m: con el doble de masa, la aceleración se reduce a la mitad."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «Un objeto pesado cae más rápido que uno ligero porque la fuerza sobre él es mayor». Evalúa críticamente esta afirmación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "aceleración",
+          "masa",
+          "gravedad",
+          "fuerza",
+          "resistencia del aire"
+        ],
+        "expected_answer": "Es falso si no hay resistencia del aire. Es cierto que el objeto pesado recibe una fuerza mayor, pero su masa también es mayor; como a = F / m, la aceleración es la misma para ambos, la de la gravedad, unos 9.8 m/s². En la vida real la resistencia del aire puede hacer que un objeto liviano caiga más lento, pero eso depende de su forma y no solo de la masa.",
+        "feedback_success": "¡Análisis de nivel experto! Mostraste que la masa se cancela en la caída libre."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La fuerza neta sobre un objeto produce una aceleración proporcional a ella e inversa a su masa.",
+      "mapa": [
+        "1.ª ley: inercia",
+        "2.ª ley: F = m · a",
+        "3.ª ley: acción y reacción",
+        "Peso W = m · g",
+        "Fricción"
+      ],
+      "formulas": [
+        {
+          "t": "Segunda ley",
+          "f": "F neta = m · a"
+        },
+        {
+          "t": "Peso",
+          "f": "W = m · g  (g ≈ 9.8 m/s²)"
+        }
+      ],
+      "astucias": [
+        "Calcula primero la fuerza NETA (resta la fricción) y luego divide entre la masa.",
+        "Con la misma fuerza, el doble de masa da la mitad de aceleración."
+      ],
+      "errores": [
+        "Usar la fuerza aplicada en lugar de la fuerza neta."
+      ],
+      "tarjetas": [
+        {
+          "q": "Con 20 N y 4 kg, ¿cuánto vale a?",
+          "a": "5 m/s²"
+        },
+        {
+          "q": "¿Qué fuerza hace falta con m = 10 kg y a = 3 m/s²?",
+          "a": "30 N"
+        },
+        {
+          "q": "¿Qué es la inercia?",
+          "a": "La tendencia a mantener el estado de movimiento."
+        }
+      ]
+    }
+  },
+  {
+    "id": "bio_seleccion_natural",
+    "target_user": "Laeticia",
+    "field": "biologia_seleccion_natural",
+    "curriculum_alignment": "MINERD - 4° Secundaria - Ciencias de la Vida (Biología): evolución y selección natural",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Selección natural: ¿cómo cambian las poblaciones?",
+    "contexte": {
+      "titre": "La polilla que cambió de color",
+      "texte": "Durante la Revolución Industrial en Inglaterra, el hollín oscureció los troncos y las polillas claras, fáciles de ver para los pájaros, se volvieron raras mientras que las oscuras se hicieron comunes. Nadie «decidió» cambiar de color: ya existían polillas de ambos colores y las oscuras sobrevivieron y se reprodujeron más.",
+      "problema": "¿Cómo puede cambiar el color de una población sin que ningún individuo cambie de color?",
+      "meta": "Al terminar podrás explicar la selección natural con variación, herencia y reproducción diferencial.",
+      "question_reflexion": "Predice: si los pájaros comen más polillas claras, ¿qué pasará con su proporción en las siguientes generaciones?",
+      "dato": {
+        "titulo": "Polillas sobre troncos con hollín (idea general)",
+        "filas": [
+          [
+            "Antes",
+            "muchas claras · pocas oscuras"
+          ],
+          [
+            "Muchas generaciones después",
+            "pocas claras · muchas oscuras"
+          ]
+        ]
+      }
+    },
+    "khan": {
+      "link": "https://es.khanacademy.org/science/biology",
+      "skill": "Evolución y selección natural",
+      "estimated_minutes": 25
+    },
+    "labo": {
+      "file": "labos/seleccion_natural.html",
+      "objective": "Cambia la ventaja de un color y observa cómo evoluciona la proporción de polillas oscuras generación tras generación."
+    },
+    "carnet": [
+      {
+        "process": "Formular",
+        "question": "Formula una pregunta científica sobre por qué las bacterias se vuelven resistentes a los antibióticos."
+      },
+      {
+        "process": "Emplear",
+        "question": "Con 10 % de polillas oscuras y una ventaja s = 0.3, calcula la proporción en la primera generación con p′ = p(1 + s)/(1 + s·p)."
+      },
+      {
+        "process": "Interpretar",
+        "question": "En el laboratorio, compara s = 0.3 con s = −0.3. ¿Qué ocurre con las proporciones y por qué?"
+      },
+      {
+        "process": "Evaluar",
+        "question": "¿Por qué se dice que la selección natural no tiene un «propósito»? Argumenta con el ejemplo de las polillas."
+      }
+    ],
+    "exercises": [
+      {
+        "id": "ex_01",
+        "level": 1,
+        "question": "¿Cómo se llama el proceso por el cual los individuos mejor adaptados sobreviven y dejan más descendientes? Responde con dos palabras.",
+        "expected_answer": "selección natural|seleccion natural",
+        "feedback_success": "¡Correcto! La selección natural cambia la proporción de los rasgos en una población."
+      },
+      {
+        "id": "ex_02",
+        "level": 2,
+        "question": "En una población, el 20 % de las polillas es oscura y las oscuras sobreviven mejor que las claras. ¿Qué esperas que pase con su proporción en las siguientes generaciones? Responde con una palabra: aumenta, disminuye o se mantiene.",
+        "expected_answer": "aumenta|aumentará|sube",
+        "feedback_success": "¡Muy bien! Las oscuras dejan más descendientes, así que su proporción aumenta."
+      },
+      {
+        "id": "ex_03",
+        "level": 3,
+        "question": "Si los pájaros comen con más facilidad las polillas claras sobre un tronco oscuro, ¿qué polillas tienen mayor aptitud (éxito reproductivo)? Responde con una palabra.",
+        "expected_answer": "oscuras|oscura|lasoscuras",
+        "feedback_success": "¡Excelente! Las oscuras pasan más desapercibidas, sobreviven más y se reproducen más."
+      },
+      {
+        "id": "ex_04",
+        "level": 4,
+        "question": "Un compañero afirma: «Las polillas se volvieron oscuras porque necesitaban camuflarse». Evalúa críticamente esta explicación en un párrafo argumentado.",
+        "rubric_keywords": [
+          "variación",
+          "hereditario",
+          "descendientes",
+          "selección natural",
+          "generación"
+        ],
+        "expected_answer": "Es una explicación incorrecta. Las polillas no cambian de color porque lo necesiten: ya existía variación en la población, con polillas claras y oscuras, y ese rasgo es hereditario. Cuando el fondo se oscureció, las oscuras sobrevivieron más, dejaron más descendientes y su proporción aumentó generación tras generación. Es la selección natural actuando sobre la variación existente.",
+        "feedback_success": "¡Análisis de nivel experto! Corregiste la idea de que los organismos cambian «por necesidad»."
+      }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La selección natural cambia la proporción de los rasgos heredables que ya existen en una población.",
+      "mapa": [
+        "Variación",
+        "Herencia",
+        "Aptitud (fitness)",
+        "Selección",
+        "Cambio entre generaciones"
+      ],
+      "formulas": [
+        {
+          "t": "Una generación",
+          "f": "p′ = p(1 + s) / (1 + s·p)"
+        },
+        {
+          "t": "Aptitud",
+          "f": "oscuras 1 + s · claras 1"
+        }
+      ],
+      "astucias": [
+        "Recuerda las 3 condiciones: variación, herencia y reproducción diferencial.",
+        "Evoluciona la población, no el individuo."
+      ],
+      "errores": [
+        "Decir que los organismos cambian «porque lo necesitan»."
+      ],
+      "tarjetas": [
+        {
+          "q": "¿Qué es la aptitud?",
+          "a": "El éxito para sobrevivir y reproducirse."
+        },
+        {
+          "q": "¿La selección natural crea rasgos nuevos?",
+          "a": "No: cambia la frecuencia de los que ya existen."
+        },
+        {
+          "q": "¿Cómo se vuelven resistentes las bacterias?",
+          "a": "Sobreviven y se reproducen las que ya eran resistentes."
+        }
+      ]
+    }
+  },
+  {
+    "id": "bio_m_1",
+    "target_user": "Maryse",
+    "field": "biologia",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias (Biología): nutrición y sistemas del cuerpo humano",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "La nutrición humana: el viaje de los alimentos",
+    "contexte": {
+      "titre": "¿Qué pasa con el taco que acabas de comer?",
+      "texte": "Cuando comes un taco, tu cuerpo no lo usa tal cual. Lo descompone en nutrimentos que viajan por la sangre hasta tus células para darles energía. Varios sistemas trabajan juntos: digestivo, respiratorio, circulatorio y excretor.",
+      "problema": "¿Por qué comer bien no basta si tus sistemas no funcionan correctamente?",
+      "meta": "Al terminar podrás explicar el recorrido de los nutrimentos y relacionar cada sistema con su función.",
+      "question_reflexion": "Predice: ¿qué sistema crees que lleva el oxígeno y los nutrimentos hasta tus células?",
+      "dato": { "titulo": "Órganos y su función", "filas": [["Estómago", "digiere los alimentos"], ["Intestino delgado", "absorbe los nutrimentos"], ["Pulmones", "intercambian oxígeno y CO₂"]] }
+    },
+    "khan": { "link": "https://es.khanacademy.org/science/biology", "skill": "Sistemas del cuerpo humano y nutrición", "estimated_minutes": 25 },
+    "labo": { "file": "labos/nutricion.html", "objective": "Explora el recorrido de los alimentos y descubre la función de cada sistema." },
+    "carnet": [
+      { "process": "Formular", "question": "Describe con tus palabras qué le pasa a un alimento desde que lo comes hasta que llega a tus células." },
+      { "process": "Emplear", "question": "¿Qué sistemas del cuerpo intervienen en la nutrición y qué hace cada uno?" },
+      { "process": "Interpretar", "question": "Si una persona tiene anemia (poco hierro), ¿qué sistema o proceso se ve afectado y por qué?" },
+      { "process": "Evaluar", "question": "¿Por qué una dieta rica en energía puede ser mala si no aporta los nutrimentos necesarios?" }
+    ],
+    "exercises": [
+      { "id": "ex_01", "level": 1, "question": "¿Qué sistema se encarga de absorber los nutrimentos de los alimentos? Responde con una palabra.", "expected_answer": "digestivo|el digestivo|sistema digestivo", "feedback_success": "¡Correcto! El sistema digestivo descompone los alimentos y absorbe los nutrimentos en el intestino delgado." },
+      { "id": "ex_02", "level": 2, "question": "¿Qué sistema transporta el oxígeno y los nutrimentos hasta las células? Responde con una palabra.", "expected_answer": "circulatorio|el circulatorio|sistema circulatorio", "feedback_success": "¡Muy bien! El sistema circulatorio lleva el oxígeno y los nutrimentos a todas las células." },
+      { "id": "ex_03", "level": 3, "question": "¿En qué órgano ocurre el intercambio de oxígeno y dióxido de carbono? Responde con una palabra.", "expected_answer": "pulmones|pulmón|los pulmones", "feedback_success": "¡Excelente! En los pulmones, el oxígeno entra a la sangre y el dióxido de carbono sale." },
+      { "id": "ex_04", "level": 4, "question": "Un compañero dice: «Si como mucha comida, mi cuerpo tendrá toda la energía que necesita, aunque no haga ejercicio». Evalúa críticamente esta afirmación en un párrafo argumentado.", "rubric_keywords": ["nutrición", "energía", "sistemas", "digestión", "células"], "expected_answer": "La afirmación es incompleta. Comer mucho aporta energía, pero el cuerpo necesita que varios sistemas funcionen bien para que esa energía llegue a las células.", "feedback_success": "¡Análisis de nivel experto!" }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La nutrición es el conjunto de procesos que permiten a las células obtener energía y materiales.",
+      "mapa": ["Sistema digestivo", "Sistema respiratorio", "Sistema circulatorio", "Sistema excretor", "Nutrimentos y energía"],
+      "formulas": [{ "t": "Nutrición", "f": "alimentos → nutrimentos → células" }, { "t": "Respiración", "f": "O₂ + glucosa → CO₂ + H₂O + energía" }],
+      "astucias": ["Piensa en los sistemas como una cadena.", "La sangre es el transporte de los nutrimentos."],
+      "errores": ["Creer que solo el sistema digestivo participa en la nutrición."],
+      "tarjetas": [{ "q": "¿Qué absorbe los nutrimentos?", "a": "El intestino delgado." }, { "q": "¿Qué sistema transporta el oxígeno?", "a": "El circulatorio." }, { "q": "¿Qué órgano intercambia gases?", "a": "Los pulmones." }]
+    }
+  },
+  {
+    "id": "bio_m_2",
+    "target_user": "Maryse",
+    "field": "biologia",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias (Biología): reproducción y transmisión de caracteres hereditarios",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Reproducción y herencia: ¿por qué nos parecemos?",
+    "contexte": {
+      "titre": "El misterio de los parecidos familiares",
+      "texte": "¿Por qué tienes los ojos de tu madre o la sonrisa de tu padre? La respuesta está en la reproducción y en la transmisión de la información genética.",
+      "problema": "¿Cómo se transmite la información genética de padres a hijos y por qué hay parecidos pero también diferencias?",
+      "meta": "Al terminar podrás explicar cómo se transmiten los caracteres hereditarios y por qué la reproducción sexual genera diversidad.",
+      "question_reflexion": "Predice: si dos hermanos tienen los mismos padres, ¿por qué no son idénticos (salvo gemelos)?",
+      "dato": { "titulo": "La reproducción sexual", "filas": [["Óvulo (madre)", "23 cromosomas"], ["Espermatozoide (padre)", "23 cromosomas"], ["Cigoto (nuevo ser)", "46 cromosomas"]] }
+    },
+    "khan": { "link": "https://es.khanacademy.org/science/biology/classical-genetics", "skill": "Reproducción sexual y herencia genética", "estimated_minutes": 25 },
+    "labo": { "file": "labos/genetica_mendel.html", "objective": "Explora cómo se combinan los alelos de los padres y observa las proporciones de los rasgos en la descendencia." },
+    "carnet": [
+      { "process": "Formular", "question": "Formula una pregunta sobre por qué los hermanos se parecen a sus padres pero no son idénticos." },
+      { "process": "Emplear", "question": "Explica con un ejemplo qué es la fecundación y cómo se forma un nuevo ser con la información de ambos padres." },
+      { "process": "Interpretar", "question": "Si un rasgo como el color de ojos se hereda, ¿por qué a veces un hijo tiene un rasgo que ninguno de los padres tiene?" },
+      { "process": "Evaluar", "question": "¿Qué ventajas tiene la reproducción sexual para una especie, en comparación con la reproducción asexual?" }
+    ],
+    "exercises": [
+      { "id": "ex_01", "level": 1, "question": "¿Cómo se llama la célula que resulta de la unión de un óvulo y un espermatozoide? Responde con una palabra.", "expected_answer": "cigoto|huevo|célula huevo", "feedback_success": "¡Correcto! El cigoto es la primera célula del nuevo individuo." },
+      { "id": "ex_02", "level": 2, "question": "En la especie humana, ¿cuántos cromosomas tiene un óvulo (gameto femenino)? Escribe solo el número.", "expected_answer": "23", "feedback_success": "¡Muy bien! Los gametos tienen la mitad de cromosomas (23)." },
+      { "id": "ex_03", "level": 3, "question": "Un niño tiene los ojos azules, pero ambos padres tienen ojos marrones. ¿Qué tipo de carácter es el color azul: dominante o recesivo? Responde con una palabra.", "expected_answer": "recesivo", "feedback_success": "¡Excelente razonamiento!" },
+      { "id": "ex_04", "level": 4, "question": "Un compañero afirma: «Como los hermanos vienen de los mismos padres, deberían ser idénticos». Evalúa críticamente esta afirmación en un párrafo argumentado.", "rubric_keywords": ["reproducción sexual", "variabilidad", "gametos", "fecundación", "combinación"], "expected_answer": "La afirmación es incorrecta. La reproducción sexual genera diversidad porque cada gameto contiene una combinación única de los genes de los padres.", "feedback_success": "¡Análisis de nivel experto!" }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La reproducción sexual combina la información genética de dos progenitores, generando un nuevo individuo único.",
+      "mapa": ["Gametos", "Fecundación", "Cigoto", "Herencia", "Variabilidad"],
+      "formulas": [
+        { "t": "Cigoto", "f": "óvulo (23) + espermatozoide (23) = 46 cromosomas" },
+        { "t": "Variabilidad", "f": "combinación única de genes de los padres" }
+      ],
+      "astucias": ["Los gametos tienen la mitad de cromosomas para que la especie mantenga su número.", "La fecundación une dos células sexuales para formar un nuevo ser."],
+      "errores": ["Creer que los hermanos son idénticos genéticamente (excepto gemelos idénticos).", "Pensar que la herencia es una copia exacta de uno de los padres."],
+      "tarjetas": [{ "q": "¿Qué es un gameto?", "a": "Una célula sexual con la mitad de cromosomas." }, { "q": "¿Qué es la fecundación?", "a": "La unión del óvulo y el espermatozoide." }, { "q": "¿Por qué los hermanos no son idénticos?", "a": "Porque cada uno recibe una combinación única de genes." }]
+    }
+  },
+    {
+    "id": "bio_m_3",
+    "target_user": "Maryse",
+    "field": "biologia",
+    "curriculum_alignment": "SEP - 3° Secundaria - Ciencias (Biología): evolución y selección natural",
+    "pisa_competency": "Explicar fenómenos de manera científica",
+    "title": "Selección natural: ¿cómo cambian las poblaciones?",
+    "contexte": {
+      "titre": "La polilla que cambió de color",
+      "texte": "Durante la Revolución Industrial, el hollín oscureció los troncos y las polillas oscuras sobrevivieron y se reprodujeron más porque se camuflaban mejor.",
+      "problema": "¿Cómo puede cambiar el color de una población sin que ningún individuo cambie de color?",
+      "meta": "Al terminar podrás explicar la selección natural con variación, herencia y reproducción diferencial.",
+      "question_reflexion": "Predice: si los pájaros comen más polillas claras, ¿qué pasará con su proporción en las siguientes generaciones?",
+      "dato": {
+        "titulo": "Polillas sobre troncos con hollín",
+        "filas": [["Antes", "muchas claras · pocas oscuras"], ["Muchas generaciones después", "pocas claras · muchas oscuras"]]
+      }
+    },
+    "khan": { "link": "https://es.khanacademy.org/science/biology", "skill": "Evolución y selección natural", "estimated_minutes": 25 },
+    "labo": { "file": "labos/seleccion_natural.html", "objective": "Cambia la ventaja de un color y observa cómo evoluciona la proporción de polillas." },
+    "carnet": [
+      { "process": "Formular", "question": "Formula una pregunta científica sobre por qué las bacterias se vuelven resistentes a los antibióticos." },
+      { "process": "Emplear", "question": "Con 10 % de polillas oscuras y una ventaja s = 0.3, calcula la proporción en la primera generación con p′ = p(1 + s)/(1 + s·p)." },
+      { "process": "Interpretar", "question": "En el laboratorio, compara s = 0.3 con s = −0.3. ¿Qué ocurre con las proporciones y por qué?" },
+      { "process": "Evaluar", "question": "¿Por qué se dice que la selección natural no tiene un «propósito»?" }
+    ],
+    "exercises": [
+      { "id": "ex_01", "level": 1, "question": "¿Cómo se llama el proceso por el cual los individuos mejor adaptados sobreviven y dejan más descendientes?", "expected_answer": "selección natural|seleccion natural", "feedback_success": "¡Correcto!" },
+      { "id": "ex_02", "level": 2, "question": "En una población, el 20 % de las polillas es oscura y las oscuras sobreviven mejor. ¿Qué esperas que pase con su proporción?", "expected_answer": "aumenta|aumentará|sube", "feedback_success": "¡Muy bien!" },
+      { "id": "ex_03", "level": 3, "question": "Si los pájaros comen con más facilidad las polillas claras sobre un tronco oscuro, ¿qué polillas tienen mayor aptitud?", "expected_answer": "oscuras|oscura|lasoscuras", "feedback_success": "¡Excelente!" },
+      { "id": "ex_04", "level": 4, "question": "Un compañero afirma: «Las polillas se volvieron oscuras porque necesitaban camuflarse». Evalúa críticamente esta explicación en un párrafo argumentado.", "rubric_keywords": ["variación", "hereditario", "descendientes", "selección natural", "generación"], "expected_answer": "Es incorrecta. Las polillas no cambian de color porque lo necesiten: ya existía variación en la población.", "feedback_success": "¡Análisis de nivel experto!" }
+    ],
+    "xp_reward": 30,
+    "revision": {
+      "idea": "La selección natural cambia la proporción de los rasgos heredables que ya existen en una población.",
+      "mapa": ["Variación", "Herencia", "Aptitud", "Selección", "Cambio entre generaciones"],
+      "formulas": [
+        { "t": "Una generación", "f": "p′ = p(1 + s) / (1 + s·p)" },
+        { "t": "Aptitud relativa", "f": "oscuras = 1 + s · claras = 1" }
+      ],
+      "astucias": [
+        "Recuerda las 3 condiciones: variación, herencia y reproducción diferencial.",
+        "Evoluciona la población, no el individuo."
+      ],
+      "errores": [
+        "Decir que los organismos cambian «porque lo necesitan».",
+        "Confundir selección natural con lamarckismo."
+      ],
+      "tarjetas": [
+        { "q": "¿Qué es la aptitud?", "a": "El éxito para sobrevivir y reproducirse." },
+        { "q": "¿Crea rasgos nuevos?", "a": "No, cambia la frecuencia de los que ya existen." },
+        { "q": "¿Cómo se vuelven resistentes las bacterias?", "a": "Sobreviven las que ya eran resistentes." }
+      ]
+    }
+  }
+]

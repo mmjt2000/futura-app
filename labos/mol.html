@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — El mol</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, SUB = [['H₂O', 18, '#38bdf8'], ['CO₂', 44, '#f59e0b'], ['NaCl', 58.5, '#f472b6'], ['O₂', 32, '#22c55e'], ['Fe', 55.8, '#a78bfa']];
+TP.lab({
+  icon: '⚗️', title: 'Laboratorio: El mol y la masa molar', alt: 'Moles en función de la masa para distintas sustancias',
+  subtitle: '<b>n = m / M</b> · Un mol siempre tiene el mismo número de partículas, pero cada sustancia tiene su propia masa molar.',
+  init: S => { S.sub = 0; },
+  controls: [{ id: 'm', label: 'Masa de la muestra', min: 1, max: 500, step: 1, value: 90, unit: ' g', dec: 0 }],
+  presets: SUB.map((s, i) => ({ label: s[0] + ` (M = ${s[1]})`, apply: S => { S.sub = i; } })),
+  compute(S) {
+    const [f, M] = SUB[S.sub], n = S.m / M, parts = n * 6.022e23, e = Math.floor(Math.log10(parts));
+    return { n, M, steps: [
+      { t: 'PASO 1 : Sustancia y masa molar', html: `${f} → M = ${N(M, 1)} g/mol`, f: f === 'H₂O' ? 'M = 2(1) + 16 = 18' : f === 'CO₂' ? 'M = 12 + 2(16) = 44' : f === 'NaCl' ? 'M = 23 + 35.5 = 58.5' : f === 'O₂' ? 'M = 2(16) = 32' : 'M = 55.8 (un solo elemento)' },
+      { t: 'PASO 2 : Moles  n = m / M', html: `n = ${S.m} g / ${N(M, 1)} g/mol`, r: `${N(n, 3)} mol`, cls: 'good' },
+      { t: 'PASO 3 : Número de partículas', html: `N = n × 6.022 × 10²³`, r: `${N(parts / Math.pow(10, e), 2)} × 10${e < 0 ? '⁻' : ''}${String(Math.abs(e)).replace(/\d/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d])}` },
+      { t: 'PASO 4 : Masa de 1 mol', html: `1 mol de ${f} pesa ${N(M, 1)} g y tiene 6.022 × 10²³ partículas.` },
+      { t: 'PASO 5 : Compara con otras sustancias', html: SUB.map(s => `${s[0]}: ${N(S.m / s[1], 2)} mol`).join(' · '), f: 'Misma masa, distinto número de moles' }] };
+  },
+  draw(ctx, S, res, { W, H }) {
+    const g = TP.plane(ctx, W, H, { x0: 0, x1: 500, y0: 0, y1: 30, xt: 100, yt: 5, lm: 40, xl: 'masa (g)', yl: 'moles' });
+    SUB.forEach((s, i) => { const sel = i === S.sub; TP.line(ctx, g.X(0), g.Y(0), g.X(500), g.Y(Math.min(500 / s[1], 30)), s[2], sel ? 4 : 1.5, sel ? [] : [5, 4]); TP.tx(ctx, s[0], g.X(Math.min(500, 30 * s[1])) - 4, g.Y(Math.min(500 / s[1], 30)) - 6, s[2], 'right', sel ? 'bold 12px sans-serif' : '10px sans-serif'); });
+    TP.line(ctx, g.X(S.m), g.Y(0), g.X(S.m), g.Y(res.n), 'rgba(255,255,255,.4)', 1.5, [4, 4]); TP.dot(ctx, g.X(S.m), g.Y(res.n), 7, '#fff'); TP.tx(ctx, `${N(res.n, 2)} mol`, g.X(S.m) + 10, g.Y(res.n) - 10, '#fff', S.m > 380 ? 'right' : 'left');
+  },
+  retos: [
+    { text: 'Obtén <b>exactamente 1 mol de agua</b> (18 g).', check: (S, r) => S.sub === 0 && Math.abs(r.n - 1) < 1e-9 },
+    { text: 'Consigue <b>2 mol de CO₂</b> (¿cuántos gramos son?).', check: (S, r) => S.sub === 1 && Math.abs(r.n - 2) < 1e-9 },
+    { text: 'Consigue <b>más de 10 mol de O₂</b>.', check: (S, r) => S.sub === 3 && r.n > 10 }],
+  info: [
+    { cls: 'materials', title: '📘 EL MOL', html: '<p>Un <b>mol</b> es una cantidad de partículas: 6.022 × 10²³ (número de Avogadro).</p><p>La <b>masa molar M</b> es la masa de un mol, en g/mol: se obtiene sumando las masas atómicas de la fórmula.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Los químicos no pueden contar átomos uno por uno, pero sí pesar una muestra. El mol convierte gramos en número de partículas.</p><div class="highlight"><b>Regla de oro:</b> mismo número de moles, mismo número de partículas; pero no la misma masa.</div>' }]
+});
+</script></body></html>

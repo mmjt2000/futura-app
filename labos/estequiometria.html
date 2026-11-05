@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Estequiometría</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num;
+TP.lab({
+  icon: '🧮', title: 'Laboratorio: Estequiometría y reactivo limitante', alt: 'Barras de moles al inicio y al final de la reacción',
+  subtitle: '<b>2 H₂ + O₂ → 2 H₂O</b> · Como una receta: el ingrediente que se acaba primero decide cuánto producto sale.',
+  controls: [{ id: 'h', label: 'Hidrógeno inicial (H₂)', min: 0, max: 12, step: 1, value: 6, unit: ' mol', dec: 0 }, { id: 'o', label: 'Oxígeno inicial (O₂)', min: 0, max: 8, step: 1, value: 2, unit: ' mol', dec: 0 }],
+  presets: [{ label: 'Proporción exacta (4 y 2)', values: { h: 4, o: 2 } }, { label: 'Sobra oxígeno (4 y 4)', values: { h: 4, o: 4 } }, { label: 'Sobra hidrógeno (8 y 2)', values: { h: 8, o: 2 } }],
+  compute({ h, o }) {
+    const rh = h / 2, ro = o, rec = Math.min(rh, ro), prod = 2 * rec, hf = h - 2 * rec, of = o - rec;
+    const lim = rec === 0 && h === 0 && o === 0 ? 'ninguno' : rh < ro ? 'H₂' : ro < rh ? 'O₂' : 'ninguno: proporción exacta';
+    return { h, o, hf, of, prod, rec, lim, exact: h > 0 && rh === ro, steps: [
+      { t: 'PASO 1 : La receta (razón molar)', html: '2 mol de H₂ + 1 mol de O₂ → 2 mol de H₂O' },
+      { t: 'PASO 2 : ¿Cuántas «recetas» alcanzan?', html: `H₂: ${h} / 2 = ${N(rh)} recetas<br>O₂: ${o} / 1 = ${N(ro)} recetas` },
+      { t: 'PASO 3 : Reactivo limitante (el que da menos recetas)', r: lim, cls: 'bad' },
+      { t: 'PASO 4 : Producto formado', html: `H₂O = 2 × ${N(rec)} recetas`, r: `${N(prod)} mol = ${N(prod * 18)} g`, cls: 'good' },
+      { t: 'PASO 5 : Reactivo sobrante (en exceso)', html: `H₂: ${h} − 2 × ${N(rec)} = ${N(hf)} mol (${N(hf * 2)} g)<br>O₂: ${o} − ${N(rec)} = ${N(of)} mol (${N(of * 32)} g)` },
+      { t: 'PASO 6 : Comprobación (conservación de la masa)', html: `Inicio: ${N(h * 2 + o * 32)} g`, f: `Final: ${N(hf * 2 + of * 32)} + ${N(prod * 18)} = ${N(hf * 2 + of * 32 + prod * 18)} g  ✅` }] };
+  },
+  draw(ctx, S, res, { W, H }) {
+    ctx.fillStyle = 'rgba(10,14,39,.6)'; ctx.fillRect(0, 0, W, H);
+    const mx = Math.max(12, res.h, res.o, res.prod), by = 330, hh = 240, g = [['H₂', '#38bdf8', res.h, res.hf], ['O₂', '#22c55e', res.o, res.of], ['H₂O', '#f472b6', 0, res.prod]];
+    g.forEach(([n, c, a, b], i) => { const x = 55 + i * 150;
+      [[a, 'rgba(148,163,184,.6)', 'Inicio'], [b, c, 'Final']].forEach(([v, col, lab], j) => { const bx = x + j * 52, hgt = v / mx * hh; ctx.fillStyle = col; ctx.fillRect(bx, by - hgt, 44, hgt); TP.tx(ctx, N(v), bx + 22, by - hgt - 6, '#e8eaf6'); TP.tx(ctx, lab, bx + 22, by + 14, '#94a3b8', 'center', '10px sans-serif'); });
+      TP.tx(ctx, n + ' (mol)', x + 48, by + 34, c); });
+    TP.line(ctx, 40, by, 470, by, 'rgba(255,255,255,.4)', 1.5); TP.tx(ctx, `Limitante: ${res.lim}`, W / 2, 30, '#f59e0b', 'center', 'bold 15px sans-serif');
+  },
+  retos: [
+    { text: 'Haz que el <b>H₂</b> sea el reactivo limitante.', check: (S, r) => r.lim === 'H₂' },
+    { text: 'Consigue la <b>proporción exacta</b>: que no sobre ningún reactivo.', check: (S, r) => r.exact },
+    { text: 'Obtén <b>exactamente 6 mol de agua</b>.', check: (S, r) => r.prod === 6 }],
+  info: [
+    { cls: 'materials', title: '📘 REACTIVO LIMITANTE', html: '<p>Los coeficientes de la ecuación son la <b>receta</b>: 2 H₂ por cada O₂.</p><p>El reactivo que alcanza para menos «recetas» es el <b>limitante</b>: se agota primero y fija cuánto producto se forma. El otro queda en <b>exceso</b>.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Los cohetes usan hidrógeno y oxígeno como combustible: si llevan de más de uno, es peso que no sirve. En la industria, calcular el limitante evita desperdiciar materia prima.</p><div class="highlight"><b>Regla de oro:</b> el producto lo decide el reactivo limitante, no el que sobra.</div>' }]
+});
+</script></body></html>

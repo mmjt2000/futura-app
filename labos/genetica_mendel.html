@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio de Genética de Mendel</title>
+<style>
+  :root { --bg:#0f1220; --card:#181c30; --line:#2b3150; --text:#e8eaf6; --muted:#9aa3c7;
+          --purple:#b36bff; --white:#f1f1f8; --accent:#4de0c1; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--bg); color:var(--text); padding:20px; }
+  h1 { font-size:1.4rem; margin:0 0 4px; }
+  p.sub { margin:0 0 18px; color:var(--muted); }
+  .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); max-width:980px; margin:auto; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; }
+  h2 { font-size:1rem; margin:0 0 12px; color:var(--accent); }
+  .parents { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  label { display:block; font-size:.85rem; color:var(--muted); margin-bottom:4px; }
+  select, button { font:inherit; border-radius:10px; border:1px solid var(--line); background:#20254a; color:var(--text); padding:9px 12px; }
+  button { cursor:pointer; transition:transform .15s, background .2s; }
+  button:hover { background:#2d3470; transform:translateY(-2px); }
+  button.primary { background:var(--accent); color:#06231d; border:none; font-weight:600; }
+  table.punnett { border-collapse:separate; border-spacing:6px; margin:auto; }
+  .punnett th { color:var(--muted); width:70px; height:34px; }
+  .punnett td { width:78px; height:78px; border-radius:12px; text-align:center; font-weight:700; font-size:1.2rem;
+                animation:pop .45s ease both; }
+  .punnett td.p { background:var(--purple); color:#1a0933; }
+  .punnett td.w { background:var(--white); color:#20254a; }
+  @keyframes pop { from { transform:scale(.4); opacity:0; } to { transform:scale(1); opacity:1; } }
+  .bar-row { display:grid; grid-template-columns:110px 1fr 90px; gap:8px; align-items:center; margin:8px 0; font-size:.9rem; }
+  .track { background:#0b0d1a; border-radius:8px; height:16px; overflow:hidden; position:relative; }
+  .fill { height:100%; width:0; border-radius:8px; transition:width .7s ease; }
+  .mark { position:absolute; top:0; bottom:0; width:2px; background:#fff; opacity:.8; }
+  .legend { font-size:.8rem; color:var(--muted); margin-top:8px; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .flowers { display:flex; flex-wrap:wrap; gap:3px; margin-top:12px; min-height:30px; }
+  .dot { width:12px; height:12px; border-radius:50%; animation:pop .3s ease both; }
+  .note { border-left:3px solid var(--accent); padding-left:10px; color:var(--muted); font-size:.9rem; margin-top:12px; }
+</style>
+</head>
+<body>
+<h1>🌱 Laboratorio de Genética de Mendel</h1>
+<p class="sub">Alelo A = flor púrpura (dominante) · alelo a = flor blanca (recesivo)</p>
+
+<div class="grid">
+  <section class="card">
+    <h2>1. Elige los progenitores</h2>
+    <div class="parents">
+      <div><label for="p1">Progenitor 1</label>
+        <select id="p1"><option>AA</option><option selected>Aa</option><option>aa</option></select></div>
+      <div style="font-size:1.6rem">×</div>
+      <div><label for="p2">Progenitor 2</label>
+        <select id="p2"><option>AA</option><option selected>Aa</option><option>aa</option></select></div>
+    </div>
+    <h2 style="margin-top:18px">2. Cuadro de Punnett</h2>
+    <table class="punnett" id="punnett" aria-label="Cuadro de Punnett"></table>
+    <p class="note" id="explain"></p>
+  </section>
+
+  <section class="card">
+    <h2>3. Proporciones esperadas</h2>
+    <div id="expected"></div>
+    <h2 style="margin-top:18px">4. Simula descendientes</h2>
+    <div class="row">
+      <button data-n="20">20</button><button data-n="100">100</button><button data-n="500" class="primary">500</button>
+    </div>
+    <div id="observed"></div>
+    <div class="flowers" id="flowers" aria-label="Descendientes simulados"></div>
+    <p class="legend">La marca blanca ┃ indica el valor esperado. Con más descendientes, el resultado se acerca más a lo esperado.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const phenotype = g => g.includes('A') ? 'p' : 'w';
+const sortG = g => g[0] === 'a' && g[1] === 'A' ? 'Aa' : g;
+
+function cross() {
+  const a = $('p1').value, b = $('p2').value, cells = [];
+  for (const x of a) for (const y of b) cells.push(sortG(x + y));
+  return { a, b, cells };
+}
+
+function render() {
+  const { a, b, cells } = cross();
+  let html = `<tr><th></th><th>${b[0]}</th><th>${b[1]}</th></tr>`;
+  [0, 1].forEach(r => {
+    html += `<tr><th>${a[r]}</th>`;
+    [0, 1].forEach(c => { const g = cells[r*2 + c];
+      html += `<td class="${phenotype(g)}" style="animation-delay:${(r*2+c)*80}ms">${g}</td>`; });
+    html += '</tr>';
+  });
+  $('punnett').innerHTML = html;
+
+  const g = { AA:0, Aa:0, aa:0 }; cells.forEach(x => g[x]++);
+  const pur = (g.AA + g.Aa) * 25, bla = g.aa * 25;
+  $('expected').innerHTML =
+    bar('AA', g.AA*25, '#8e44ff', g.AA*25) + bar('Aa', g.Aa*25, '#b36bff', g.Aa*25) + bar('aa', g.aa*25, '#cfd2ee', g.aa*25) +
+    bar('Púrpura', pur, '#b36bff', pur) + bar('Blanca', bla, '#f1f1f8', bla);
+  $('explain').textContent = `Genotipos: ${g.AA*25} % AA, ${g.Aa*25} % Aa, ${g.aa*25} % aa. Fenotipos: ${pur} % púrpura y ${bla} % blanca.`;
+  $('observed').innerHTML = ''; $('flowers').innerHTML = '';
+  requestAnimationFrame(() => document.querySelectorAll('#expected .fill').forEach(f => f.style.width = f.dataset.w + '%'));
+  window._cells = cells; window._exp = { pur, bla };
+}
+
+function bar(name, pct, color, mark) {
+  return `<div class="bar-row"><span>${name}</span><div class="track"><div class="fill" data-w="${pct}" style="background:${color}"></div>
+    ${mark !== null ? `<div class="mark" style="left:${mark}%"></div>` : ''}</div><span>${pct.toFixed(0)} %</span></div>`;
+}
+
+function simulate(n) {
+  const cells = window._cells; let pur = 0; const dots = [];
+  for (let i = 0; i < n; i++) { const p = phenotype(cells[Math.floor(Math.random() * 4)]) === 'p'; if (p) pur++; dots.push(p); }
+  const pp = pur / n * 100, pb = 100 - pp;
+  $('observed').innerHTML = `<p style="margin:12px 0 0;color:var(--muted)">Resultado de ${n} descendientes:</p>` +
+    bar('Púrpura', pp, '#b36bff', window._exp.pur) + bar('Blanca', pb, '#f1f1f8', window._exp.bla);
+  requestAnimationFrame(() => document.querySelectorAll('#observed .fill').forEach(f => f.style.width = f.dataset.w + '%'));
+  $('flowers').innerHTML = dots.slice(0, 120).map((p, i) =>
+    `<span class="dot" style="background:${p ? '#b36bff' : '#f1f1f8'};animation-delay:${i*8}ms"></span>`).join('');
+}
+
+document.querySelectorAll('[data-n]').forEach(b => b.addEventListener('click', () => simulate(+b.dataset.n)));
+$('p1').addEventListener('change', render); $('p2').addEventListener('change', render);
+render();
+</script>
+</body>
+</html>

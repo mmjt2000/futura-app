@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — La parábola</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, sg = TP.sg;
+TP.lab({
+  icon: '📈', title: 'Laboratorio: La parábola', alt: 'Gráfica de la parábola con sus raíces y su vértice',
+  subtitle: 'Ecuación: <b>y = ax² + bx + c</b> · Mueve los controles, prueba los casos y cumple los retos.',
+  controls: [
+    { id: 'a', label: 'Coeficiente <b>a</b>', min: -3, max: 3, step: 0.5, value: 1 },
+    { id: 'b', label: 'Coeficiente <b>b</b>', min: -8, max: 8, step: 0.5, value: 0 },
+    { id: 'c', label: 'Coeficiente <b>c</b>', min: -12, max: 12, step: 0.5, value: -4 }],
+  presets: [
+    { label: 'x² − 4x − 12 (Ana y Luis)', values: { a: 1, b: -4, c: -12 } }, { label: 'x² − 5x + 6', values: { a: 1, b: -5, c: 6 } },
+    { label: 'Raíz doble: x² − 4x + 4', values: { a: 1, b: -4, c: 4 } }, { label: 'Sin raíces: x² + 1', values: { a: 1, b: 0, c: 1 } }],
+  compute({ a, b, c }) {
+    if (a === 0) return { line: true, steps: [{ t: 'PASO 1 : Ecuación actual', html: `y = ${N(b)}x ${sg(c)}` },
+      { t: '⚠️ ATENCIÓN', html: '<span class="warning">Con a = 0 ya no es una ecuación cuadrática: la gráfica es una recta. Mueve a para volver a la parábola.</span>' }] };
+    const D = b * b - 4 * a * c, xv = -b / (2 * a), yv = a * xv * xv + b * xv + c, roots = [];
+    if (D >= 0) { roots.push((-b - Math.sqrt(D)) / (2 * a)); if (D > 0) roots.push((-b + Math.sqrt(D)) / (2 * a)); roots.sort((p, q) => p - q); }
+    const steps = [{ t: 'PASO 1 : Ecuación actual', html: `y = ${N(a)}x² ${sg(b)}x ${sg(c)}` },
+      { t: 'PASO 2 : Discriminante (Δ = b² − 4ac)', html: `Δ = (${N(b)})² − 4(${N(a)})(${N(c)})<br>${D > 0 ? 'Δ > 0 → dos raíces reales distintas' : D === 0 ? 'Δ = 0 → una raíz doble' : 'Δ < 0 → ninguna raíz real'}`, f: `Δ = ${N(D)}`, cls: D < 0 ? 'bad' : 'good' },
+      { t: 'PASO 3 : Raíces (fórmula general)', html: D >= 0 ? `x = (−b ± √Δ) / 2a = (${N(-b)} ± √${N(D)}) / ${N(2 * a)}` : 'No hay raíces reales: la parábola no toca el eje x.',
+        f: D > 0 ? `x₁ = ${N(roots[0])}    x₂ = ${N(roots[1])}` : D === 0 ? `x = ${N(roots[0])} (raíz doble)` : '', cls: 'good' },
+      { t: 'PASO 4 : Vértice y eje de simetría', html: `xv = −b / 2a = ${N(-b)} / ${N(2 * a)}<br>yv = a·xv² + b·xv + c`, f: `V = (${N(xv)}, ${N(yv)})   Eje: x = ${N(xv)}` },
+      { t: 'PASO 5 : Apertura y corte con el eje y', html: `${a > 0 ? 'Hacia arriba ↑ (a > 0): el vértice es un <b>mínimo</b>' : 'Hacia abajo ↓ (a < 0): el vértice es un <b>máximo</b>'}<br>Corta el eje y en (0, ${N(c)})` },
+      { t: 'PASO 6 : Formas equivalentes', html: `Canónica: y = ${N(a)}(x ${sg(-xv)})² ${sg(yv)}` + (D > 0 ? `<br>Factorizada: y = ${N(a)}(x ${sg(-roots[0])})(x ${sg(-roots[1])})` : D === 0 ? `<br>Factorizada: y = ${N(a)}(x ${sg(-roots[0])})²` : '') }];
+    return { D, xv, yv, roots, steps };
+  },
+  draw(ctx, { a, b, c }, res, { W, H }) {
+    const g = TP.plane(ctx, W, H, { x0: -8, x1: 8, y0: -20, y1: 20, xt: 2, yt: 5 });
+    g.clip(); ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 3; ctx.beginPath();
+    for (let i = 0; i <= 400; i++) { const x = -8 + 16 * i / 400, y = a * x * x + b * x + c; i ? ctx.lineTo(g.X(x), g.Y(y)) : ctx.moveTo(g.X(x), g.Y(y)); }
+    ctx.stroke(); g.unclip(); if (res.line) return;
+    TP.line(ctx, g.X(res.xv), g.t, g.X(res.xv), g.b, 'rgba(167,139,250,.6)', 1.5, [5, 4]);
+    res.roots.forEach(x => { if (Math.abs(x) <= 8) { TP.dot(ctx, g.X(x), g.Y(0), 6, '#22c55e'); TP.tx(ctx, N(x), g.X(x), g.Y(0) + 28, '#22c55e'); } });
+    if (Math.abs(res.xv) <= 8 && Math.abs(res.yv) <= 20) { TP.dot(ctx, g.X(res.xv), g.Y(res.yv), 6, '#f59e0b'); TP.tx(ctx, `V(${N(res.xv)}, ${N(res.yv)})`, g.X(res.xv) + (res.xv > 3 ? -8 : 8), g.Y(res.yv) + (a > 0 ? 20 : -10), '#f59e0b', res.xv > 3 ? 'right' : 'left', 'bold 11px sans-serif'); }
+    if (Math.abs(c) <= 20) TP.dot(ctx, g.X(0), g.Y(c), 4, '#f472b6');
+  },
+  retos: [
+    { text: 'Haz que la parábola corte el eje x en <b>x = 2</b> y <b>x = 5</b>.', check: (S, r) => r.roots && r.roots.length === 2 && Math.abs(r.roots[0] - 2) < 1e-9 && Math.abs(r.roots[1] - 5) < 1e-9 },
+    { text: 'Consigue <b>una sola raíz</b> (Δ = 0).', check: (S, r) => r.D === 0 },
+    { text: 'Consigue una parábola que abra <b>hacia abajo</b> y <b>no corte</b> el eje x.', check: (S, r) => r.D < 0 && S.a < 0 }],
+  info: [
+    { cls: 'materials', title: '📘 ¿QUÉ SIGNIFICA CADA PASO?', html: '<p><b>Discriminante (Δ):</b> b² − 4ac. Dice cuántas raíces reales tiene la ecuación.</p><p><b>Raíces:</b> los valores de x donde la parábola corta el eje x (y = 0).</p><p><b>Vértice:</b> el punto más alto o más bajo. Está sobre el eje de simetría x = −b / 2a.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>La trayectoria de un balón y la forma de una antena parabólica son parábolas. Las raíces dicen dónde cae el balón y el vértice, su altura máxima.</p><div class="highlight"><b>Regla de oro:</b> si Δ < 0 la parábola nunca toca el eje x, y la ecuación no tiene solución real.</div>' }]
+});
+</script></body></html>

@@ -1,0 +1,11 @@
+{
+  "name": "Futura",
+  "short_name": "Futura",
+  "description": "Aprende aplicando: parcours PISA para Maryse y Laeticia",
+  "lang": "es",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1220",
+  "theme_color": "#0f1220",
+  "icons": [{ "src": "/static/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

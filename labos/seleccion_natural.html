@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Selección natural</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, nextP = (p, s) => p * (1 + s) / (1 + s * p), traj = (p0, s, n) => { const a = [p0]; for (let i = 0; i < n; i++) a.push(nextP(a[i], s)); return a; };
+TP.lab({
+  icon: '🦋', title: 'Laboratorio: Selección natural', alt: 'Proporción de polillas oscuras a lo largo de las generaciones', H: 470,
+  subtitle: 'Polillas oscuras y claras sobre un tronco. Si los depredadores ven peor a un color, su proporción cambia generación tras generación.',
+  controls: [{ id: 'p0', label: 'Polillas <b>oscuras</b> al inicio', min: 0.1, max: 0.9, step: 0.1, value: 0.1, fmt: v => N(v * 100, 0) + ' %' }, { id: 's', label: 'Ventaja de las oscuras <b>s</b> (negativa = ventaja de las claras)', min: -0.5, max: 0.5, step: 0.05, value: 0.2, dec: 2 }, { id: 'g', label: 'Generaciones <b>g</b>', min: 0, max: 30, step: 1, value: 10, dec: 0 }],
+  presets: [{ label: 'Tronco con hollín (s = 0.30)', values: { s: 0.3 } }, { label: 'Bosque limpio (s = −0.30)', values: { s: -0.3, p0: 0.5 } }, { label: 'Sin selección (s = 0)', values: { s: 0 } }],
+  compute({ p0, s, g }) {
+    const t = traj(p0, s, 30), pg = t[g], gen = t.findIndex(p => p > 0.9), low = t.findIndex(p => p < 0.1);
+    return { t, pg, steps: [
+      { t: 'PASO 1 : Población inicial', html: `Oscuras: ${N(p0 * 100, 0)} % · Claras: ${N((1 - p0) * 100, 0)} %` },
+      { t: 'PASO 2 : Aptitud (éxito para sobrevivir y reproducirse)', html: `Oscuras: 1 + s = ${N(1 + s, 2)}<br>Claras: 1` , cls: 'good' },
+      { t: 'PASO 3 : Fórmula de una generación', html: 'p′ = p(1 + s) / (1 + s·p)', f: `p₁ = ${N(p0, 2)}(${N(1 + s, 2)}) / (1 + ${N(s, 2)}·${N(p0, 2)}) = ${N(t[1], 3)}` },
+      { t: `PASO 4 : Proporción en la generación ${g}`, r: `${N(pg * 100, 1)} % oscuras`, cls: 'good' },
+      { t: 'PASO 5 : ¿Cuándo domina un color?', html: s > 0 ? (gen > 0 ? `Las oscuras superan el 90 % en la generación <b>${gen}</b>.` : 'En 30 generaciones no llegan al 90 %.') : s < 0 ? (low > 0 ? `Las oscuras bajan de 10 % en la generación <b>${low}</b>.` : 'En 30 generaciones no bajan de 10 %.') : 'Sin ventaja de ningún color, la proporción no cambia.' },
+      { t: 'CONCLUSIÓN', html: 'La selección natural actúa sobre la <b>variación que ya existe</b>: no crea el rasgo, cambia su frecuencia.' }] };
+  },
+  draw(ctx, { p0, s, g }, res, { W, H }) {
+    const gp = TP.plane(ctx, W, H - 70, { x0: 0, x1: 30, y0: 0, y1: 100, xt: 5, yt: 20, lm: 44, xl: 'generaciones', yl: 'oscuras (%)', yf: v => v + '%' });
+    ctx.strokeStyle = '#4de0c1'; ctx.lineWidth = 3; ctx.beginPath(); res.t.forEach((p, i) => i ? ctx.lineTo(gp.X(i), gp.Y(p * 100)) : ctx.moveTo(gp.X(i), gp.Y(p * 100))); ctx.stroke();
+    TP.dot(ctx, gp.X(g), gp.Y(res.pg * 100), 7, '#f59e0b'); TP.tx(ctx, `${N(res.pg * 100, 0)} %`, gp.X(g) + 10, gp.Y(res.pg * 100) - 10, '#f59e0b', g > 22 ? 'right' : 'left');
+    ctx.fillStyle = 'rgba(10,14,39,.6)'; ctx.fillRect(0, H - 70, W, 70); TP.tx(ctx, `Población en la generación ${g} (40 polillas)`, 14, H - 52, '#94a3b8', 'left', '11px sans-serif');
+    const dark = Math.round(res.pg * 40); for (let i = 0; i < 40; i++) TP.dot(ctx, 22 + (i % 20) * 23, H - 36 + Math.floor(i / 20) * 22, 8, i < dark ? '#4b5563' : '#e5e7eb');
+  },
+  retos: [
+    { text: 'Haz que las oscuras superen el <b>90 %</b> en <b>15 generaciones o menos</b>.', check: (S, r) => S.g <= 15 && r.pg > 0.9 },
+    { text: 'Partiendo de <b>50 % o más</b> de oscuras, logra que bajen del <b>10 %</b>.', check: (S, r) => S.p0 >= 0.5 && r.pg < 0.1 },
+    { text: 'Comprueba que <b>sin selección (s = 0)</b> la proporción no cambia.', check: (S, r) => S.s === 0 && S.g > 0 && Math.abs(r.pg - S.p0) < 1e-9 }],
+  info: [
+    { cls: 'materials', title: '📘 SELECCIÓN NATURAL', html: '<p>En una población hay <b>variación</b> hereditaria. Los individuos con mayor <b>aptitud</b> sobreviven y se reproducen más.</p><p>Con el tiempo, sus rasgos se vuelven más frecuentes en la población.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Explica por qué las bacterias se vuelven resistentes a los antibióticos y por qué las polillas de Inglaterra se oscurecieron cuando el hollín cubrió los troncos.</p><div class="highlight"><b>Regla de oro:</b> los individuos no cambian: cambia la proporción de los rasgos en la población.</div>' }]
+});
+</script></body></html>

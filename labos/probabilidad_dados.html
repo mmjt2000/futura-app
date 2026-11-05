@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Probabilidad</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, d6 = () => 1 + Math.floor(Math.random() * 6), fav = s => 6 - Math.abs(s - 7);
+const roll = (S, k) => { for (let i = 0; i < k; i++) { S.cnt[d6() + d6()]++; S.n++; } };
+TP.lab({
+  icon: '🎲', title: 'Laboratorio: Dos dados y la probabilidad', alt: 'Frecuencia observada y probabilidad teórica de cada suma',
+  subtitle: 'Lanza dos dados muchas veces y compara la <b>frecuencia observada</b> con la <b>probabilidad teórica</b>.',
+  init: S => { S.cnt = Array(13).fill(0); S.n = 0; },
+  controls: [{ id: 's', label: 'Suma que estudias', min: 2, max: 12, step: 1, value: 5, dec: 0 }],
+  presets: [10, 100, 1000].map(k => ({ label: `🎲 Lanzar ${k} veces`, apply: S => roll(S, k) })).concat([{ label: '↺ Reiniciar', apply: S => { S.cnt = Array(13).fill(0); S.n = 0; } }]),
+  compute(S) {
+    const s = S.s, f = fav(s), P = f / 36, combos = []; for (let a = 1; a <= 6; a++) { const b = s - a; if (b >= 1 && b <= 6) combos.push(`(${a},${b})`); }
+    const obs = S.n ? S.cnt[s] / S.n : null;
+    return { f, P, obs, steps: [
+      { t: 'PASO 1 : Espacio muestral', html: 'Cada dado tiene 6 caras: 6 × 6 = <b>36</b> resultados posibles, todos igual de probables.' },
+      { t: `PASO 2 : Casos favorables a la suma ${s}`, html: combos.join(' ') , r: `${f} casos` },
+      { t: 'PASO 3 : Probabilidad teórica', html: `P(suma = ${s}) = ${f} / 36`, f: `= ${N(P, 4)} = ${N(P * 100, 1)} %`, cls: 'good' },
+      { t: 'PASO 4 : Lanzamientos realizados', r: String(S.n) },
+      { t: 'PASO 5 : Frecuencia observada', html: S.n ? `${S.cnt[s]} veces / ${S.n} lanzamientos` : 'Lanza los dados para ver resultados.', f: S.n ? `= ${N(obs * 100, 1)} %   (diferencia: ${N(Math.abs(obs - P) * 100, 1)} puntos)` : '', cls: 'bad' },
+      { t: 'PASO 6 : Ley de los grandes números', html: S.n < 100 ? 'Con pocos lanzamientos el azar puede alejarse mucho de la probabilidad teórica.' : 'Con muchos lanzamientos la frecuencia observada se acerca a la probabilidad teórica.' }] };
+  },
+  draw(ctx, S, res, { W, H }) {
+    const mx = S.n ? Math.max(...S.cnt.slice(2).map(c => c / S.n * 100)) : 0, top = Math.max(20, Math.ceil((mx + 2) / 5) * 5);
+    const g = TP.plane(ctx, W, H, { x0: 1.5, x1: 12.5, y0: 0, y1: top, xt: 1, yt: 5, yf: v => v + '%', lm: 44 });
+    for (let k = 2; k <= 12; k++) { const h = S.n ? S.cnt[k] / S.n * 100 : 0, x0 = g.X(k - 0.4), x1 = g.X(k + 0.4);
+      ctx.fillStyle = k === S.s ? 'rgba(56,189,248,.9)' : 'rgba(56,189,248,.45)'; ctx.fillRect(x0, g.Y(h), x1 - x0, g.Y(0) - g.Y(h));
+      TP.line(ctx, x0 - 2, g.Y(fav(k) / 36 * 100), x1 + 2, g.Y(fav(k) / 36 * 100), '#f59e0b', 3); }
+    TP.tx(ctx, '▬ Teórica', g.r - 4, g.t + 12, '#f59e0b', 'right'); TP.tx(ctx, '■ Observada', g.r - 4, g.t + 28, '#38bdf8', 'right');
+    TP.tx(ctx, `n = ${S.n}`, g.l + 6, g.t + 12, '#e8eaf6', 'left');
+  },
+  retos: [
+    { text: 'Lanza los dados <b>al menos 500 veces</b> en total.', check: S => S.n >= 500 },
+    { text: 'Estudia la suma <b>más probable</b>.', check: S => S.s === 7 },
+    { text: 'Estudia una suma con probabilidad <b>1/36</b> (la menos probable).', check: S => S.s === 2 || S.s === 12 }],
+  info: [
+    { cls: 'materials', title: '📘 PROBABILIDAD', html: '<p><b>Probabilidad teórica</b> = casos favorables ÷ casos posibles.</p><p><b>Frecuencia observada</b> = veces que ocurrió ÷ veces que lo intentaste.</p><p>Con dos dados, la suma 7 tiene 6 formas, y la 2 y la 12 solo 1.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Las aseguradoras, los meteorólogos y los diseñadores de juegos usan la probabilidad para decidir con incertidumbre.</p><div class="highlight"><b>Ley de los grandes números:</b> con pocas pruebas el azar engaña; con muchas, la frecuencia se acerca a la probabilidad.</div>' }]
+});
+</script></body></html>

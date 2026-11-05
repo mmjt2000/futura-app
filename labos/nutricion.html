@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio: Balance Energético</title>
+<style>
+  :root { --bg:#0f1220; --card:#181c30; --line:#2b3150; --text:#e8eaf6; --muted:#9aa3c7; --accent:#4de0c1; --warn:#f59e0b; --danger:#ff7a8a; --blue:#38bdf8; --purple:#a78bfa; }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:20px; font-family: system-ui, sans-serif; background:var(--bg); color:var(--text); }
+  h1 { font-size: 1.2rem; margin: 0 0 10px; color: var(--accent); }
+  h2 { font-size: 1rem; margin-top: 20px; color: var(--text); }
+  .grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; max-width: 1100px; margin: auto; }
+  @media(max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .category { margin-bottom: 15px; }
+  .category h3 { font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px; }
+  .food-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .food-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: #0b0d1a; border: 1px solid var(--line); border-radius: 8px; font-size: 0.9rem; }
+  .food-item label { flex: 1; cursor: pointer; }
+  .food-item input { width: 50px; padding: 4px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--text); text-align: center; margin-left: 8px; }
+  .food-item .kcal { font-size: 0.75rem; color: var(--muted); margin-left: 8px; min-width: 50px; text-align: right; }
+  .total-row { display: flex; justify-content: space-between; padding: 12px 0 0; border-top: 2px solid var(--accent); font-size: 1.1rem; font-weight: bold; }
+  .result-box { margin-top: 15px; padding: 12px; border-radius: 10px; font-size: 0.95rem; line-height: 1.6; }
+  .result-box.ok { background: rgba(61, 220, 151, 0.1); border-left: 4px solid var(--accent); }
+  .result-box.bad { background: rgba(255, 122, 138, 0.1); border-left: 4px solid var(--danger); }
+  .result-box.warn { background: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--warn); }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; background: #20254a; color: var(--muted); margin-left: 8px; }
+  .macro-bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 8px; background: #0b0d1a; }
+  .macro-bar div { height: 100%; }
+  .macro-legend { display: flex; gap: 12px; font-size: 0.75rem; margin-top: 6px; color: var(--muted); }
+  .macro-legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+  .pro { color: var(--blue); } .pro::before { background: var(--blue); }
+  .car { color: var(--warn); } .car::before { background: var(--warn); }
+  .gra { color: var(--purple); } .gra::before { background: var(--purple); }
+</style>
+</head>
+<body>
+<h1>🍽️ Laboratorio: ¿Qué comes en un día?</h1>
+<div class="grid">
+  <!-- GAUCHE : Profil et sélection des aliments -->
+  <div class="card">
+    <h2>1. Tu perfil</h2>
+    <div style="display:flex;gap:15px;flex-wrap:wrap;align-items:center;">
+      <div><label style="font-size:0.85rem;color:var(--muted);">Edad</label><input type="number" id="age" value="14" min="10" max="18" style="width:60px;padding:6px;border-radius:6px;border:1px solid var(--line);background:#0b0d1a;color:var(--text);"></div>
+      <div><label style="font-size:0.85rem;color:var(--muted);">Actividad</label>
+        <select id="activity" style="padding:6px;border-radius:8px;background:#0b0d1a;color:var(--text);border:1px solid var(--line);">
+          <option value="1.2">Sedentaria</option>
+          <option value="1.5" selected>Moderada</option>
+          <option value="1.8">Intensa</option>
+        </select>
+      </div>
+    </div>
+    <p id="needs" style="font-size:0.9rem;margin-top:10px;"></p>
+
+    <h2>2. Tu día de comida</h2>
+    <div id="foods-container"></div>
+    <div class="total-row"><span>Total del día</span><span id="total-kcal">0 kcal</span></div>
+  </div>
+
+  <!-- DROITE : Résultat -->
+  <div class="card">
+    <h2>3. Análisis</h2>
+    <div id="analysis" class="result-box">
+      Introduce tus datos para ver el análisis.
+    </div>
+    <div id="macros" style="margin-top:15px;display:none;">
+      <h2 style="font-size:0.9rem;margin-bottom:8px;">Distribución de macronutrientes</h2>
+      <div class="macro-bar">
+        <div class="pro" id="bar-pro" style="width:0%"></div>
+        <div class="car" id="bar-car" style="width:0%"></div>
+        <div class="gra" id="bar-gra" style="width:0%"></div>
+      </div>
+      <div class="macro-legend">
+        <span class="pro" id="leg-pro">Proteínas: 0%</span>
+        <span class="car" id="leg-car">Carbohidratos: 0%</span>
+        <span class="gra" id="leg-gra">Grasas: 0%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const FOODS = [
+  // Catégorie: Desayuno
+  { cat: 'Desayuno', name: 'Huevo cocido', kcal: 78, pro: 6, car: 1, gra: 5 },
+  { cat: 'Desayuno', name: 'Pan blanco (rebanada)', kcal: 80, pro: 3, car: 15, gra: 1 },
+  { cat: 'Desayuno', name: 'Leche (1 vaso)', kcal: 120, pro: 8, car: 12, gra: 5 },
+  { cat: 'Desayuno', name: 'Café con leche', kcal: 80, pro: 3, car: 8, gra: 3 },
+  { cat: 'Desayuno', name: 'Cereal con leche', kcal: 250, pro: 6, car: 45, gra: 5 },
+  // Catégorie: Comidas típicas
+  { cat: 'Comidas', name: 'Taco de carne', kcal: 220, pro: 12, car: 20, gra: 10 },
+  { cat: 'Comidas', name: 'Taco de pollo', kcal: 180, pro: 14, car: 18, gra: 6 },
+  { cat: 'Comidas', name: 'Arroz (1 taza)', kcal: 240, pro: 5, car: 45, gra: 2 },
+  { cat: 'Comidas', name: 'Habichuelas (1 taza)', kcal: 200, pro: 12, car: 30, gra: 4 },
+  { cat: 'Comidas', name: 'Pollo a la plancha (100g)', kcal: 165, pro: 31, car: 0, gra: 3 },
+  { cat: 'Comidas', name: 'Plátano frito (1 unidad)', kcal: 200, pro: 1, car: 30, gra: 10 },
+  { cat: 'Comidas', name: 'Sopa de verduras', kcal: 120, pro: 3, car: 20, gra: 3 },
+  // Catégorie: Frutas y verduras
+  { cat: 'Frutas y verduras', name: 'Manzana', kcal: 80, pro: 0, car: 20, gra: 0 },
+  { cat: 'Frutas y verduras', name: 'Plátano', kcal: 105, pro: 1, car: 27, gra: 0 },
+  { cat: 'Frutas y verduras', name: 'Naranja', kcal: 60, pro: 1, car: 15, gra: 0 },
+  { cat: 'Frutas y verduras', name: 'Ensalada verde', kcal: 30, pro: 1, car: 5, gra: 0 },
+  // Catégorie: Bebidas
+  { cat: 'Bebidas', name: 'Agua (1 vaso)', kcal: 0, pro: 0, car: 0, gra: 0 },
+  { cat: 'Bebidas', name: 'Refresco (1 vaso)', kcal: 150, pro: 0, car: 40, gra: 0 },
+  { cat: 'Bebidas', name: 'Jugo natural', kcal: 110, pro: 0, car: 25, gra: 0 },
+  { cat: 'Bebidas', name: 'Té frío', kcal: 80, pro: 0, car: 20, gra: 0 },
+  // Catégorie: Snacks
+  { cat: 'Snacks', name: 'Dulce (1 pieza)', kcal: 100, pro: 0, car: 20, gra: 4 },
+  { cat: 'Snacks', name: 'Galletas (3 piezas)', kcal: 140, pro: 2, car: 20, gra: 6 },
+  { cat: 'Snacks', name: 'Papas fritas (paquete)', kcal: 250, pro: 3, car: 30, gra: 14 },
+  { cat: 'Snacks', name: 'Yogur natural', kcal: 100, pro: 6, car: 10, gra: 4 }
+];
+
+let selected = {};
+
+function renderFoods() {
+  const container = document.getElementById('foods-container');
+  const cats = [...new Set(FOODS.map(f => f.cat))];
+  container.innerHTML = '';
+  cats.forEach(cat => {
+    const div = document.createElement('div');
+    div.className = 'category';
+    div.innerHTML = `<h3>${cat}</h3>`;
+    const list = document.createElement('div');
+    list.className = 'food-list';
+    FOODS.filter(f => f.cat === cat).forEach((f, i) => {
+      const idx = FOODS.indexOf(f);
+      const item = document.createElement('div');
+      item.className = 'food-item';
+      item.innerHTML = `<label for="food-${idx}">${f.name}</label>
+        <span class="kcal">${f.kcal} kcal</span>
+        <input type="number" id="food-${idx}" data-idx="${idx}" value="${selected[idx] || 0}" min="0" max="10">`;
+      list.appendChild(item);
+    });
+    div.appendChild(list);
+    container.appendChild(div);
+  });
+  container.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', calculate);
+  });
+}
+
+function calculate() {
+  let total = 0, pro = 0, car = 0, gra = 0;
+  document.querySelectorAll('#foods-container input').forEach(input => {
+    const idx = parseInt(input.dataset.idx);
+    const q = parseInt(input.value) || 0;
+    selected[idx] = q;
+    const f = FOODS[idx];
+    total += q * f.kcal;
+    pro += q * f.pro;
+    car += q * f.car;
+    gra += q * f.gra;
+  });
+  document.getElementById('total-kcal').textContent = total + ' kcal';
+
+  const age = parseInt(document.getElementById('age').value) || 14;
+  const act = parseFloat(document.getElementById('activity').value) || 1.5;
+  const base = (age < 14 ? 1400 : 1600) + (age * 10);
+  const needs = Math.round(base * act);
+  document.getElementById('needs').innerHTML = `<b>Necesidad energética aproximada:</b> ${needs} kcal/día <span class="tag">edad ${age} · factor ${act}</span>`;
+
+  const box = document.getElementById('analysis');
+  const percent = Math.round((total / needs) * 100);
+
+  if (total === 0) {
+    box.className = 'result-box';
+    box.innerHTML = 'Añade alimentos a tu día para ver el análisis.';
+    document.getElementById('macros').style.display = 'none';
+    return;
+  }
+
+  if (percent < 70) {
+    box.className = 'result-box warn';
+    box.innerHTML = `⚠️ <b>Comes menos de lo que necesitas</b><br>Tu día aporta ${percent}% de tu necesidad energética.<br><span style="color:var(--muted);font-size:0.85rem;">Riesgo: fatiga, falta de concentración y pérdida de masa muscular.</span>`;
+  } else if (percent <= 110) {
+    box.className = 'result-box ok';
+    box.innerHTML = `✅ <b>¡Balance adecuado!</b><br>Tu día aporta ${percent}% de tu necesidad.<br><span style="color:var(--muted);font-size:0.85rem;">Buen equilibrio. Recuerda beber agua y comer variado.</span>`;
+  } else if (percent <= 150) {
+    box.className = 'result-box warn';
+    box.innerHTML = `⚠️ <b>Ligero exceso</b><br>Tu día aporta ${percent}% de tu necesidad (+${total - needs} kcal).<br><span style="color:var(--muted);font-size:0.85rem;">Si repites esto muchos días, puede llevar a aumento de peso.</span>`;
+  } else {
+    box.className = 'result-box bad';
+    box.innerHTML = `❌ <b>Exceso importante</b><br>Tu día aporta ${percent}% de tu necesidad.<br><span style="color:var(--muted);font-size:0.85rem;">El cuerpo almacena el exceso. Cuidado con los snacks y bebidas azucaradas.</span>`;
+  }
+
+  // Macros
+  const totalMacro = pro + car + gra || 1;
+  const pPro = Math.round(pro / totalMacro * 100);
+  const pCar = Math.round(car / totalMacro * 100);
+  const pGra = Math.round(gra / totalMacro * 100);
+  document.getElementById('bar-pro').style.width = pPro + '%';
+  document.getElementById('bar-car').style.width = pCar + '%';
+  document.getElementById('bar-gra').style.width = pGra + '%';
+  document.getElementById('leg-pro').textContent = `Proteínas: ${pPro}%`;
+  document.getElementById('leg-car').textContent = `Carbohidratos: ${pCar}%`;
+  document.getElementById('leg-gra').textContent = `Grasas: ${pGra}%`;
+  document.getElementById('macros').style.display = 'block';
+}
+
+document.getElementById('age').addEventListener('input', calculate);
+document.getElementById('activity').addEventListener('change', calculate);
+
+renderFoods();
+calculate();
+</script>
+</body>
+</html>

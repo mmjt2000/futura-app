@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — pH</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+const sci = v => { const e = Math.floor(Math.log10(v) + 1e-12), m = v / Math.pow(10, e); return `${N(m, 2)} × 10${e < 0 ? '⁻' : ''}${String(Math.abs(e)).replace(/\d/g, d => SUP[d])}`; };
+const SUB = [[2, 'jugo de limón'], [3, 'vinagre'], [5, 'café'], [6.5, 'leche'], [7, 'agua pura'], [7.5, 'sangre'], [8.5, 'bicarbonato'], [10, 'jabón'], [11, 'amoníaco'], [13, 'lejía']];
+const color = p => `hsl(${p <= 7 ? p / 7 * 120 : 120 + (p - 7) / 7 * 150}, 75%, 50%)`;
+TP.lab({
+  icon: '🧪', title: 'Laboratorio: pH, ácidos y bases', alt: 'Vaso con indicador universal y escala de pH',
+  subtitle: 'Mueve el <b>pH</b> y observa la concentración de iones, el color del indicador y cuántas veces cambia la acidez.',
+  controls: [{ id: 'pH', label: 'pH de la solución', min: 0, max: 14, step: 0.5, value: 5 }],
+  presets: [{ label: 'Jugo de limón', values: { pH: 2 } }, { label: 'Café', values: { pH: 5 } }, { label: 'Agua pura', values: { pH: 7 } }, { label: 'Bicarbonato', values: { pH: 8.5 } }, { label: 'Jabón', values: { pH: 10 } }, { label: 'Lejía', values: { pH: 13 } }],
+  compute({ pH }) {
+    const pOH = 14 - pH, H = Math.pow(10, -pH), OH = Math.pow(10, -pOH), f = Math.pow(10, Math.abs(7 - pH)), near = SUB.reduce((a, b) => Math.abs(b[0] - pH) < Math.abs(a[0] - pH) ? b : a);
+    const kind = pH < 7 ? 'ácida' : pH > 7 ? 'básica (alcalina)' : 'neutra';
+    return { pH, near, steps: [
+      { t: 'PASO 1 : pH actual', html: `pH = ${N(pH, 1)}`, r: kind, cls: pH < 7 ? 'bad' : pH > 7 ? '' : 'good' },
+      { t: 'PASO 2 : Iones de hidrógeno  [H⁺] = 10⁻ᵖᴴ', html: `[H⁺] = 10^(−${N(pH, 1)})`, f: `[H⁺] = ${sci(H)} mol/L` },
+      { t: 'PASO 3 : pOH = 14 − pH', html: `pOH = 14 − ${N(pH, 1)}`, r: N(pOH, 1) },
+      { t: 'PASO 4 : Iones hidróxido  [OH⁻] = 10⁻ᵖᴼᴴ', f: `[OH⁻] = ${sci(OH)} mol/L` },
+      { t: 'PASO 5 : Comparación con el agua pura (pH 7)', html: pH === 7 ? 'Es el agua pura: ni ácida ni básica.' : `Diferencia de ${N(Math.abs(7 - pH), 1)} unidades → 10^${N(Math.abs(7 - pH), 1)}`, r: pH === 7 ? '' : `${N(f, 0)} veces más ${pH < 7 ? 'ácida' : 'básica'}` },
+      { t: 'PASO 6 : Se parece a…', html: `${near[1]} (pH ≈ ${near[0]})` }] };
+  },
+  draw(ctx, { pH }, res, { W }) {
+    ctx.fillStyle = 'rgba(10,14,39,.6)'; ctx.fillRect(0, 0, W, 400);
+    const c = color(pH); ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.strokeStyle = 'rgba(255,255,255,.6)'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(190, 40); ctx.lineTo(190, 190); ctx.quadraticCurveTo(190, 230, 230, 230); ctx.lineTo(270, 230); ctx.quadraticCurveTo(310, 230, 310, 190); ctx.lineTo(310, 40); ctx.stroke();
+    ctx.fillStyle = c; ctx.beginPath(); ctx.moveTo(191, 100); ctx.lineTo(309, 100); ctx.lineTo(309, 190); ctx.quadraticCurveTo(309, 228, 270, 228); ctx.lineTo(230, 228); ctx.quadraticCurveTo(191, 228, 191, 190); ctx.closePath(); ctx.fill();
+    TP.tx(ctx, 'pH ' + N(pH, 1), 250, 170, '#0a0e27', 'center', 'bold 20px sans-serif');
+    for (let i = 0; i < 140; i++) { ctx.fillStyle = color(i / 10); ctx.fillRect(40 + i * 3, 290, 3.2, 26); }
+    for (let p = 0; p <= 14; p++) { TP.tx(ctx, p, 40 + p * 30, 336, 'rgba(255,255,255,.6)', 'center', '11px sans-serif'); TP.line(ctx, 40 + p * 30, 316, 40 + p * 30, 321, 'rgba(255,255,255,.6)', 1); }
+    TP.tx(ctx, 'ÁCIDO', 40, 276, '#ef4444', 'left', 'bold 11px sans-serif'); TP.tx(ctx, 'NEUTRO', 250, 276, '#22c55e', 'center', 'bold 11px sans-serif'); TP.tx(ctx, 'BÁSICO', 460, 276, '#a78bfa', 'right', 'bold 11px sans-serif');
+    const x = 40 + pH * 30; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(x, 288); ctx.lineTo(x - 7, 274); ctx.lineTo(x + 7, 274); ctx.closePath(); ctx.fill();
+    SUB.forEach(s => TP.dot(ctx, 40 + s[0] * 30, 303, 3, 'rgba(0,0,0,.55)')); TP.tx(ctx, 'Parecido a: ' + res.near[1], 250, 372, '#94a3b8', 'center', '13px sans-serif');
+  },
+  retos: [
+    { text: 'Elige el pH del <b>jugo de limón</b> (alrededor de 2).', check: S => S.pH === 2 },
+    { text: 'Consigue una solución <b>1000 veces más ácida</b> que el agua pura.', check: S => S.pH === 4 },
+    { text: 'Consigue una solución <b>básica</b> con pOH menor que 3.', check: S => S.pH > 11 }],
+  info: [
+    { cls: 'materials', title: '📘 ¿QUÉ ES EL pH?', html: '<p>El <b>pH</b> mide la concentración de iones de hidrógeno [H⁺]: pH = −log [H⁺].</p><p>Menor que 7 es <b>ácida</b>, 7 es <b>neutra</b> y mayor que 7 es <b>básica</b>. Siempre pH + pOH = 14.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>El pH de tu sangre, de la piel, del suelo y del agua de una alberca debe mantenerse en rangos muy precisos para que todo funcione.</p><div class="highlight"><b>Regla de oro:</b> la escala es logarítmica: cada unidad de pH cambia la acidez <b>10 veces</b>. Entre pH 5 y pH 2 hay ¡1000 veces!</div>' }]
+});
+</script></body></html>

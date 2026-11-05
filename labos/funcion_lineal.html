@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Función lineal</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, sg = TP.sg;
+TP.lab({
+  icon: '📈', title: 'Laboratorio: La función lineal', alt: 'Gráfica de la recta y = mx + b',
+  subtitle: 'Ecuación: <b>y = mx + b</b> · <b>m</b> es la pendiente y <b>b</b> la ordenada en el origen.',
+  controls: [
+    { id: 'm', label: 'Pendiente <b>m</b>', min: -5, max: 5, step: 0.5, value: 2 },
+    { id: 'b', label: 'Ordenada <b>b</b>', min: -8, max: 8, step: 1, value: 1, dec: 0 },
+    { id: 'x0', label: 'Evaluar en <b>x</b>', min: -5, max: 5, step: 1, value: 3, dec: 0 }],
+  presets: [{ label: 'y = 3x + 4', values: { m: 3, b: 4 } }, { label: 'y = −2x + 8', values: { m: -2, b: 8 } }, { label: 'Recta horizontal', values: { m: 0, b: 3 } }],
+  compute({ m, b, x0 }) {
+    const y0 = m * x0 + b, xi = m !== 0 ? -b / m : null, tabla = [-2, -1, 0, 1, 2].map(x => `${N(x, 0)}→${N(m * x + b)}`).join('   ');
+    return { m, b, x0, y0, xi, steps: [
+      { t: 'PASO 1 : Ecuación actual', html: `y = ${N(m)}x ${sg(b)}` },
+      { t: 'PASO 2 : Pendiente (cuánto cambia y por cada 1 de x)', html: m > 0 ? `m = ${N(m)} > 0 → la recta <b>sube</b>: y aumenta ${N(m)} por cada unidad.` : m < 0 ? `m = ${N(m)} < 0 → la recta <b>baja</b>: y disminuye ${N(-m)} por cada unidad.` : 'm = 0 → recta <b>horizontal</b>: y no cambia.', cls: 'good' },
+      { t: 'PASO 3 : Ordenada en el origen', html: `Corta el eje y en el punto (0, ${N(b)}).` },
+      { t: 'PASO 4 : Corte con el eje x (y = 0)', html: xi !== null ? `0 = ${N(m)}x ${sg(b)} → x = ${N(-b)} / ${N(m)}` : (b === 0 ? 'La recta coincide con el eje x.' : 'La recta es paralela al eje x: no lo corta.'), r: xi !== null ? `(${N(xi)}, 0)` : '' },
+      { t: `PASO 5 : Evaluar f(${N(x0, 0)})`, html: `f(${N(x0, 0)}) = ${N(m)}(${N(x0, 0)}) ${sg(b)}`, r: N(y0) },
+      { t: 'PASO 6 : Tabla de valores  (x → y)', f: tabla }] };
+  },
+  draw(ctx, { m, b }, res, { W, H }) {
+    const g = TP.plane(ctx, W, H, { x0: -11, x1: 11, y0: -9, y1: 9, xt: 2, yt: 2 });
+    g.clip(); TP.line(ctx, g.X(-11), g.Y(-11 * m + b), g.X(11), g.Y(11 * m + b), '#38bdf8', 3); g.unclip();
+    if (Math.abs(b) <= 9) { TP.dot(ctx, g.X(0), g.Y(b), 6, '#f59e0b'); TP.tx(ctx, `(0, ${N(b)})`, g.X(0) + 10, g.Y(b) - 8, '#f59e0b', 'left'); }
+    if (res.xi !== null && Math.abs(res.xi) <= 11) { TP.dot(ctx, g.X(res.xi), g.Y(0), 6, '#22c55e'); TP.tx(ctx, `(${N(res.xi)}, 0)`, g.X(res.xi), g.Y(0) - 10, '#22c55e'); }
+    if (Math.abs(res.y0) <= 9) { TP.line(ctx, g.X(res.x0), g.Y(0), g.X(res.x0), g.Y(res.y0), 'rgba(244,114,182,.6)', 1.5, [4, 4]); TP.dot(ctx, g.X(res.x0), g.Y(res.y0), 6, '#f472b6'); TP.tx(ctx, `(${N(res.x0, 0)}, ${N(res.y0)})`, g.X(res.x0) + 8, g.Y(res.y0) - 10, '#f472b6', 'left'); }
+  },
+  retos: [
+    { text: 'Haz una recta que pase por <b>(0, 4)</b> y <b>(2, 10)</b>.', check: S => S.b === 4 && S.m === 3 },
+    { text: 'Haz una recta que pase por el origen y por <b>(4, −8)</b>.', check: S => S.b === 0 && S.m === -2 },
+    { text: 'Crea una recta con <b>pendiente negativa</b> que corte el eje x en <b>x = 4</b>.', check: S => S.m < 0 && Math.abs(-S.b / S.m - 4) < 1e-9 }],
+  info: [
+    { cls: 'materials', title: '📘 ¿QUÉ SIGNIFICA CADA PARTE?', html: '<p><b>m (pendiente):</b> cuánto cambia y cuando x aumenta 1.</p><p><b>b (ordenada):</b> el valor de y cuando x = 0, es decir, el valor inicial.</p><p><b>Corte con el eje x:</b> el valor de x donde y = 0.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Un taxi cobra una bajada fija (b) y una cantidad por kilómetro (m). Los planes de celular y los recibos de luz funcionan igual.</p><div class="highlight"><b>Regla de oro:</b> pendiente positiva, la recta sube; negativa, baja; cero, es horizontal.</div>' }]
+});
+</script></body></html>

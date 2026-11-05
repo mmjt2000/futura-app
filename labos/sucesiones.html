@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Sucesiones</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, big = v => Math.abs(v) >= 1e6 ? v.toExponential(2).replace('e+', ' × 10^') : N(v, 2);
+TP.lab({
+  icon: '🧩', title: 'Laboratorio: Progresiones aritméticas y geométricas', alt: 'Puntos de los términos de una sucesión',
+  subtitle: 'Compara una progresión que <b>suma</b> la misma diferencia con otra que <b>multiplica</b> por la misma razón.',
+  init: S => { S.mode = 'ari'; },
+  controls: [{ id: 'a1', label: 'Primer término <b>a₁</b>', min: -10, max: 20, step: 1, value: 3, dec: 0 }, { id: 'q', label: 'Diferencia <b>d</b> o razón <b>r</b>', min: -4, max: 4, step: 0.5, value: 2 }, { id: 'n', label: 'Número de términos <b>n</b>', min: 2, max: 12, step: 1, value: 8, dec: 0 }],
+  presets: [{ label: '➕ Aritmética', apply: S => { S.mode = 'ari'; S.a1 = 3; S.q = 2; } }, { label: '✖️ Geométrica', apply: S => { S.mode = 'geo'; S.a1 = 1; S.q = 2; } }, { label: 'Geométrica decreciente', apply: S => { S.mode = 'geo'; S.a1 = 16; S.q = 0.5; } }],
+  compute(S) {
+    const { a1, q, n, mode } = S, ari = mode === 'ari', t = Array.from({ length: n }, (_, i) => ari ? a1 + i * q : a1 * Math.pow(q, i)), an = t[n - 1];
+    const Sn = ari ? n * (a1 + an) / 2 : (q === 1 ? a1 * n : a1 * (Math.pow(q, n) - 1) / (q - 1));
+    return { t, an, Sn, ari, steps: [
+      { t: 'PASO 1 : Tipo de progresión', r: ari ? 'Aritmética (suma d)' : 'Geométrica (multiplica por r)' },
+      { t: 'PASO 2 : Término general', html: ari ? `aₙ = a₁ + (n − 1)·d = ${a1} + (n − 1)(${N(q)})` : `aₙ = a₁ · rⁿ⁻¹ = ${a1} · (${N(q)})ⁿ⁻¹` },
+      { t: 'PASO 3 : Primeros términos', f: t.slice(0, 8).map(v => big(v)).join(', ') + (n > 8 ? ', …' : '') },
+      { t: `PASO 4 : Término a${n}`, html: ari ? `a${n} = ${a1} + ${n - 1}(${N(q)})` : `a${n} = ${a1} · (${N(q)})^${n - 1}`, r: big(an), cls: 'good' },
+      { t: `PASO 5 : Suma de los ${n} primeros`, html: ari ? `Sₙ = n(a₁ + aₙ)/2 = ${n}(${a1} + ${big(an)})/2` : (q === 1 ? 'Con r = 1 todos los términos son iguales: Sₙ = n·a₁' : `Sₙ = a₁(rⁿ − 1)/(r − 1) = ${a1}((${N(q)})^${n} − 1)/(${N(q)} − 1)`), r: big(Sn) },
+      { t: 'PASO 6 : Comportamiento', html: ari ? (q > 0 ? 'Crece de forma <b>lineal</b>.' : q < 0 ? 'Decrece de forma <b>lineal</b>.' : 'Es constante.') : (Math.abs(q) > 1 ? 'Crece (o decrece) de forma <b>exponencial</b>.' : Math.abs(q) < 1 && q !== 0 ? 'Los términos se <b>acercan a 0</b>.' : '') }] };
+  },
+  draw(ctx, S, res, { W, H }) {
+    const t = res.t, mn = Math.min(0, ...t), mxv = Math.max(1, ...t), pad = (mxv - mn) * 0.1, step = TP.nice(mxv - mn + 2 * pad, 5);
+    const g = TP.plane(ctx, W, H, { x0: 0, x1: S.n + 1, y0: Math.floor((mn - pad) / step) * step, y1: Math.ceil((mxv + pad) / step) * step, xt: S.n > 8 ? 2 : 1, yt: step, yf: big, lm: 62, xl: 'n' });
+    ctx.strokeStyle = S.mode === 'ari' ? '#38bdf8' : '#4de0c1'; ctx.lineWidth = 2; ctx.beginPath(); t.forEach((v, i) => i ? ctx.lineTo(g.X(i + 1), g.Y(v)) : ctx.moveTo(g.X(i + 1), g.Y(v))); ctx.stroke();
+    t.forEach((v, i) => { TP.dot(ctx, g.X(i + 1), g.Y(v), 5, S.mode === 'ari' ? '#38bdf8' : '#4de0c1'); if (S.n <= 8) TP.tx(ctx, big(v), g.X(i + 1), g.Y(v) - 10, '#e8eaf6', 'center', '10px sans-serif'); });
+  },
+  retos: [
+    { text: 'Haz una progresión <b>aritmética</b> cuyo <b>8.º término sea 31</b>.', check: S => S.mode === 'ari' && S.a1 + 7 * S.q === 31 },
+    { text: 'Haz una progresión <b>geométrica</b> cuya <b>suma de 5 términos sea 31</b>.', check: (S, r) => S.mode === 'geo' && S.n === 5 && Math.abs(r.Sn - 31) < 1e-9 },
+    { text: 'Haz una progresión <b>geométrica decreciente</b> (0 < r < 1) con términos positivos.', check: S => S.mode === 'geo' && S.q > 0 && S.q < 1 && S.a1 > 0 }],
+  info: [
+    { cls: 'materials', title: '📘 DOS TIPOS DE PROGRESIÓN', html: '<p><b>Aritmética:</b> cada término suma una diferencia constante d. 3, 7, 11, 15…</p><p><b>Geométrica:</b> cada término se multiplica por una razón constante r. 2, 6, 18, 54…</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Ahorrar una cantidad fija cada mes es aritmético; un capital con interés compuesto o una población que se duplica es geométrico.</p><div class="highlight"><b>Regla de oro:</b> a largo plazo, una progresión geométrica con r > 1 supera a cualquier aritmética.</div>' }]
+});
+</script></body></html>

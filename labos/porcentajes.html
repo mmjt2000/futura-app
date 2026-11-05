@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Porcentajes</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, $ = v => '$' + N(v, 2);
+TP.lab({
+  icon: '🏷️', title: 'Laboratorio: Descuentos e impuestos', alt: 'Barras del precio original, con descuentos y con impuesto',
+  subtitle: 'Aplica <b>dos descuentos sucesivos</b> y un <b>impuesto</b>, y descubre por qué los porcentajes no se suman.',
+  controls: [{ id: 'P', label: 'Precio original', min: 100, max: 2000, step: 50, value: 800, fmt: v => '$' + v }, { id: 'd1', label: 'Primer descuento', min: 0, max: 60, step: 5, value: 30, unit: ' %', dec: 0 }, { id: 'd2', label: 'Segundo descuento', min: 0, max: 60, step: 5, value: 10, unit: ' %', dec: 0 }, { id: 'tax', label: 'Impuesto (ITBIS / IVA)', min: 0, max: 25, step: 1, value: 18, unit: ' %', dec: 0 }],
+  presets: [{ label: '20 % + 10 %', values: { P: 800, d1: 20, d2: 10, tax: 18 } }, { label: '30 % + 20 % (¿50 %?)', values: { P: 1000, d1: 30, d2: 20, tax: 0 } }, { label: 'El impuesto anula el descuento', values: { P: 800, d1: 15, d2: 0, tax: 18 } }],
+  compute({ P, d1, d2, tax }) {
+    const p1 = P * (1 - d1 / 100), p2 = p1 * (1 - d2 / 100), fin = p2 * (1 + tax / 100), tot = (1 - p2 / P) * 100, naive = P * (1 - (d1 + d2) / 100);
+    return { P, p1, p2, fin, tot, naive, steps: [
+      { t: 'PASO 1 : Precio original', r: $(P) },
+      { t: `PASO 2 : Primer descuento (${d1} %)`, html: `${$(P)} × (1 − ${N(d1 / 100)})`, r: $(p1) },
+      { t: `PASO 3 : Segundo descuento (${d2} %) sobre el precio ya rebajado`, html: `${$(p1)} × (1 − ${N(d2 / 100)})`, r: $(p2), cls: 'good' },
+      { t: 'PASO 4 : Descuento total equivalente', html: `1 − ${N(p2 / P, 4)} = ${N(tot, 2)} %<br>(¡no ${d1 + d2} %, que sería sumarlos!)`, r: `${N(tot, 2)} %`, cls: 'bad' },
+      { t: `PASO 5 : Con impuesto (${tax} %)`, html: `${$(p2)} × (1 + ${N(tax / 100)})`, r: $(fin) },
+      { t: 'PASO 6 : Si se hubieran sumado los descuentos', html: `${$(P)} × (1 − ${N((d1 + d2) / 100)})`, f: `${$(naive)}  (diferencia: ${$(p2 - naive)})` }] };
+  },
+  draw(ctx, S, res, { W, H }) {
+    ctx.fillStyle = 'rgba(10,14,39,.6)'; ctx.fillRect(0, 0, W, H);
+    const bars = [['Original', res.P, '#94a3b8'], ['− 1.er desc.', res.p1, '#38bdf8'], ['− 2.º desc.', res.p2, '#22c55e'], ['+ impuesto', res.fin, '#f59e0b']], mx = Math.max(res.P, res.fin) * 1.12, by = 330, hh = 260, bw = 70;
+    bars.forEach(([n, v, c], i) => { const x = 40 + i * 112, h = v / mx * hh; ctx.fillStyle = c; ctx.fillRect(x, by - h, bw, h); TP.tx(ctx, $(v), x + bw / 2, by - h - 8, '#e8eaf6'); TP.tx(ctx, n, x + bw / 2, by + 18, '#94a3b8', 'center', '11px sans-serif'); });
+    TP.line(ctx, 30, by - res.naive / mx * hh, 470, by - res.naive / mx * hh, '#ef4444', 2, [6, 5]); TP.tx(ctx, `--- Línea roja: precio si se sumaran los descuentos (${$(res.naive)})`, 250, by + 42, '#ef4444', 'center', '11px sans-serif');
+    TP.line(ctx, 30, by, 470, by, 'rgba(255,255,255,.4)', 1.5);
+  },
+  retos: [
+    { text: 'Con <b>20 %</b> y <b>10 %</b>, comprueba que el descuento total es <b>28 %</b>.', check: (S, r) => S.d1 === 20 && S.d2 === 10 && Math.abs(r.tot - 28) < 1e-9 },
+    { text: 'Haz que el <b>impuesto anule el descuento</b>: precio final igual al original (± 2 %).', check: (S, r) => Math.abs(r.fin / r.P - 1) < 0.02 },
+    { text: 'Elige dos descuentos que sumen <b>más de 50 %</b> pero den un total <b>menor que 50 %</b>.', check: (S, r) => S.d1 + S.d2 > 50 && r.tot < 50 }],
+  info: [
+    { cls: 'materials', title: '📘 PORCENTAJES SUCESIVOS', html: '<p>Un descuento del d % multiplica el precio por <b>(1 − d/100)</b>. Un impuesto del i % lo multiplica por <b>(1 + i/100)</b>.</p><p>Con dos descuentos se <b>multiplican los factores</b>, no se suman los porcentajes.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Los carteles de «30 % + 20 %» confunden al comprador. El ITBIS (18 % en República Dominicana) o el IVA también cambian el precio final.</p><div class="highlight"><b>Regla de oro:</b> el segundo descuento se aplica sobre un precio que ya bajó, por eso vale menos.</div>' }]
+});
+</script></body></html>

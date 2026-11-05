@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUTURA — Tabla Periódica Viva</title>
+<style>
+  :root {
+    --bg-primary: #0a0e27;
+    --bg-card: rgba(255,255,255,0.04);
+    --border-card: rgba(255,255,255,0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-pink: #f472b6;
+    --accent-blue: #38bdf8;
+    --accent-green: #22c55e;
+    --accent-orange: #f59e0b;
+    --accent-purple: #a78bfa;
+    --accent-red: #ef4444;
+    
+    --family-alkali: #f87171;
+    --family-alkaline: #fb923c;
+    --family-transition: #facc15;
+    --family-post: #a3e635;
+    --family-metalloid: #34d399;
+    --family-nonmetal: #22d3ee;
+    --family-halogen: #60a5fa;
+    --family-noble: #a78bfa;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(ellipse at top, var(--bg-primary) 0%, #000 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 {
+    font-size: 22px; margin-bottom: 4px;
+    background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-blue));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab {
+    padding: 10px 18px; border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-card);
+    color: var(--text-secondary);
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .tab:hover { background: rgba(255,255,255,0.08); }
+  .tab.active {
+    background: rgba(56,189,248,0.15);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+  }
+
+  .main-layout { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
+  @media (max-width: 1000px) { .main-layout { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .periodic-table {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    gap: 3px;
+    margin-bottom: 20px;
+  }
+  .element {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s;
+    border: 1px solid transparent;
+    position: relative;
+    min-width: 0;
+  }
+  .element:hover { transform: scale(1.15); z-index: 10; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+  .element.selected { border: 2px solid #fff; box-shadow: 0 0 20px rgba(255,255,255,0.6); transform: scale(1.1); }
+  .element .num { font-size: 8px; opacity: 0.7; position: absolute; top: 2px; left: 4px; }
+  .element .symbol { font-size: 14px; font-weight: 800; line-height: 1; }
+  .element .name { font-size: 6px; opacity: 0.8; text-align: center; line-height: 1; margin-top: 2px; }
+  @media (max-width: 800px) { .element .num, .element .name { display: none; } .element .symbol { font-size: 11px; } }
+
+  .fam-alkali { background: var(--family-alkali); color: #000; }
+  .fam-alkaline { background: var(--family-alkaline); color: #000; }
+  .fam-transition { background: var(--family-transition); color: #000; }
+  .fam-post { background: var(--family-post); color: #000; }
+  .fam-metalloid { background: var(--family-metalloid); color: #000; }
+  .fam-nonmetal { background: var(--family-nonmetal); color: #000; }
+  .fam-halogen { background: var(--family-halogen); color: #000; }
+  .fam-noble { background: var(--family-noble); color: #000; }
+  .empty { visibility: hidden; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+  /* ============ PANNEAU DÉTAIL AMÉLIORÉ ============ */
+  .detail-panel { height: fit-content; }
+  .detail-panel h3 { font-size: 12px; color: var(--accent-orange); letter-spacing: 1.5px; margin-bottom: 12px; }
+  
+  .element-header {
+    text-align: center;
+    margin-bottom: 16px;
+    padding: 16px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 12px;
+    border: 2px solid var(--border-card);
+  }
+  .element-header .symbol-big {
+    font-size: 48px; font-weight: 800; line-height: 1;
+    margin-bottom: 4px;
+  }
+  .element-header .name-big {
+    font-size: 16px; font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .element-header .num-big {
+    font-size: 12px; color: var(--text-muted);
+    font-family: monospace;
+  }
+
+  /* Visualisation atomique */
+  .atom-visual {
+    position: relative;
+    width: 240px; height: 240px;
+    margin: 0 auto 20px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  
+  .nucleus {
+    position: absolute;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ff6b6b, #990000);
+    box-shadow: 0 0 30px rgba(239,68,68,0.6), inset -5px -5px 10px rgba(0,0,0,0.3);
+    z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+    text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  }
+  
+  .shell-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(255,255,255,0.15);
+  }
+  
+  .shell-ring.valence-ring {
+    border: 2px dashed rgba(34,197,94,0.4);
+  }
+  
+  .electron {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #93c5fd, #3b82f6);
+    box-shadow: 0 0 10px rgba(59,130,246,0.8);
+    z-index: 5;
+  }
+  
+  .electron.valence-electron {
+    background: radial-gradient(circle at 30% 30%, #86efac, #22c55e);
+    box-shadow: 0 0 12px rgba(34,197,94,0.9);
+    width: 12px; height: 12px;
+  }
+
+  .atom-legend {
+    display: flex; justify-content: center; gap: 16px;
+    margin-bottom: 16px; font-size: 11px;
+  }
+  .atom-legend-item { display: flex; align-items: center; gap: 6px; color: var(--text-secondary); }
+  .atom-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  /* Barre de complétion */
+  .completion-bar-container {
+    margin-bottom: 16px;
+  }
+  .completion-label {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .completion-bar {
+    height: 8px; background: rgba(255,255,255,0.08);
+    border-radius: 4px; overflow: hidden;
+  }
+  .completion-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+    border-radius: 4px;
+    transition: width 0.5s;
+  }
+
+  /* Tendance */
+  .tendency-box {
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .tendency-box.donate {
+    background: rgba(239,68,68,0.1);
+    border-left: 4px solid var(--accent-red);
+  }
+  .tendency-box.receive {
+    background: rgba(56,189,248,0.1);
+    border-left: 4px solid var(--accent-blue);
+  }
+  .tendency-box.stable {
+    background: rgba(167,139,250,0.1);
+    border-left: 4px solid var(--accent-purple);
+  }
+  .tendency-box .tendency-icon {
+    font-size: 28px; margin-bottom: 4px;
+  }
+  .tendency-box .tendency-title {
+    font-size: 14px; font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .tendency-box .tendency-desc {
+    font-size: 12px; color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .valence-info {
+    padding: 12px;
+    background: rgba(56,189,248,0.08);
+    border-left: 3px solid var(--accent-blue);
+    border-radius: 8px;
+    font-size: 12px; line-height: 1.6;
+  }
+  .valence-info b { color: var(--accent-blue); }
+
+  /* Mode Reaction & Balance (inchangé) */
+  .balance-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .balance-selector label { font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px; }
+  .balance-selector select { width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-card); border-radius: 8px; color: var(--text-primary); font-size: 13px; }
+  .balance-selector select:focus { outline: none; border-color: var(--accent-blue); }
+
+  .equation-display { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px; margin-bottom: 16px; text-align: center; }
+  .equation-display .eq-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; font-size: 20px; font-weight: 700; font-family: "Courier New", monospace; }
+  .equation-display input { width: 50px; padding: 8px; text-align: center; background: rgba(255,255,255,0.1); border: 1px solid var(--border-card); border-radius: 8px; color: #fff; font-size: 18px; font-weight: 700; font-family: monospace; }
+  .equation-display input:focus { outline: none; border-color: var(--accent-green); }
+  .equation-display .arrow { color: var(--accent-orange); font-size: 24px; }
+  .equation-display .compound { color: var(--accent-green); }
+
+  .balance-actions { display: flex; gap: 10px; margin-top: 16px; }
+  .balance-actions .btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; }
+
+  /* Carnet de cálculo del balanceo */
+  .carnet { margin-top: 20px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-card); border-radius: 14px; padding: 16px; }
+  .carnet h4 { font-size: 13px; color: var(--accent-orange); letter-spacing: 1.2px; margin-bottom: 8px; }
+  .carnet .cstep { padding: 10px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+  .carnet .cstep:last-child { border-bottom: none; }
+  .carnet .ctitle { font-size: 11px; font-weight: 700; color: var(--accent-purple); letter-spacing: 1px; margin-bottom: 6px; }
+  .carnet .ceq { font-family: monospace; font-size: 15px; color: var(--accent-green); background: rgba(0,0,0,0.3); padding: 8px 10px; border-radius: 8px; }
+  .carnet table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .carnet th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 4px 6px; }
+  .carnet td { padding: 6px; vertical-align: middle; border-top: 1px solid rgba(255,255,255,0.06); }
+  .carnet .sym { font-weight: 800; font-size: 15px; color: var(--text-primary); }
+  .carnet .bar { height: 6px; border-radius: 4px; margin-top: 4px; min-width: 2px; }
+  .carnet .bar.l { background: var(--accent-blue); } .carnet .bar.r { background: var(--accent-pink); }
+  .carnet tr.ok .st { color: var(--accent-green); font-weight: 700; } .carnet tr.ko .st { color: var(--accent-red); font-weight: 700; }
+  .carnet .tip { background: rgba(245,158,11,0.1); border-left: 3px solid var(--accent-orange); padding: 8px 12px; border-radius: 8px; color: var(--text-primary); }
+  .carnet .good { background: rgba(34,197,94,0.12); border-left-color: var(--accent-green); }
+  .carnet .muted { color: var(--text-muted); font-size: 12px; margin-top: 6px; }
+  .btn-check { background: linear-gradient(135deg, var(--accent-green), var(--accent-blue)); color: #fff; }
+  .btn-hint { background: rgba(255,255,255,0.08); color: var(--text-primary); border: 1px solid var(--border-card); }
+
+  .feedback-box { margin-top: 16px; padding: 16px; border-radius: 12px; font-size: 14px; line-height: 1.6; display: none; }
+  .feedback-box.correct { display: block; background: rgba(34,197,94,0.15); border-left: 4px solid var(--accent-green); color: var(--accent-green); }
+  .feedback-box.incorrect { display: block; background: rgba(239,68,68,0.15); border-left: 4px solid var(--accent-red); color: var(--accent-red); }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>⚛️ Tabla Periódica Viva</h1>
+  <div class="subtitle">No memorices: explora, haz clic y descubre por qué los elementos reaccionan como lo hacen.</div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setTab('table', this)">🧪 Tabla Interactiva</button>
+    <button class="tab" onclick="setTab('reaction', this)">⚡ Predictor de Reacciones</button>
+    <button class="tab" onclick="setTab('balance', this)">⚖️ Balanceo de Ecuaciones</button>
+  </div>
+
+  <!-- MODE TABLEAU -->
+  <div id="mode-table" class="main-layout">
+    <div class="panel">
+      <div class="periodic-table" id="periodic-table"></div>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:12px;">Se muestran los 36 primeros elementos, más la plata, el oro y el plomo. Los lantánidos y el resto de la tabla se estudian más adelante.</p>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--family-alkali)"></div>Metales Alcalinos</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--family-alkaline)"></div>Alcalinotérreos</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--family-transition)"></div>Transición</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--family-post)"></div>Post-transición</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--family-metalloid)"></div>Metaloides</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--family-nonmetal)"></div>No metales</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--family-halogen)"></div>Halógenos</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--family-noble)"></div>Gases Nobles</div>
+      </div>
+    </div>
+
+    <div class="panel detail-panel">
+      <h3>🔍 DETALLE DEL ELEMENTO</h3>
+      <div id="detail-content">
+        <p style="font-size:13px;color:var(--text-muted);text-align:center;padding:40px 0;">
+          Haz clic en un elemento de la tabla para ver su estructura atómica y entender por qué reacciona como lo hace.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODE RÉACTION -->
+  <div id="mode-reaction" class="main-layout hidden">
+    <div class="panel">
+      <h3 style="font-size:14px;color:var(--accent-orange);margin-bottom:16px;">⚡ Predice la reacción entre dos elementos</h3>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">La reacción depende de la <b>capa de valencia</b>. Los metales quieren <b>dar</b> electrones; los no metales quieren <b>recibir</b>.</p>
+      <div class="balance-selector">
+        <div><label>Elemento 1</label><select id="react1" onchange="predictReaction()"></select></div>
+        <div><label>Elemento 2</label><select id="react2" onchange="predictReaction()"></select></div>
+      </div>
+      <div id="reaction-result" style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; text-align: center;"></div>
+    </div>
+    <div class="panel">
+      <h3 style="font-size:12px;color:var(--accent-blue);margin-bottom:12px;">🧠 EL PORQUÉ</h3>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">Los átomos reaccionan para <b>completar su última capa de electrones</b> y alcanzar la estabilidad de los gases nobles.</p>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;"><b style="color:var(--accent-red)">Los metales</b> (grupos 1 y 2) tienen 1 o 2 electrones en su última capa. Tienden a <b>perderlos</b> y convertirse en iones positivos.</p>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;"><b style="color:var(--accent-blue)">Los no metales</b> (grupos 16 y 17) necesitan 1 o 2 electrones para completar su capa. Tienden a <b>ganarlos</b>.</p>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">Cuando un metal se une a un no metal, uno dona y el otro recibe. Esto es un <b>enlace iónico</b>. El resultado es una sal.</p>
+    </div>
+  </div>
+
+  <!-- MODE BALANCEO -->
+  <div id="mode-balance" class="main-layout hidden">
+    <div class="panel">
+      <h3 style="font-size:14px;color:var(--accent-orange);margin-bottom:16px;">⚖️ Equilibra la ecuación de neutralización</h3>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">Ácido + Base → Sal + Agua. Escribe los coeficientes que faltan para que la ecuación esté balanceada.</p>
+      <div class="balance-selector">
+        <div><label>Ácido</label><select id="acid-select" onchange="loadEquation()"></select></div>
+        <div><label>Base</label><select id="base-select" onchange="loadEquation()"></select></div>
+      </div>
+      <div class="equation-display" id="equation-display"></div>
+      <div class="balance-actions">
+        <button class="btn btn-check" onclick="checkBalance()">✓ Verificar</button>
+        <button class="btn btn-hint" onclick="showHint()">💡 Pista</button>
+      </div>
+      <div id="balance-feedback" class="feedback-box"></div>
+      <div class="carnet" id="carnet" aria-live="polite"></div>
+    </div>
+    <div class="panel">
+      <h3 style="font-size:12px;color:var(--accent-blue);margin-bottom:12px;">🧠 ¿POR QUÉ HAY QUE BALANCEAR?</h3>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">La <b>Ley de Conservación de la Masa</b> dice que la materia no se crea ni se destruye. El número de átomos de cada elemento debe ser <b>el mismo</b> en reactivos y productos.</p>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">En una neutralización, un ácido (H⁺) y una base (OH⁻) forman <b>agua (H₂O)</b> y una <b>sal</b>.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ DONNÉES ============
+const elements = [
+  { num: 1, sym: 'H', name: 'Hidrógeno', fam: 'nonmetal', row: 1, col: 1, valence: 1, type: 'nonmetal', info: 'Tiene 1 electrón. Puede compartirlo (H₂) o donarlo (H⁺).' },
+  { num: 2, sym: 'He', name: 'Helio', fam: 'noble', row: 1, col: 18, valence: 2, type: 'noble', info: 'Capa completa. No reacciona con nada.' },
+  { num: 3, sym: 'Li', name: 'Litio', fam: 'alkali', row: 2, col: 1, valence: 1, type: 'metal', info: '1 electrón. Lo pierde. Forma Li⁺.' },
+  { num: 4, sym: 'Be', name: 'Berilio', fam: 'alkaline', row: 2, col: 2, valence: 2, type: 'metal', info: '2 electrones. Forma Be²⁺.' },
+  { num: 5, sym: 'B', name: 'Boro', fam: 'metalloid', row: 2, col: 13, valence: 3, type: 'metalloid', info: 'Metaloide. Comparte electrones.' },
+  { num: 6, sym: 'C', name: 'Carbono', fam: 'nonmetal', row: 2, col: 14, valence: 4, type: 'nonmetal', info: '4 electrones. Base de la vida.' },
+  { num: 7, sym: 'N', name: 'Nitrógeno', fam: 'nonmetal', row: 2, col: 15, valence: 5, type: 'nonmetal', info: '5 electrones. Necesita 3 más.' },
+  { num: 8, sym: 'O', name: 'Oxígeno', fam: 'nonmetal', row: 2, col: 16, valence: 6, type: 'nonmetal', info: '6 electrones. Necesita 2 más. Forma O²⁻.' },
+  { num: 9, sym: 'F', name: 'Flúor', fam: 'halogen', row: 2, col: 17, valence: 7, type: 'nonmetal', info: '7 electrones. Necesita 1 más. Forma F⁻.' },
+  { num: 10, sym: 'Ne', name: 'Neón', fam: 'noble', row: 2, col: 18, valence: 8, type: 'noble', info: 'Capa completa. Estable.' },
+  { num: 11, sym: 'Na', name: 'Sodio', fam: 'alkali', row: 3, col: 1, valence: 1, type: 'metal', info: '1 electrón. Forma Na⁺.' },
+  { num: 12, sym: 'Mg', name: 'Magnesio', fam: 'alkaline', row: 3, col: 2, valence: 2, type: 'metal', info: '2 electrones. Forma Mg²⁺.' },
+  { num: 13, sym: 'Al', name: 'Aluminio', fam: 'post', row: 3, col: 13, valence: 3, type: 'metal', info: '3 electrones. Forma Al³⁺.' },
+  { num: 14, sym: 'Si', name: 'Silicio', fam: 'metalloid', row: 3, col: 14, valence: 4, type: 'metalloid', info: 'Metaloide. Base de los chips.' },
+  { num: 15, sym: 'P', name: 'Fósforo', fam: 'nonmetal', row: 3, col: 15, valence: 5, type: 'nonmetal', info: '5 electrones. Presente en el ADN.' },
+  { num: 16, sym: 'S', name: 'Azufre', fam: 'nonmetal', row: 3, col: 16, valence: 6, type: 'nonmetal', info: '6 electrones. Forma S²⁻.' },
+  { num: 17, sym: 'Cl', name: 'Cloro', fam: 'halogen', row: 3, col: 17, valence: 7, type: 'nonmetal', info: '7 electrones. Forma Cl⁻.' },
+  { num: 18, sym: 'Ar', name: 'Argón', fam: 'noble', row: 3, col: 18, valence: 8, type: 'noble', info: 'Capa completa. Estable.' },
+  { num: 19, sym: 'K', name: 'Potasio', fam: 'alkali', row: 4, col: 1, valence: 1, type: 'metal', info: '1 electrón. Forma K⁺.' },
+  { num: 20, sym: 'Ca', name: 'Calcio', fam: 'alkaline', row: 4, col: 2, valence: 2, type: 'metal', info: '2 electrones. Forma Ca²⁺.' },
+  { num: 21, sym: 'Sc', name: 'Escandio', fam: 'transition', row: 4, col: 3, valence: 3, type: 'metal', info: 'Forma Sc³⁺. Se usa en aleaciones ligeras muy resistentes.' },
+  { num: 22, sym: 'Ti', name: 'Titanio', fam: 'transition', row: 4, col: 4, valence: 4, type: 'metal', info: 'Fuerte y ligero. Forma Ti⁴⁺ y casi no se corroe.' },
+  { num: 23, sym: 'V', name: 'Vanadio', fam: 'transition', row: 4, col: 5, valence: 2, type: 'metal', info: 'Puede dar de 2 a 5 electrones. Endurece el acero.' },
+  { num: 24, sym: 'Cr', name: 'Cromo', fam: 'transition', row: 4, col: 6, valence: 3, type: 'metal', info: 'Forma Cr³⁺. Da brillo y protege del óxido (cromado).' },
+  { num: 25, sym: 'Mn', name: 'Manganeso', fam: 'transition', row: 4, col: 7, valence: 2, type: 'metal', info: 'Forma Mn²⁺. Es esencial en el acero y en el cuerpo humano.' },
+  { num: 27, sym: 'Co', name: 'Cobalto', fam: 'transition', row: 4, col: 9, valence: 2, type: 'metal', info: 'Forma Co²⁺. Se usa en imanes y en baterías.' },
+  { num: 28, sym: 'Ni', name: 'Níquel', fam: 'transition', row: 4, col: 10, valence: 2, type: 'metal', info: 'Forma Ni²⁺. Se usa en monedas y en baterías.' },
+  { num: 31, sym: 'Ga', name: 'Galio', fam: 'post', row: 4, col: 13, valence: 3, type: 'metal', info: 'Forma Ga³⁺. Se derrite en la mano, a unos 30 °C.' },
+  { num: 32, sym: 'Ge', name: 'Germanio', fam: 'metalloid', row: 4, col: 14, valence: 4, type: 'metalloid', info: 'Metaloide semiconductor. Se usa en electrónica.' },
+  { num: 33, sym: 'As', name: 'Arsénico', fam: 'metalloid', row: 4, col: 15, valence: 5, type: 'metalloid', info: 'Metaloide tóxico. Comparte electrones.' },
+  { num: 34, sym: 'Se', name: 'Selenio', fam: 'nonmetal', row: 4, col: 16, valence: 6, type: 'nonmetal', info: '6 electrones. Necesita 2 más. Forma Se²⁻.' },
+  { num: 35, sym: 'Br', name: 'Bromo', fam: 'halogen', row: 4, col: 17, valence: 7, type: 'nonmetal', info: '7 electrones. Forma Br⁻. Es un líquido rojizo.' },
+  { num: 36, sym: 'Kr', name: 'Kriptón', fam: 'noble', row: 4, col: 18, valence: 8, type: 'noble', info: 'Capa completa. Gas noble muy poco reactivo.' },
+  { num: 26, sym: 'Fe', name: 'Hierro', fam: 'transition', row: 4, col: 8, valence: 2, type: 'metal', info: 'Puede dar 2 o 3 electrones.' },
+  { num: 29, sym: 'Cu', name: 'Cobre', fam: 'transition', row: 4, col: 11, valence: 1, type: 'metal', info: 'Conductor. Dona 1 electrón (Cu⁺) o 2 (Cu²⁺).' },
+  { num: 30, sym: 'Zn', name: 'Zinc', fam: 'transition', row: 4, col: 12, valence: 2, type: 'metal', info: 'Forma Zn²⁺. Protege el hierro.' },
+  { num: 47, sym: 'Ag', name: 'Plata', fam: 'transition', row: 5, col: 11, valence: 1, type: 'metal', info: 'Conductor. Forma Ag⁺.' },
+  { num: 79, sym: 'Au', name: 'Oro', fam: 'transition', row: 6, col: 11, valence: 1, type: 'metal', info: 'Metal noble. No se oxida.' },
+  { num: 82, sym: 'Pb', name: 'Plomo', fam: 'post', row: 6, col: 14, valence: 4, type: 'metal', info: 'Tóxico. Forma Pb²⁺.' }
+];
+
+// ============ AYUDAS DE NOTACIÓN ============
+const SUB = '₀₁₂₃₄₅₆₇₈₉', SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+const sub = n => String(n).replace(/\d/g, d => SUB[d]);
+const sup = n => String(n).replace(/\d/g, d => SUP[d]);
+const gcdN = (a, b) => b === 0 ? a : gcdN(b, a % b);
+const ion = (sym, q, sign) => sym + (q > 1 ? sup(q) : '') + (sign > 0 ? '⁺' : '⁻');
+const anionNeed = el => el.sym === 'H' ? 1 : 8 - el.valence;
+const bonds = el => el.type === 'metalloid' ? el.valence : anionNeed(el);
+const count = (sym, n) => sym + (n > 1 ? sub(n) : '');
+
+// ============ CONSTRUCTION TABLEAU ============
+function buildTable() {
+  const table = document.getElementById('periodic-table');
+  table.innerHTML = '';
+  const grid = Array.from({ length: 7 }, () => Array(18).fill(null));
+  elements.forEach(el => { if (el.row <= 7 && el.col <= 18) grid[el.row - 1][el.col - 1] = el; });
+  for (let r = 0; r < 7; r++) {
+    for (let c = 0; c < 18; c++) {
+      const el = grid[r][c];
+      const div = document.createElement('div');
+      if (el) {
+        div.className = `element fam-${el.fam}`;
+        div.innerHTML = `<span class="num">${el.num}</span><span class="symbol">${el.sym}</span><span class="name">${el.name}</span>`;
+        div.addEventListener('click', () => showElement(el));
+        div.tabIndex = 0; div.setAttribute('role', 'button'); div.setAttribute('aria-label', `${el.name}, número atómico ${el.num}`);
+        div.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); showElement(el); } });
+        div.dataset.symbol = el.sym;
+      } else { div.className = 'element empty'; }
+      table.appendChild(div);
+    }
+  }
+}
+
+// ============ AFFICHAGE DÉTAIL AMÉLIORÉ ============
+function showElement(el) {
+  document.querySelectorAll('.element').forEach(e => e.classList.remove('selected'));
+  document.querySelector(`[data-symbol="${el.sym}"]`).classList.add('selected');
+  
+  const detail = document.getElementById('detail-content');
+  const shells = getShells(el.num);
+  const famColor = getFamColor(el.fam);
+  
+  // Déterminer la tendance
+  let tendency = { icon: '😴', title: 'Estable', desc: 'No necesita reaccionar.', class: 'stable' };
+  if (el.sym === 'H') {
+    tendency = { icon: '🔁', title: 'Puede DONAR 1 electrón o COMPARTIR 1', desc: 'Su única capa se completa con 2 electrones: forma H⁺ si dona o H₂ si comparte.', class: 'stable' };
+  } else if (el.type === 'metalloid') {
+    tendency = { icon: '🤝', title: 'Tiende a COMPARTIR electrones', desc: 'Los metaloides están entre metales y no metales: suelen formar enlaces covalentes.', class: 'stable' };
+  } else if (el.type === 'metal') {
+    tendency = { icon: '➡️', title: `Quiere DONAR ${el.valence} electrón(es)`, desc: 'Los metales pierden electrones para formar iones positivos.', class: 'donate' };
+  } else if (el.type === 'nonmetal' || el.type === 'halogen') {
+    const need = 8 - el.valence;
+    tendency = { icon: '⬅️', title: `Quiere RECIBIR ${need} electrón(es)`, desc: 'Los no metales ganan electrones para completar su capa.', class: 'receive' };
+  }
+  
+  // Construction du SVG atomique
+  const svgSize = 240;
+  const cx = svgSize / 2, cy = svgSize / 2;
+  const maxShells = shells.length;
+  
+  let svg = `<svg width="${svgSize}" height="${svgSize}" viewBox="0 0 ${svgSize} ${svgSize}" style="display:block;margin:0 auto 20px;">`;
+  
+  // Noyau
+  svg += `<circle cx="${cx}" cy="${cy}" r="25" fill="url(#nucleusGradient)" />`;
+  svg += `<text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">${el.num}</text>`;
+  
+  // Dégradé du noyau
+  svg += `<defs>
+    <radialGradient id="nucleusGradient" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#ff6b6b"/>
+      <stop offset="100%" stop-color="#990000"/>
+    </radialGradient>
+  </defs>`;
+  
+  // Couches
+  shells.forEach((count, idx) => {
+    const isValence = idx === shells.length - 1;
+    const radius = shells.length > 1 ? 36 + idx * Math.min(25, 80 / (shells.length - 1)) : 40;
+    
+    // Cercle de la couche
+    svg += `<circle cx="${cx}" cy="${cy}" r="${radius}" fill="none" stroke="${isValence ? 'rgba(34,197,94,0.5)' : 'rgba(255,255,255,0.15)'}" stroke-width="${isValence ? 2 : 1.5}" stroke-dasharray="${isValence ? '4,4' : '2,4'}" />`;
+    
+    // Électrons
+    const displayCount = count;
+    const er = shells.length > 4 ? 3 : 4;
+    for (let i = 0; i < displayCount; i++) {
+      const angle = (i / displayCount) * Math.PI * 2 - Math.PI / 2;
+      const ex = cx + Math.cos(angle) * radius;
+      const ey = cy + Math.sin(angle) * radius;
+      const electronColor = isValence ? '#22c55e' : '#3b82f6';
+      svg += `<circle cx="${ex}" cy="${ey}" r="${isValence ? 5 : er}" fill="${electronColor}" />`;
+      svg += `<circle cx="${ex}" cy="${ey}" r="${isValence ? 8 : er + 2}" fill="${electronColor}" opacity="0.3" />`;
+    }
+  });
+  
+  svg += `</svg>`;
+  
+  // Barre de complétion
+  const totalNeeded = el.num <= 2 ? 2 : 8;
+  const current = el.valence;
+  const percent = el.type === 'noble' ? 100 : (current / totalNeeded) * 100;
+  
+  const completionBar = `
+    <div class="completion-bar-container">
+      <div class="completion-label">
+        <span>Capa de valencia</span>
+        <span>${current} / ${totalNeeded} electrones</span>
+      </div>
+      <div class="completion-bar">
+        <div class="completion-fill" style="width: ${percent}%"></div>
+      </div>
+    </div>
+  `;
+  
+  detail.innerHTML = `
+    <div class="element-header" style="border-color: ${famColor};">
+      <div class="symbol-big" style="color: ${famColor};">${el.sym}</div>
+      <div class="name-big">${el.name}</div>
+      <div class="num-big">Z = ${el.num}</div>
+    </div>
+    
+    ${svg}
+    
+    <div class="atom-legend">
+      <div class="atom-legend-item"><div class="atom-legend-dot" style="background:#ff6b6b;"></div>Núcleo (${el.num} protones)</div>
+      <div class="atom-legend-item"><div class="atom-legend-dot" style="background:#3b82f6;"></div>Electrones internos</div>
+      <div class="atom-legend-item"><div class="atom-legend-dot" style="background:#22c55e;"></div>Electrones de valencia</div>
+    </div>
+    
+    ${completionBar}
+    
+    <div class="tendency-box ${tendency.class}">
+      <div class="tendency-icon">${tendency.icon}</div>
+      <div class="tendency-title">${tendency.title}</div>
+      <div class="tendency-desc">${tendency.desc}</div>
+    </div>
+    
+    <div class="valence-info">
+      <b>¿Por qué reacciona así?</b><br>
+      ${el.info}
+    </div>
+  `;
+}
+
+function getShells(num) {
+  const configs = { 1:[1],2:[2],3:[2,1],4:[2,2],5:[2,3],6:[2,4],7:[2,5],8:[2,6],9:[2,7],10:[2,8],11:[2,8,1],12:[2,8,2],13:[2,8,3],14:[2,8,4],15:[2,8,5],16:[2,8,6],17:[2,8,7],18:[2,8,8],19:[2,8,8,1],20:[2,8,8,2],21:[2,8,9,2], 22:[2,8,10,2], 23:[2,8,11,2], 24:[2,8,13,1], 25:[2,8,13,2], 27:[2,8,15,2], 28:[2,8,16,2], 31:[2,8,18,3], 32:[2,8,18,4], 33:[2,8,18,5], 34:[2,8,18,6], 35:[2,8,18,7], 36:[2,8,18,8], 26:[2,8,14,2],29:[2,8,18,1],30:[2,8,18,2],47:[2,8,18,18,1],79:[2,8,18,32,18,1],82:[2,8,18,32,18,4] };
+  return configs[num] || [2, 8, 8];
+}
+
+function getFamColor(fam) {
+  const colors = { alkali:'#f87171',alkaline:'#fb923c',transition:'#facc15',post:'#a3e635',metalloid:'#34d399',nonmetal:'#22d3ee',halogen:'#60a5fa',noble:'#a78bfa' };
+  return colors[fam] || '#fff';
+}
+
+// ============ MODES RÉACTION ET BALANCEO (inchangés) ============
+function populateSelectors() {
+  const select1 = document.getElementById('react1');
+  const select2 = document.getElementById('react2');
+  const sorted = [...elements].sort((a, b) => a.num - b.num);
+  sorted.forEach(el => {
+    const opt1 = document.createElement('option'); opt1.value = el.sym; opt1.textContent = `${el.sym} - ${el.name}`; select1.appendChild(opt1);
+    const opt2 = document.createElement('option'); opt2.value = el.sym; opt2.textContent = `${el.sym} - ${el.name}`; select2.appendChild(opt2);
+  });
+  select1.value = 'Na'; select2.value = 'Cl';
+}
+
+function predictReaction() {
+  const el1 = elements.find(e => e.sym === document.getElementById('react1').value);
+  const el2 = elements.find(e => e.sym === document.getElementById('react2').value);
+  const result = document.getElementById('reaction-result');
+  const box = (title, formula, text) => {
+    result.innerHTML = `<h4 style="color:var(--accent-pink);font-size:20px;margin-bottom:12px;">${title}</h4><div style="font-size:28px;font-weight:800;color:var(--accent-green);font-family:monospace;margin:12px 0;">${formula}</div><p style="font-size:13px;color:var(--text-secondary);line-height:1.7;text-align:left;">${text}</p>`;
+  };
+  if (!el1 || !el2 || el1.sym === el2.sym) { result.innerHTML = `<p style="color:var(--text-muted);">Elige dos elementos diferentes.</p>`; return; }
+  if (el1.type === 'noble' || el2.type === 'noble') {
+    const noble = el1.type === 'noble' ? el1 : el2;
+    box('😴 No hay reacción', noble.sym, `El ${noble.name} (${noble.sym}) es un gas noble. Su capa de valencia está completa y es muy estable.`); return;
+  }
+  const metals = [el1, el2].filter(e => e.type === 'metal'), others = [el1, el2].filter(e => e.type !== 'metal');
+  if (metals.length === 2) { box('🤝 Aleación', `${el1.sym}-${el2.sym}`, 'Dos metales no forman un compuesto iónico: se mezclan y forman una aleación.'); return; }
+  if (metals.length === 1) {
+    const m = metals[0], o = others[0];
+    if (o.type === 'metalloid') { box('🤝 Aleación o compuesto especial', `${m.sym}-${o.sym}`, `El ${m.name} y el ${o.name} (metaloide) forman compuestos o aleaciones especiales, no una sal simple.`); return; }
+    const q = m.valence, n = anionNeed(o);
+    if (n > 3) { box('🤔 Caso especial', `${m.sym} + ${o.sym}`, `El ${o.name} necesitaría recibir ${n} electrones, algo muy difícil: prefiere compartir electrones, por eso no forma una sal iónica simple.`); return; }
+    const g = gcdN(q, n), cm = n / g, co = q / g, f = count(m.sym, cm) + count(o.sym, co);
+    box('⚡ Enlace iónico', f, `${ion(m.sym, q, 1)} + ${ion(o.sym, n, -1)} → ${f}. Cada átomo de ${m.name} dona ${q} electrón(es) y cada átomo de ${o.name} recibe ${n}. Se necesitan ${cm} de ${m.sym} y ${co} de ${o.sym} para que los electrones donados igualen los recibidos.`); return;
+  }
+  const first = (x, y) => x.sym === 'H' ? y.col >= 16 : y.sym === 'H' ? !(x.col >= 16) : x.col <= y.col;
+  const [a, b] = first(el1, el2) ? [el1, el2] : [el2, el1];
+  const na = bonds(a), nb = bonds(b), g = gcdN(na, nb), ca = nb / g, cb = na / g, f = count(a.sym, ca) + count(b.sym, cb);
+  box('🔗 Enlace covalente', f, `Los dos necesitan completar su capa, así que comparten electrones: el ${a.name} forma ${na} enlace(s) y el ${b.name} forma ${nb}. Fórmula más sencilla: ${f} (modelo simplificado).`);
+}
+
+const acids = [
+  { formula: 'HCl', name: 'Ácido clorhídrico', h: 1, anion: 'Cl', anionCharge: -1 },
+  { formula: 'H₂SO₄', name: 'Ácido sulfúrico', h: 2, anion: 'SO₄', anionCharge: -2 },
+  { formula: 'HNO₃', name: 'Ácido nítrico', h: 1, anion: 'NO₃', anionCharge: -1 },
+  { formula: 'H₃PO₄', name: 'Ácido fosfórico', h: 3, anion: 'PO₄', anionCharge: -3 },
+  { formula: 'CH₃COOH', name: 'Ácido acético', h: 1, anion: 'CH₃COO', anionCharge: -1 }
+];
+const bases = [
+  { formula: 'NaOH', name: 'Hidróxido de sodio', oh: 1, cation: 'Na', cationCharge: 1 },
+  { formula: 'KOH', name: 'Hidróxido de potasio', oh: 1, cation: 'K', cationCharge: 1 },
+  { formula: 'Ca(OH)₂', name: 'Hidróxido de calcio', oh: 2, cation: 'Ca', cationCharge: 2 },
+  { formula: 'Mg(OH)₂', name: 'Hidróxido de magnesio', oh: 2, cation: 'Mg', cationCharge: 2 },
+  { formula: 'Al(OH)₃', name: 'Hidróxido de aluminio', oh: 3, cation: 'Al', cationCharge: 3 }
+];
+
+function populateBalanceSelectors() {
+  const acidSel = document.getElementById('acid-select');
+  const baseSel = document.getElementById('base-select');
+  acids.forEach(a => { const opt = document.createElement('option'); opt.value = a.formula; opt.textContent = `${a.formula} - ${a.name}`; acidSel.appendChild(opt); });
+  bases.forEach(b => { const opt = document.createElement('option'); opt.value = b.formula; opt.textContent = `${b.formula} - ${b.name}`; baseSel.appendChild(opt); });
+  acidSel.value = 'HCl'; baseSel.value = 'NaOH';
+}
+
+function getSaltFormula(acid, base) {
+  const cation = base.cation, cationCharge = base.cationCharge;
+  const anion = acid.anion, anionCharge = Math.abs(acid.anionCharge);
+  let cationCount = anionCharge, anionCount = cationCharge;
+  const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+  const g = gcd(cationCount, anionCount);
+  cationCount /= g; anionCount /= g;
+  const poly = (anion.match(/[A-Z]/g) || []).length > 1 || /[₀-₉]/.test(anion);
+  let formula = count(cation, cationCount);
+  formula += (poly && anionCount > 1) ? `(${anion})${sub(anionCount)}` : count(anion, anionCount);
+  return { formula, cationCount, anionCount };
+}
+
+const gcdAll = arr => arr.reduce((a, b) => gcdN(a, b), 0);
+const parseF = f => { const o = {}; (f.match(/[A-Z][a-z]?[₀-₉]*/g) || []).forEach(t => { const el = t.match(/[A-Z][a-z]?/)[0], n = t.slice(el.length); o[el] = (o[el] || 0) + (n ? [...n].reduce((a, d) => a * 10 + '₀₁₂₃₄₅₆₇₈₉'.indexOf(d), 0) : 1); }); return o; };
+let hintStep = 0;
+
+function currentEquation() {
+  const acid = acids.find(a => a.formula === document.getElementById('acid-select').value);
+  const base = bases.find(b => b.formula === document.getElementById('base-select').value);
+  const salt = getSaltFormula(acid, base);
+  const lcm = (a, b) => a * b / gcdN(a, b), l = lcm(acid.h, base.oh), a = l / acid.h, b = l / base.oh, s = a / salt.anionCount;
+  const baseAt = {}; baseAt[base.cation] = 1; baseAt.O = base.oh; baseAt.H = base.oh;
+  const saltAt = {}; saltAt[base.cation] = salt.cationCount; const an = parseF(acid.anion); for (const k in an) saltAt[k] = (saltAt[k] || 0) + an[k] * salt.anionCount;
+  return { acid, base, salt, l, a, b, s, names: [acid.formula, base.formula, salt.formula, 'H₂O'], parts: [parseF(acid.formula), baseAt, saltAt, { H: 2, O: 1 }] };
+}
+const readCoefs = () => ['coef-acid', 'coef-base', 'coef-salt', 'coef-water'].map(id => parseInt(document.getElementById(id).value) || 0);
+
+function loadEquation() {
+  const E = currentEquation(), { acid, base, salt } = E;
+  const equationDisplay = document.getElementById('equation-display');
+  const inp = id => `<input type="number" id="${id}" min="1" max="10" placeholder="?" oninput="renderCarnet()" aria-label="Coeficiente">`;
+  equationDisplay.innerHTML = `
+    <div class="eq-row">
+      ${inp('coef-acid')} <span>${acid.formula}</span>
+      <span style="color:var(--text-muted);">+</span>
+      ${inp('coef-base')} <span>${base.formula}</span>
+      <span class="arrow">→</span>
+      ${inp('coef-salt')} <span class="compound">${salt.formula}</span>
+      <span style="color:var(--text-muted);">+</span>
+      ${inp('coef-water')} <span class="compound">H₂O</span>
+    </div>`;
+  equationDisplay.dataset.correct = JSON.stringify({ acid: E.a, base: E.b, salt: E.s, water: E.l });
+  document.getElementById('balance-feedback').className = 'feedback-box';
+  hintStep = 0; renderCarnet();
+}
+
+function renderCarnet() {
+  const E = currentEquation(), c = readCoefs(), box = document.getElementById('carnet');
+  const els = [...new Set(E.parts.flatMap(p => Object.keys(p)))].sort((x, y) => (x === 'H' ? -2 : x === 'O' ? -1 : 0) - (y === 'H' ? -2 : y === 'O' ? -1 : 0));
+  const rows = els.map(el => {
+    const L = [0, 1].map(i => c[i] * (E.parts[i][el] || 0)), R = [2, 3].map(i => c[i] * (E.parts[i][el] || 0));
+    const lt = L[0] + L[1], rt = R[0] + R[1];
+    const ex = (idx, tot) => idx.filter(i => E.parts[i][el]).map(i => `${c[i] || '?'}×${E.parts[i][el]}`).join(' + ') + ` = <b>${tot}</b>`;
+    return { el, lt, rt, ok: lt === rt, lx: ex([0, 1], lt), rx: ex([2, 3], rt) };
+  });
+  const mx = Math.max(1, ...rows.flatMap(r => [r.lt, r.rt])), bal = c.every(v => v > 0) && rows.every(r => r.ok), g = gcdAll(c);
+  const eqStr = c.map((v, i) => `${v || '?'} ${E.names[i]}`);
+  const first = rows.find(r => !r.ok);
+  let tip;
+  if (c.every(v => v === 0)) tip = 'Empieza escribiendo un <b>1</b> en cada casilla y mira qué elementos no coinciden.';
+  else if (bal && g === 1) tip = '🎉 <b>¡Está balanceada!</b> Presiona <b>✓ Verificar</b>.';
+  else if (bal) tip = `Está balanceada, pero se puede <b>simplificar</b>: divide todos los coeficientes entre ${g}.`;
+  else if (c.some(v => v === 0)) tip = 'Escribe un coeficiente <b>mayor que 0</b> en las cuatro casillas.';
+  else {
+    const el = first.el, withEl = idx => idx.filter(i => E.parts[i][el]).map(i => E.names[i]).join(' o ');
+    tip = first.lt > first.rt ? `Hay <b>${first.lt}</b> átomos de <b>${el}</b> en los reactivos y solo <b>${first.rt}</b> en los productos. Sube el coeficiente de ${withEl([2, 3])}.`
+      : `Hay <b>${first.rt}</b> átomos de <b>${el}</b> en los productos y solo <b>${first.lt}</b> en los reactivos. Sube el coeficiente de ${withEl([0, 1])} (o baja el de un producto).`;
+  }
+  const steps = [
+    `Cuenta los <b>H</b> que libera el ácido (<b>${E.acid.h}</b>) y los <b>OH</b> que aporta la base (<b>${E.base.oh}</b>).`,
+    `Cada H⁺ se une a un OH⁻ y forma 1 H₂O. Deben reaccionar los mismos H⁺ que OH⁻: busca el <b>mínimo común múltiplo</b> de ${E.acid.h} y ${E.base.oh} → <b>${E.l}</b>.`,
+    `Coeficientes: ácido = ${E.l} ÷ ${E.acid.h} = <b>${E.a}</b>; base = ${E.l} ÷ ${E.base.oh} = <b>${E.b}</b>; agua = <b>${E.l}</b>.`,
+    `La sal usa los iones que quedan: ${E.a} ÷ ${E.salt.anionCount} = <b>${E.s}</b>.<div class="ceq" style="margin-top:6px;">${E.a} ${E.names[0]} + ${E.b} ${E.names[1]} → ${E.s} ${E.names[2]} + ${E.l} H₂O</div>`];
+  box.innerHTML = `<h4>📓 CARNET DE CÁLCULO</h4>
+    <div class="cstep"><div class="ctitle">PASO 1 : Tu ecuación</div><div class="ceq">${eqStr[0]} + ${eqStr[1]} → ${eqStr[2]} + ${eqStr[3]}</div></div>
+    <div class="cstep"><div class="ctitle">PASO 2 : Cuenta los átomos (coeficiente × subíndice)</div>
+      <table><tr><th>Elemento</th><th>Reactivos</th><th>Productos</th><th></th></tr>${rows.map(r => `<tr class="${r.ok ? 'ok' : 'ko'}"><td class="sym">${r.el}</td>
+        <td>${r.lx}<div class="bar l" style="width:${r.lt / mx * 100}%"></div></td><td>${r.rx}<div class="bar r" style="width:${r.rt / mx * 100}%"></div></td>
+        <td class="st">${r.ok ? '✅' : '❌ ' + (r.lt > r.rt ? 'faltan ' + (r.lt - r.rt) : 'sobran ' + (r.rt - r.lt))}</td></tr>`).join('')}</table></div>
+    <div class="cstep"><div class="ctitle">PASO 3 : ¿Qué ajustar?</div><div class="tip ${bal && g === 1 ? 'good' : ''}">${tip}</div>
+      <div class="muted">Truco: empieza por H y OH. Cada H⁺ del ácido + un OH⁻ de la base forman 1 H₂O.</div></div>
+    <div class="cstep"><div class="ctitle">🧭 MÉTODO PASO A PASO (${hintStep} de 4)</div>${hintStep ? steps.slice(0, hintStep).map((t, i) => `<div style="margin-bottom:6px;">${i + 1}. ${t}</div>`).join('') : '<span class="muted">Presiona <b>💡 Pista</b> para ver el método, un paso a la vez.</span>'}</div>`;
+}
+
+function checkBalance() {
+  const E = currentEquation(), c = readCoefs(), feedback = document.getElementById('balance-feedback');
+  const els = [...new Set(E.parts.flatMap(p => Object.keys(p)))];
+  const bal = c.every(v => v > 0) && els.every(el => c[0] * (E.parts[0][el] || 0) + c[1] * (E.parts[1][el] || 0) === c[2] * (E.parts[2][el] || 0) + c[3] * (E.parts[3][el] || 0)), g = gcdAll(c);
+  if (c.some(v => v <= 0)) { feedback.className = 'feedback-box incorrect'; feedback.innerHTML = '❌ <b>Faltan coeficientes.</b> Escribe un número mayor que 0 en las cuatro casillas.'; }
+  else if (bal && g === 1) { feedback.className = 'feedback-box correct'; feedback.innerHTML = '✅ <b>¡Correcto!</b> La ecuación está balanceada con los coeficientes más sencillos.'; }
+  else if (bal) { feedback.className = 'feedback-box incorrect'; feedback.innerHTML = `⚠️ <b>Casi.</b> Está balanceada, pero se puede simplificar: divide todos los coeficientes entre ${g}.`; }
+  else { feedback.className = 'feedback-box incorrect'; feedback.innerHTML = '❌ <b>Todavía no.</b> Mira el carnet de cálculo: las filas con ❌ muestran qué elementos no coinciden.'; }
+}
+
+function showHint() {
+  hintStep = Math.min(4, hintStep + 1); renderCarnet();
+  const feedback = document.getElementById('balance-feedback');
+  feedback.className = 'feedback-box correct'; feedback.innerHTML = `💡 <b>Pista ${hintStep} de 4:</b> mira el método en el carnet de cálculo.`;
+}
+
+function setTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mode-table').classList.add('hidden');
+  document.getElementById('mode-reaction').classList.add('hidden');
+  document.getElementById('mode-balance').classList.add('hidden');
+  
+  if (tab === 'table') document.getElementById('mode-table').classList.remove('hidden');
+  else if (tab === 'reaction') document.getElementById('mode-reaction').classList.remove('hidden');
+  else if (tab === 'balance') { document.getElementById('mode-balance').classList.remove('hidden'); loadEquation(); }
+}
+
+// INIT
+buildTable();
+populateSelectors();
+populateBalanceSelectors();
+predictReaction();
+loadEquation();
+</script>
+</body>
+</html>

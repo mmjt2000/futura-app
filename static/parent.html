@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/static/icon.svg">
+<link rel="stylesheet" href="/static/style.css">
+<title>Futura — Espace parent</title>
+</head>
+<body>
+<header><a href="/" id="logo-link" style="color:var(--accent);font-weight:700;text-decoration:none">✨ Futura · Espace parent</a><div id="who"></div></header>
+<main id="app"></main>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const h = (t, a = {}, ...k) => { const e = document.createElement(t); for (const [n, v] of Object.entries(a)) { if (v == null || v === false) continue; n === 'class' ? e.className = v : n.startsWith('on') ? e.addEventListener(n.slice(2), v) : e.setAttribute(n, v); } e.append(...k.flat()); return e; };
+const app = $('#app'); let token = sessionStorage.getItem('futura:parent');
+async function call(path, body) {
+  const r = await fetch('/api/parent' + path, { method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json', ...(token ? { 'X-Futura-Token': token } : {}) }, body: body ? JSON.stringify(body) : undefined });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) { if (r.status === 401 && path !== '/login') { sessionStorage.removeItem('futura:parent'); token = null; login(); } throw new Error(d.detail || 'Erreur'); }
+  return d;
+}
+function login() {
+  const input = h('input', { type: 'password', placeholder: 'Code parent', 'aria-label': 'Code parent', autocomplete: 'current-password' }), msg = h('p', { class: 'muted', role: 'alert' });
+  const go = async () => { try { token = (await call('/login', { pin: input.value })).token; sessionStorage.setItem('futura:parent', token); load(); } catch (e) { msg.textContent = e.message; input.value = ''; } };
+  input.addEventListener('keydown', e => e.key === 'Enter' && go());
+  app.replaceChildren(h('h1', {}, 'Espace parent'), h('div', { class: 'card' }, h('p', { class: 'muted' }, 'Entre le code parent pour voir la progression de chaque élève.'), h('div', { class: 'row' }, input, h('button', { class: 'primary', onclick: go }, 'Entrer')), msg));
+  input.focus();
+}
+const date = s => s ? new Date(s).toLocaleDateString('fr-CA') : '—';
+async function load() {
+  let data; try { data = await call('/summary'); } catch (e) { return; }
+  app.replaceChildren(h('div', { class: 'row', style: 'justify-content:space-between' }, h('h1', {}, 'Progression'), h('div', {}, h('button', { onclick: load }, '↻ Actualiser'), h('button', { onclick: () => { sessionStorage.removeItem('futura:parent'); token = null; login(); } }, 'Quitter'))),
+    ...data.map(u => {
+      const done = u.parcours.filter(p => p.done).length, pin = h('input', { type: 'password', inputmode: 'numeric', maxlength: '8', placeholder: 'Nouveau PIN (4–8 chiffres)', 'aria-label': 'PIN de ' + u.name, style: 'max-width:240px' }), pm = h('span', { class: 'muted' });
+      const setPin = async v => { try { const r = await call('/pin', { user: u.name, pin: v }); pm.textContent = r.has_pin ? '✅ PIN enregistré' : '✅ PIN supprimé'; pin.value = ''; } catch (e) { pm.textContent = '❌ ' + e.message; } };
+      return h('section', { class: 'card' }, h('h2', {}, `${u.name} · ⭐ ${u.xp} XP`), h('p', { class: 'muted' }, `${done} parcours terminés sur ${u.parcours.length} · PIN : ${u.has_pin ? 'activé 🔒' : 'aucun'}`),
+        h('table', { class: 'tbl' }, h('thead', {}, h('tr', {}, ['Parcours', 'Matière', 'Exercices', 'Essais', 'État'].map(t => h('th', {}, t)))),
+          h('tbody', {}, u.parcours.map(p => h('tr', {}, h('td', {}, p.title), h('td', {}, p.category === 'matematicas' ? '🧮 Maths' : '🔬 Sciences'), h('td', {}, `${p.solved}/4`), h('td', {}, String(p.attempts)),
+            h('td', {}, h('span', { class: 'pill' + (p.done ? ' ok' : '') }, p.done ? '✅ ' + date(p.completed_at) : p.solved ? 'En cours' : 'À faire')))))),
+        h('h3', { style: 'margin-top:16px' }, 'Prédictions de départ'),
+        ...(u.predictions.length ? u.predictions.map(p => h('div', { class: 'refl' }, h('b', {}, p.title), h('div', { class: 'muted' }, p.question), h('div', {}, '🔮 « ' + p.text + ' »', p.result ? '  →  ' + ({ acerte: '✅ correcte', casi: '🤏 proche', cambie: '🔄 différente' })[p.result] : '  (pas encore évaluée)'))) : [h('p', { class: 'muted' }, 'Aucune prédiction pour le moment.')]),
+        h('h3', { style: 'margin-top:16px' }, 'Réflexions récentes'),
+        ...(u.reflections.length ? u.reflections.map(r => h('div', { class: 'refl' }, h('b', {}, `${'★'.repeat(r.confidence)}${'☆'.repeat(5 - r.confidence)} `), `${r.title} · ${date(r.created_at)}`, r.comment ? h('div', {}, '« ' + r.comment + ' »') : '')) : [h('p', { class: 'muted' }, 'Aucune réflexion pour le moment.')]),
+        h('h3', { style: 'margin-top:16px' }, 'Code PIN'), h('div', { class: 'row' }, pin, h('button', { class: 'primary', onclick: () => setPin(pin.value) }, 'Définir'), h('button', { onclick: () => setPin(null) }, 'Supprimer'), pm));
+    }));
+}
+token ? load() : login();
+</script>
+</body>
+</html>

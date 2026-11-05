@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Interés compuesto</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, M = TP.money;
+TP.lab({
+  icon: '💰', title: 'Laboratorio: Interés simple vs. compuesto', alt: 'Crecimiento del dinero con interés simple y compuesto',
+  subtitle: 'Cambia el capital, la tasa y los años, y mira cómo el interés compuesto se separa del simple.',
+  controls: [
+    { id: 'K', label: 'Capital inicial', min: 100, max: 10000, step: 100, value: 1000, fmt: TP.money },
+    { id: 'r', label: 'Tasa anual', min: 1, max: 20, step: 1, value: 8, unit: ' %', dec: 0 },
+    { id: 't', label: 'Años', min: 1, max: 30, step: 1, value: 15, dec: 0 }],
+  presets: [{ label: '$1,000 al 10 % por 2 años', values: { K: 1000, r: 10, t: 2 } }, { label: 'Ahorro a 30 años (8 %)', values: { K: 1000, r: 8, t: 30 } }, { label: 'Regla del 72 (6 %)', values: { K: 1000, r: 6, t: 12 } }],
+  compute({ K, r, t }) {
+    const i = r / 100, simple = K * (1 + i * t), comp = K * Math.pow(1 + i, t), yrs = Math.min(t, 3); let v = K; const rows = [];
+    for (let y = 1; y <= yrs; y++) { const nv = v * (1 + i); rows.push(`Año ${y}: ${M(v)} × ${N(1 + i, 2)} = ${N(nv, 2)}`); v = nv; }
+    return { K, i, t, simple, comp, steps: [
+      { t: 'PASO 1 : Datos', html: `C = ${M(K)} · r = ${r} % = ${N(i)} · n = ${t} años` },
+      { t: 'PASO 2 : Interés simple  M = C(1 + r·n)', html: `M = ${M(K)}(1 + ${N(i)}·${t}) = ${M(K)} × ${N(1 + i * t)}`, r: M(simple) },
+      { t: 'PASO 3 : Interés compuesto  M = C(1 + r)ⁿ', html: `M = ${M(K)}(1 + ${N(i)})^${t} = ${M(K)} × ${N(Math.pow(1 + i, t), 3)}`, r: M(comp), cls: 'good' },
+      { t: 'PASO 4 : Diferencia', html: `Compuesto − simple = ${M(comp)} − ${M(simple)}`, r: M(comp - simple) },
+      { t: 'PASO 5 : Año por año (intereses sobre intereses)', f: rows.join('\n').replace(/\n/g, '<br>') },
+      { t: 'PASO 6 : Regla del 72', html: `Años para duplicar ≈ 72 / r = 72 / ${r}`, r: `≈ ${N(72 / r, 1)} años` }] };
+  },
+  draw(ctx, { K, t }, res, { W, H }) {
+    const step = TP.nice(res.comp * 1.05, 5), ymax = Math.ceil(res.comp * 1.05 / step) * step;
+    const g = TP.plane(ctx, W, H, { x0: 0, x1: t, y0: 0, y1: ymax, xt: Math.max(1, TP.nice(t, 6)), yt: step, yf: M, lm: 62 });
+    const curve = (f, col) => { ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.beginPath(); for (let i = 0; i <= 200; i++) { const x = t * i / 200; i ? ctx.lineTo(g.X(x), g.Y(f(x))) : ctx.moveTo(g.X(x), g.Y(f(x))); } ctx.stroke(); };
+    curve(x => K * (1 + res.i * x), '#94a3b8'); curve(x => K * Math.pow(1 + res.i, x), '#4de0c1');
+    TP.dot(ctx, g.X(t), g.Y(res.simple), 5, '#94a3b8'); TP.dot(ctx, g.X(t), g.Y(res.comp), 5, '#4de0c1');
+    TP.tx(ctx, 'Compuesto ' + M(res.comp), g.r - 4, g.Y(res.comp) - 10, '#4de0c1', 'right'); TP.tx(ctx, 'Simple ' + M(res.simple), g.r - 4, g.Y(res.simple) + 18, '#94a3b8', 'right');
+  },
+  retos: [
+    { text: 'Haz que el capital se <b>duplique en menos de 8 años</b> con interés compuesto.', check: (S, r) => S.t < 8 && r.comp >= 2 * S.K },
+    { text: 'Logra que la diferencia entre compuesto y simple sea <b>mayor que el capital inicial</b>.', check: (S, r) => r.comp - r.simple > S.K }],
+  info: [
+    { cls: 'materials', title: '📘 ¿QUÉ ES CADA INTERÉS?', html: '<p><b>Simple:</b> los intereses se calculan siempre sobre el capital inicial. Crece en línea recta.</p><p><b>Compuesto:</b> los intereses se suman al capital y también generan intereses. Crece como una curva.</p><p><b>Regla del 72:</b> 72 ÷ tasa estima los años para duplicar el dinero.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Con el interés compuesto, ahorrar pronto vale mucho más que ahorrar mucho. Pero también funciona en tu contra cuando tienes una deuda.</p><div class="highlight"><b>Regla de oro:</b> en una inversión, el tiempo es tu aliado; en una deuda con tarjeta de crédito, es tu enemigo.</div>' }]
+});
+</script></body></html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Semejanza</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num;
+TP.lab({
+  icon: '🔺', title: 'Laboratorio: Triángulos semejantes', alt: 'Dos triángulos semejantes, el original y el ampliado',
+  subtitle: 'Cambia la <b>razón de semejanza k</b> y observa cómo cambian los lados, el perímetro y el área.',
+  controls: [{ id: 'k', label: 'Razón de semejanza <b>k</b>', min: 0.5, max: 3, step: 0.5, value: 1 }],
+  presets: [{ label: 'Doble (k = 2)', values: { k: 2 } }, { label: 'Mitad (k = 0.5)', values: { k: 0.5 } }, { label: 'Triple (k = 3)', values: { k: 3 } }],
+  compute({ k }) {
+    const a = 3 * k, b = 4 * k, c = 5 * k, P = 12 * k, A = (a * b) / 2;
+    return { k, steps: [
+      { t: 'PASO 1 : Triángulo original', html: 'Lados 3 · 4 · 5 (triángulo rectángulo)<br>Perímetro = 12 · Área = (3 × 4) / 2 = 6' },
+      { t: 'PASO 2 : Lados del semejante', html: `Cada lado se multiplica por k = ${N(k)}<br>3 × ${N(k)} = ${N(a)} · 4 × ${N(k)} = ${N(b)} · 5 × ${N(k)} = ${N(c)}`, f: `Lados: ${N(a)} · ${N(b)} · ${N(c)}` },
+      { t: 'PASO 3 : Perímetro', html: `P′ = ${N(a)} + ${N(b)} + ${N(c)}<br>P′ / P = ${N(P)} / 12`, r: `${N(P)}  (× ${N(k)})`, cls: 'good' },
+      { t: 'PASO 4 : Área', html: `A′ = (${N(a)} × ${N(b)}) / 2<br>A′ / A = ${N(A)} / 6`, r: `${N(A)}  (× ${N(k * k)} = k²)`, cls: 'bad' },
+      { t: 'PASO 5 : Proporcionalidad de los lados', html: `3 / ${N(a)} = 4 / ${N(b)} = 5 / ${N(c)} = 1 / ${N(k)}`, f: `${N(3 / a, 3)} = ${N(4 / b, 3)} = ${N(5 / c, 3)}` },
+      { t: 'PASO 6 : Aplicación (torre y sombra)', html: `Un poste de 2 m da 3 m de sombra. Una torre con sombra de ${N(3 * k)} m mide:<br>2 × ${N(k)}`, r: `${N(2 * k)} m` }] };
+  },
+  draw(ctx, { k }, res, { W, H }) {
+    const g = TP.plane(ctx, W, H, { x0: 0, x1: 16, y0: 0, y1: 13, xt: 1, yt: 1, lm: 34 });
+    const tri = (x, kk, col, name) => { const a = 3 * kk, b = 4 * kk, P = [[g.X(x), g.Y(0)], [g.X(x + a), g.Y(0)], [g.X(x), g.Y(b)]];
+      ctx.fillStyle = col + '33'; ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.beginPath(); P.forEach((p, i) => i ? ctx.lineTo(...p) : ctx.moveTo(...p)); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.strokeRect(P[0][0], P[0][1] - 10, 10, 10);
+      TP.tx(ctx, N(a), (P[0][0] + P[1][0]) / 2, P[0][1] - 6, col); TP.tx(ctx, N(b), P[0][0] + 6, (P[0][1] + P[2][1]) / 2, col, 'left');
+      TP.tx(ctx, N(5 * kk), (P[1][0] + P[2][0]) / 2 + 8, (P[1][1] + P[2][1]) / 2 - 4, col, 'left'); TP.tx(ctx, name, P[0][0], g.b + 22 - 22, col, 'left', '11px sans-serif'); };
+    tri(1, 1, '#94a3b8', ''); tri(6, k, '#4de0c1', '');
+    TP.tx(ctx, 'Original', g.X(1), g.Y(4) - 10, '#94a3b8', 'left'); TP.tx(ctx, `Semejante (k = ${N(k)})`, g.X(6), g.Y(4 * k) - 10, '#4de0c1', 'left');
+  },
+  retos: [
+    { text: 'Haz que el <b>área</b> sea <b>4 veces</b> la original.', check: S => S.k === 2 },
+    { text: 'Consigue un <b>perímetro de 30</b>.', check: S => S.k === 2.5 },
+    { text: 'Consigue lados de <b>4.5 · 6 · 7.5</b>.', check: S => S.k === 1.5 }],
+  info: [
+    { cls: 'materials', title: '📘 ¿QUÉ ES LA SEMEJANZA?', html: '<p>Dos figuras son <b>semejantes</b> si tienen la misma forma: ángulos iguales y lados proporcionales.</p><p>La <b>razón de semejanza k</b> es el número por el que se multiplican todos los lados.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>Tales midió una pirámide comparando su sombra con la de un bastón. Hoy se usa la misma idea para estimar la altura de torres y edificios.</p><div class="highlight"><b>Regla de oro:</b> las longitudes se multiplican por k, pero las áreas se multiplican por k².</div>' }]
+});
+</script></body></html>

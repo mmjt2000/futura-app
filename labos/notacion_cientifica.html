@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/tp.css"><title>FUTURA — Notación científica</title></head><body><script src="/static/tp.js"></script><script>
+const N = TP.num, SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹', sup = e => (e < 0 ? '⁻' : '') + String(Math.abs(e)).replace(/\d/g, d => SUP[d]);
+const sci = v => { const e = Math.floor(Math.log10(v) + 1e-12), m = v / Math.pow(10, e); return `${N(m, 2)} × 10${sup(e)}`; };
+const dec = v => v.toLocaleString('en-US', { maximumFractionDigits: 15 });
+const REF = [['un átomo (diámetro)', 1e-10], ['una bacteria', 1e-6], ['el grosor de un cabello', 1e-4], ['una persona (1.7 m)', 1.7], ['el Everest (8 849 m)', 8849], ['el radio de la Tierra', 6.4e6], ['la distancia Tierra–Sol', 1.5e11]];
+TP.lab({
+  icon: '🔭', title: 'Laboratorio: Notación científica', alt: 'Recta con escala de potencias de 10 y ejemplos reales',
+  subtitle: 'Escribe números muy grandes o muy pequeños como <b>m × 10ⁿ</b> y ubícalos en la escala.',
+  controls: [{ id: 'm', label: 'Mantisa <b>m</b> (entre 1 y 10)', min: 1, max: 9.9, step: 0.1, value: 4.5 }, { id: 'e', label: 'Exponente <b>n</b>', min: -10, max: 12, step: 1, value: 3, dec: 0 }],
+  presets: [{ label: 'Wi-Fi 2.4 × 10⁹ Hz', values: { m: 2.4, e: 9 } }, { label: 'Luz 3 × 10⁸ m/s', values: { m: 3, e: 8 } }, { label: 'Un átomo', values: { m: 1, e: -10 } }, { label: 'Una célula 4.5 × 10⁻⁵', values: { m: 4.5, e: -5 } }],
+  compute({ m, e }) {
+    const v = Number((m * Math.pow(10, e)).toPrecision(12)), lg = Math.log10(v), near = REF.reduce((a, b) => Math.abs(Math.log10(b[1]) - lg) < Math.abs(Math.log10(a[1]) - lg) ? b : a), ratio = v / near[1];
+    return { v, lg, near, steps: [
+      { t: 'PASO 1 : Notación científica', r: `${N(m, 1)} × 10${sup(e)}` },
+      { t: 'PASO 2 : Forma decimal', html: `Se mueve el punto decimal ${Math.abs(e)} lugar(es) a la ${e >= 0 ? 'derecha' : 'izquierda'}.`, f: dec(v) },
+      { t: 'PASO 3 : Orden de magnitud', html: `log₁₀(${N(v, 6)}) ≈ ${N(lg, 2)}`, r: `≈ 10${sup(Math.round(lg))}` },
+      { t: 'PASO 4 : Comparación', html: `Se parece a ${near[0]}: ${sci(near[1])}.<br>Es ${ratio >= 1 ? N(ratio, 2) + ' veces mayor' : N(1 / ratio, 2) + ' veces menor'} que eso.` },
+      { t: 'PASO 5 : Aplicación (ondas de radio)', html: `Si este número fuera una frecuencia f en Hz, la longitud de onda es λ = c / f = (3 × 10⁸) / f`, f: `λ = ${sci(3e8 / v)} m` }] };
+  },
+  draw(ctx, { m, e }, res, { W, H }) {
+    ctx.fillStyle = 'rgba(10,14,39,.6)'; ctx.fillRect(0, 0, W, H);
+    const X = l => 40 + (l + 10) / 22 * 420, y = 220; TP.line(ctx, 40, y, 460, y, '#e8eaf6', 2);
+    for (let k = -10; k <= 12; k++) { TP.line(ctx, X(k), y - 5, X(k), y + 5, '#94a3b8', 1); if (k % 2 === 0) TP.tx(ctx, k, X(k), y + 20, '#94a3b8', 'center', '11px sans-serif'); }
+    TP.tx(ctx, 'exponente de 10', 250, y + 42, '#94a3b8', 'center', '11px sans-serif');
+    REF.forEach(([n, v], i) => { const x = X(Math.log10(v)), up = i % 2 === 0; TP.dot(ctx, x, y, 4, '#f59e0b'); TP.line(ctx, x, y, x, y + (up ? -34 - (i % 4) * 4 : 0), 'rgba(245,158,11,.4)', 1); if (up) TP.tx(ctx, n.split(' (')[0], Math.min(Math.max(x, 50), 450), y - 40 - (i % 4) * 4, '#f59e0b', 'center', '10px sans-serif'); });
+    const x = X(res.lg); ctx.fillStyle = '#4de0c1'; ctx.beginPath(); ctx.moveTo(x, y - 4); ctx.lineTo(x - 8, y - 22); ctx.lineTo(x + 8, y - 22); ctx.closePath(); ctx.fill();
+    TP.tx(ctx, `${N(m, 1)} × 10${sup(e)}`, Math.min(Math.max(x, 70), 430), y - 118 + 70, '#4de0c1', 'center', 'bold 16px sans-serif');
+    TP.tx(ctx, 'Escala logarítmica', 250, 36, '#94a3b8', 'center', '12px sans-serif');
+  },
+  retos: [
+    { text: 'Escribe la frecuencia del Wi-Fi: <b>2.4 × 10⁹</b> Hz.', check: S => S.m === 2.4 && S.e === 9 },
+    { text: 'Escribe <b>0.000045</b> en notación científica (4.5 × 10⁻⁵).', check: S => S.m === 4.5 && S.e === -5 },
+    { text: 'Consigue un número <b>mayor que la distancia a la Luna</b> (3.8 × 10⁸ m).', check: (S, r) => r.v > 3.84e8 }],
+  info: [
+    { cls: 'materials', title: '📘 LA NOTACIÓN', html: '<p>Un número está en notación científica si es <b>m × 10ⁿ</b> con <b>1 ≤ m < 10</b> y n entero.</p><p>Exponente positivo: número grande. Exponente negativo: número pequeño.</p>' },
+    { cls: 'explanation', title: '💡 ¿POR QUÉ ES IMPORTANTE?', html: '<p>En telecomunicaciones las frecuencias son del orden de 10⁹ Hz y las longitudes de onda, de centímetros. Escribirlas con todos los ceros sería casi imposible.</p><div class="highlight"><b>Regla de oro:</b> subir el exponente en 1 hace el número 10 veces mayor.</div>' }]
+});
+</script></body></html>
